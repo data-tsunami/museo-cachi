@@ -4,28 +4,36 @@
 
 <h2>Búsqueda de piezas</h2>
 
-<form action="." method="post">
+<form action="." method="post" role="form">
 <table class="table">
     {{ form.as_table }}
     <tr>
         <td width="25%">&nbsp;</td>
-        <td width="75%"><button>Buscar</button></td>
+        <td width="75%"><button class="btn btn-default">Buscar</button></td>
     </tr>
 </table>
 {% csrf_token %}
 </form>
 
 {% if result %}
+<h4>Resultado</h4>
 <table class="table">
     <tr>
         <th>Inv.</th>
         <th>Nombre</th>
+        <th>Imagen</th>
     </tr>
     
      {% for pieza in result %}
         <tr>
             <td>{{ pieza.numero_inventario }}</td>
             <td>{{ pieza.nombre }}</td>
+            <td>
+                {% if mostrar_imagenes %}
+                    <div style="max-width: 128px;"><img src="{% url 'imagen_de_pieza' pieza.id %}"
+                            alt="Imagen para pieza {{ pieza.numero_inventario }}" class="img-thumbnail img-responsive""></div>
+                {% endif %}
+            </td>
         </tr>
      {% endfor %}
 
@@ -33,3 +41,11 @@
 {% endif %}
 
 {% endblock content %}
+
+{% block js_at_bottom_of_body %}
+<script type="text/javascript">
+$( document ).ready(function() {
+    $("select").addClass('form-control');
+});
+</script>
+{% endblock js_at_bottom_of_body %}

@@ -18,3 +18,5 @@ class SearchForm(forms.Form):
         empty_label="(Todos)", required=False)
     sitio_arqueologico = forms.ModelChoiceField(queryset=SitioArqueologico.objects.all(),
         empty_label="(Todos)", required=False)
+
+    mostrar_imagenes = forms.BooleanField(required=False)

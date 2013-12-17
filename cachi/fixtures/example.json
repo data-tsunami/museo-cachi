@@ -1,0 +1,141 @@
+[
+{
+  "pk": 1, 
+  "model": "cachi.pieza", 
+  "fields": {
+    "forma": 1, 
+    "sitio_arqueologico": 2, 
+    "color": 1, 
+    "periodo": 1, 
+    "naturaleza": null, 
+    "nombre": "Vasija de ceramica negra", 
+    "numero_inventario": 2886
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.pieza", 
+  "fields": {
+    "forma": null, 
+    "sitio_arqueologico": 5, 
+    "color": 4, 
+    "periodo": null, 
+    "naturaleza": null, 
+    "nombre": "Instrumento de hueso", 
+    "numero_inventario": 4426
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.forma", 
+  "fields": {
+    "nombre": "Jarra"
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.color", 
+  "fields": {
+    "nombre": "Negro"
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.color", 
+  "fields": {
+    "nombre": "Blanco"
+  }
+},
+{
+  "pk": 3, 
+  "model": "cachi.color", 
+  "fields": {
+    "nombre": "Gris"
+  }
+},
+{
+  "pk": 4, 
+  "model": "cachi.color", 
+  "fields": {
+    "nombre": "Marron"
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.sitioarqueologico", 
+  "fields": {
+    "nombre": "Puerta La Paya", 
+    "coordenada_x": null, 
+    "coordenada_y": null, 
+    "sitio_arqueologico": null
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.sitioarqueologico", 
+  "fields": {
+    "nombre": "Fermin Lera", 
+    "coordenada_x": null, 
+    "coordenada_y": null, 
+    "sitio_arqueologico": null
+  }
+},
+{
+  "pk": 3, 
+  "model": "cachi.sitioarqueologico", 
+  "fields": {
+    "nombre": "La Banda 7/8", 
+    "coordenada_x": null, 
+    "coordenada_y": null, 
+    "sitio_arqueologico": null
+  }
+},
+{
+  "pk": 4, 
+  "model": "cachi.sitioarqueologico", 
+  "fields": {
+    "nombre": "La Banda 9", 
+    "coordenada_x": null, 
+    "coordenada_y": null, 
+    "sitio_arqueologico": null
+  }
+},
+{
+  "pk": 5, 
+  "model": "cachi.sitioarqueologico", 
+  "fields": {
+    "nombre": "Borgatta", 
+    "coordenada_x": null, 
+    "coordenada_y": null, 
+    "sitio_arqueologico": null
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.periodo", 
+  "fields": {
+    "nombre": "Inca"
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.periodo", 
+  "fields": {
+    "nombre": "Preceramico"
+  }
+},
+{
+  "pk": 3, 
+  "model": "cachi.periodo", 
+  "fields": {
+    "nombre": "Formativo"
+  }
+},
+{
+  "pk": 4, 
+  "model": "cachi.periodo", 
+  "fields": {
+    "nombre": "Hisp. Indigena"
+  }
+}
+]

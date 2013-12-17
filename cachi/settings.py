@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-
 """
 Django settings for cachi project.
 
@@ -11,9 +9,15 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+from __future__ import unicode_literals
+
 import os
+
+from django.contrib import messages
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -40,6 +44,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'south',
+    'cachi',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,16 +68,16 @@ WSGI_APPLICATION = 'cachi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.expanduser('~/cachi.sqlite3'),
     }
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-AR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Argentina/Cordoba'
 
 USE_I18N = True
 
@@ -84,3 +90,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Bootstrap friendly
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
+
+#===============================================================================
+# South
+#===============================================================================
+
+# http://south.readthedocs.org/en/latest/settings.html#south-tests-migrate
+SOUTH_TESTS_MIGRATE = False
+
+
+#===============================================================================
+# Load local settings
+#===============================================================================
+
+try:
+    from cachi.local_settings import *  # @UnusedWildImport
+except ImportError, e:
+    import warnings
+    warnings.warn("Couldn't import from 'cachi.local_settings': {}".format(
+        e.args[0]), stacklevel=0)

@@ -8,6 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'cachi.views.index', name='index'),
+    url(r'^search/$', 'cachi.views.search', name='search'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

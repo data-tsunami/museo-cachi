@@ -19,9 +19,12 @@ class Pieza(models.Model):
     naturaleza = models.ForeignKey('Naturaleza', null=True, blank=True)
     forma = models.ForeignKey('Forma', null=True, blank=True)
     color = models.ForeignKey('Color', null=True, blank=True)
-    procedencia = models.ForeignKey('Procedencia', null=True, blank=True)
 
-    # fotografias -> FotografiasDePieza
+    # --- procedencia ---
+    sitio_arqueologico = models.ForeignKey('SitioArqueologico', null=True, blank=True)
+    periodo = models.ForeignKey('Periodo', null=True, blank=True)
+
+    # self.fotografias.all() -> FotografiasDePieza
 
     def __str__(self):
         return "{} - {}".format(self.id, self.nombre)
@@ -63,17 +66,6 @@ class Color(models.Model):
     Ej: negro
     """
     nombre = models.CharField(max_length=64)
-
-    def __str__(self):
-        return self.nombre
-
-
-class Procedencia(models.Model):
-    """
-    Procedencia de la pieza
-    """
-    sitio_arqueologico = models.ForeignKey('SitioArqueologico', null=True, blank=True)
-    periodo = models.ForeignKey('Periodo', null=True, blank=True)
 
     def __str__(self):
         return self.nombre

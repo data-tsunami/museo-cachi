@@ -57,6 +57,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+if DEBUG:
+    MIDDLEWARE_CLASSES += (
+        'cachi.middleware.AutomaticLoginUserMiddleware',
+    )
+
 ROOT_URLCONF = 'cachi.urls'
 
 WSGI_APPLICATION = 'cachi.wsgi.application'

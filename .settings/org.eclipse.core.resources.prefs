@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//cachi/admin.py=utf-8
+encoding//cachi/middleware.py=utf-8
 encoding//cachi/models.py=utf-8
 encoding//cachi/settings.py=utf-8
 encoding//cachi/tests.py=utf-8

@@ -1,0 +1,52 @@
+{% load url from future %}
+{% load staticfiles %}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Logueo - Museo Cachi</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap.min.css' %}">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap-theme.min.css' %}">
+    <!-- Main css -->
+    <link  rel="stylesheet" href="{% static 'bootstrap3/css/main.css' %}">
+    
+     <!-- JS -->
+    <script src="{% static 'bootstrap3/js/bootstrap.min.js' %}"></script>
+
+
+</head>
+<body>
+    <div class="container" style="padding-top: 70px;">
+
+        {% if not user.is_authenticated %}
+            <form class="form-signin col-lg-4 col-md-4 col-sm-6 col-xs-6 col-lg-offset-4 col-md-offset-4 col-sm-offset-3 col-xs-offset-3" role="form" method="post" action="">
+                {% csrf_token %}
+
+                <h2 class="form-signin-heading">Logueo</h2>
+
+                <div class="form-group">
+                    <label >Usuario</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label >Password</label>
+                    {{ form.password }}
+                </div>
+                
+                         
+                <button class="btn btn-lg btn-primary btn-block" id="login" type="submit">Entrar</button>
+            </form>
+        {% else %}
+            <h2 class="form-signin-heading">Logueo</h2>
+            <div class="alert alert-error">
+                <b>Logueo!</b> Ya se encuentra Logueado. Cierre Sesión si desea loguearse con otro Usuario.
+            </div>
+        {% endif %}
+    </div>
+</body>

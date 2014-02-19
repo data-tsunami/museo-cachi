@@ -1,0 +1,75 @@
+{% extends "cachi/base.html" %}
+{% block content %}
+    <div class="row">
+        <!-- <div class="col-sm-3 col-md-2 sidebar">        
+            <ul class="nav nav-sidebar">            
+                <li><a href="#">Pieza</a></li>
+                <li><a href="#">Ficha Técnica</a></li>
+                <li><a href="#">Procedencia</a></li>
+            </ul>
+        </div> -->
+
+        <div class="col-lg-12 main">
+            <h4 class="no-margin">Busca Pieza</h4>
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">                
+                    <div>
+                        <a href="{% url 'nueva_pieza' %}"><button type="button" class="btn btn-default">+ Nueva Pieza </button></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td width="35%">
+                                        <form class="form-inline" role="form">
+                                            <div class="form-group col-lg-8">
+                                                <label class="sr-only" for="id_numero_inventario">Número Inventario</label>
+                                                <input type="text" class="form-control " id="id_numero_inventario" placeholder="Número Inventario">
+                                            </div>                                        
+                                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+                                        </form>
+
+                                        
+                                        
+                                    </td>
+                                    <td width="65%">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                              <tr>                                
+                                                <th>Número Inventario</th>
+                                                <th>Nombre Descriptivo</th>
+                                                <th>Naturaleza</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr>
+                                                <td>345560</td>
+                                                <td>Plato Sopero</td>
+                                                <td>Cerámica</td>
+                                              </tr>
+                                              <tr>
+                                                <td>355677</td>
+                                                <td>Jarrón Aceite</td>
+                                                <td>Cerámica</td>
+                                              </tr>
+                                              <tr>
+                                                <td>365687</td>
+                                                <td>Punta Flecha</td>
+                                                <td>Metal</td>
+                                              </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>                                
+                            </tbody>
+                        </table>
+                       
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

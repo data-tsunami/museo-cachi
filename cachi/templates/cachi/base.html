@@ -1,90 +1,82 @@
+{% load url from future %}
+{% load staticfiles %}
+
 <!doctype html>
-<html ng-app='Cachi'>
+<html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{% block title %} Museo Cachi {% endblock %}</title>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap3/css/dashboard.css' %}">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap-theme.min.css' %}">    
+    <!-- Main css -->
+    <link  rel="stylesheet" href="{% static 'bootstrap3/css/main.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"  href="{% static 'font-awesome4/css/font-awesome.min.css' %}">
+    
+     <!-- JS -->
+    <script src="{% static 'cachi/js/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'bootstrap3/js/bootstrap.min.js' %}"></script>
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-    href="/static/bootstrap-3.0.3/css/bootstrap.min.css">
-
-<link rel="stylesheet"
-    href="/static/magic-bootstrap/magic-bootstrap.css">
-
-<!-- Optional theme -->
-<link rel="stylesheet"
-    href="/static/bootstrap-3.0.3/css/bootstrap-theme.min.css">
-
-<!-- Font Awesome -->
-<link
-    href="/static/font-awesome-4.0.3/css/font-awesome.min.css"
-    rel="stylesheet">
-
-<link
-    href="/static/cachi.css"
-    rel="stylesheet">
-
-<script src="/static/jquery-1.10.2.min.js"></script>
-
-<script
-    src="/static/bootstrap-3.0.3/js/bootstrap.min.js"></script>
-
-<!--
-<script
-    src="/static/angular-1.2.4/angular.min.js"></script>
-<script
-    src="/static/angular-1.2.4/angular-cookies.min.js"></script>
-
-<script src="/static/js/global.js"></script>
--->
-
-<!--
-<script
-    src="/static/angular-1.2.5/angular-route.min.js"></script>
-<script src="/static/ui-bootstrap-tpls-0.6.0.min.js"></script>
--->
-
-{% block js_at_bottom_of_header %}
-{% endblock js_at_bottom_of_header %}
+    {% block extras_js %}
+    {% endblock %}
 
 </head>
 <body ng-controller="GlobalController">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
 
-    <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
+
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target=".navbar-collapse">
-                    <span class="icon-bar"></span> <span class="icon-bar"></span> <span
-                        class="icon-bar"></span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="javascript:void(0);">Cachi</a>
+                <a class="navbar-brand" href="#">Pio Pablo Dias</a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
 
-                    <li ng-class="{ active: isCurrentPath('/Xxxxxxxxxxxxxxxxxxxxxxxx') }"><a
-                        href="{% url 'index' %}">Inicio</a></li>
-
-                    <li ng-class="{ active: isCurrentPath('/Xxxxxxxxxxxxxxxxxxxxxxxx') }"><a
-                        href="{% url 'search' %}">Buscar</a></li>
-
-                    <li ng-class="{ active: isCurrentPath('/Xxxxxxxxxxxxxxxxxxxxxxxx') }"><a
-                        href="/admin">Administrador</a></li>
-                
-                </ul>
+            <div class="navbar-collapse collapse">                
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://www.data-tsunami.com" target="_blank">data-tsunami.com <span
-                            class="glyphicon glyphicon-registration-mark"></span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle text-info" data-toggle="dropdown">
+                            {{ user.get_full_name }}
+                            <b class="caret"></b>
+                        </a> 
+                        <ul class="dropdown-menu">
+                            <li>                            
+                                <a href="" class="navbar-link">Perfil</a>
+                            </li> 
+                            <li class="divider"></li> 
+                            <li>                            
+                                <a href="{% url 'deslogueo' %}" class="navbar-link">Cerrar Sesión</a>
+                            </li>                                        
+                        </ul>
+                    </li> 
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="divider"></li>
+                    <li class="divider"></li>
+
+                    <li><a href="{% url 'busca_pieza' %}">Piezas</a></li>
+
+                    <li><a href="#">Sitios Arqueológicos</a></li>
+                    <li><a href="#">Ubicaciones</a></li>
                 </ul>
             </div>
-            <!--/.nav-collapse -->
         </div>
+
+
+
     </div>
 
-    <div class="container" style="padding-top: 70px;">
+    <div class="container-fluid">
 
 		{% for message in messages %}
 	        <div class="alert alert-dismissable {{ message.tags }}">
@@ -94,13 +86,16 @@
 		{% endfor %}
 
 	    {% block content %}
-	    {% endblock content %}
+	    {% endblock %}
 
     </div>
-    <!-- /container -->
-
-{% block js_at_bottom_of_body %}
-{% endblock js_at_bottom_of_body %}
-
+   <!--  <div id="footer">
+        <div class="container">
+            <p class="text-center">
+                <small>Museo Arqueológico Pio Pablo Dias </small><br>
+                <small><a href="">www.piopablodias.com.ar</a></small>
+            </p>
+        </div>
+    </div> -->
 </body>
 </html>

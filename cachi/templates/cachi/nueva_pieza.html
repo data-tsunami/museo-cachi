@@ -1,0 +1,115 @@
+{% extends "cachi/base.html" %}
+{% block content %}
+    <div class="row">
+        <!-- <div class="col-sm-3 col-md-2 sidebar">        
+            <ul class="">            
+                <li><a href="#">Pieza</a></li>
+                <li><a href="#">Ficha Técnica</a></li>
+                <li><a href="#">Procedencia</a></li>
+            </ul>
+        </div> -->
+        <div class="col-sm-12 main">
+            <h4 class="no-margin">Nueva Pieza</h4>
+            <div class="panel panel-default">
+                <div class="panel-heading">                
+                    <div class="text-right">
+                        <button type="button" class="btn btn-default btn-success">Siguiente</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Pieza</th>
+                                <th>Ficha Técnica</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="50%">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.numero_inventario }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.nombre_descriptivo }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.fecha_hallazgo }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.naturaleza }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.forma }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.tipo_adquisicion }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.tecnica_manufactura }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_pieza_conjunto.tipo_condicion_hallazgo }}
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                               {{ form_pieza_conjunto.fragmentos }} Fragmento
+                                            </label>
+                                        </div>
+                                    </form>                            
+                                </td>
+                                <td width="50%">
+                                    <form role="form">
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.alto }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.peso }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.espesor }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.diametro_min }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.diametro_max }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.color }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.decoracion }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.inscripciones_marcas }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.reparaciones }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.desperfectos }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.desperfectos_fabricacion }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.tratamiento }}
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            {{ form_ficha_tecnica.observacion }}
+                                        </div>
+                                    </form> 
+                                </td>
+                            </tr>                                
+                        </tbody>
+                    </table>                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

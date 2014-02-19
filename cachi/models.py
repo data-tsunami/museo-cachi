@@ -22,11 +22,13 @@ class PiezaConjunto(models.Model):
         max_length=128,
     )
     tecnica_manufactura = models.TextField(
-        max_length=128,
+        null=True,
+        blank=True,
     )
     fecha_hallazgo = models.DateField()
     condicion_hallazgo = models.TextField(
-        max_length=128,
+        null=True,
+        blank=True,
     )
     fragmentos = models.BooleanField(
         default=False,
@@ -222,43 +224,35 @@ class FichaTecnica(models.Model):
     color = models.CharField(
         max_length=64,
     )
-    decoracion = models.CharField(
-        max_length=128,
+    decoracion = models.TextField(
         null=True,
         blank=True,
     )
-    inscripciones_marcas = models.CharField(
-        max_length=128,
+    inscripciones_marcas = models.TextField(
         null=True,
         blank=True,
     )
-    reparaciones = models.CharField(
-        max_length=128,
+    reparaciones = models.TextField(
         null=True,
         blank=True,
     )
-    desperfectos = models.CharField(
-        max_length=128,
+    desperfectos = models.TextField(
         null=True,
         blank=True,
     )
-    desperfectos_fabricacion = models.CharField(
-        max_length=128,
+    desperfectos_fabricacion = models.TextField(
         null=True,
         blank=True,
     )
-    otras_caracteristicas_distintivas = models.CharField(
-        max_length=128,
+    otras_caracteristicas_distintivas = models.TextField(
         null=True,
         blank=True,
     )
-    tratamiento = models.CharField(
-        max_length=128,
+    tratamiento = models.TextField(
         null=True,
         blank=True,
     )
-    observacion = models.CharField(
-        max_length=128,
+    observacion = models.TextField(
         null=True,
         blank=True,
     )

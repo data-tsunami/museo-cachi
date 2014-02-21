@@ -11,22 +11,53 @@ class Migration(SchemaMigration):
         # Adding model 'PiezaConjunto'
         db.create_table(u'cachi_piezaconjunto', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('numero_inventario', self.gf('django.db.models.fields.PositiveIntegerField')()),
             ('nombre_descriptivo', self.gf('django.db.models.fields.CharField')(max_length=128)),
-            ('forma', self.gf('django.db.models.fields.CharField')(max_length=128)),
-            ('tecnica_manufactura', self.gf('django.db.models.fields.CharField')(max_length=128)),
+            ('forma', self.gf('django.db.models.fields.TextField')(max_length=128)),
+            ('tecnica_manufactura', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('fecha_hallazgo', self.gf('django.db.models.fields.DateField')()),
-            ('condicion_hallazgo', self.gf('django.db.models.fields.CharField')(max_length=128)),
+            ('condicion_hallazgo', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('fragmentos', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('procedencia', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Procedencia'], null=True, blank=True)),
             ('ubicacion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Ubicacion'], null=True, blank=True)),
             ('tipo_adquisicion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.TipoAdquisicion'], null=True, blank=True)),
             ('tipo_condicion_hallazgo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.TipoCondicionHallazgo'], null=True, blank=True)),
             ('naturaleza', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Naturaleza'])),
             ('persona_colectora', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Persona'], null=True, blank=True)),
-            ('adjuntos', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Adjunto'], null=True, blank=True)),
         ))
         db.send_create_signal(u'cachi', ['PiezaConjunto'])
+
+        # Adding model 'Fragmento'
+        db.create_table(u'cachi_fragmento', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('numero_inventario', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('ultima_version', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'ultima_version', to=orm['cachi.FichaTecnica'])),
+            ('pieza_conjunto', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.PiezaConjunto'])),
+        ))
+        db.send_create_signal(u'cachi', ['Fragmento'])
+
+        # Adding model 'FichaTecnica'
+        db.create_table(u'cachi_fichatecnica', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('alto', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('peso', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('espesor', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('diametro_min', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True)),
+            ('diametro_max', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True)),
+            ('color', self.gf('django.db.models.fields.CharField')(max_length=64)),
+            ('decoracion', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('inscripciones_marcas', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('reparaciones', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('desperfectos', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('desperfectos_fabricacion', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('otras_caracteristicas_distintivas', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('tratamiento', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('observacion', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('razon_actualizacion', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('fecha', self.gf('django.db.models.fields.DateField')()),
+            ('autor', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Persona'], null=True, blank=True)),
+            ('usuario', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('fragmento', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Fragmento'])),
+        ))
+        db.send_create_signal(u'cachi', ['FichaTecnica'])
 
         # Adding model 'Adjunto'
         db.create_table(u'cachi_adjunto', (
@@ -37,8 +68,8 @@ class Migration(SchemaMigration):
             ('tipo', self.gf('django.db.models.fields.CharField')(max_length=64)),
             ('adjunto', self.gf('django.db.models.fields.files.FileField')(max_length=768)),
             ('pieza_conjunto', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.PiezaConjunto'], null=True, blank=True)),
+            ('fragmento', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Fragmento'], null=True, blank=True)),
             ('ficha_tecnica', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.FichaTecnica'], null=True, blank=True)),
-            ('diagnostico_estado_conservacion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.DiagnosticoEstadoConservacion'], null=True, blank=True)),
             ('ficha_relevamiento_sitio', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.FichaRelevamientoSitio'], null=True, blank=True)),
             ('informe_campo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.InformeCampo'], null=True, blank=True)),
         ))
@@ -81,38 +112,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'cachi', ['Ubicacion'])
 
-        # Adding model 'FichaTecnica'
-        db.create_table(u'cachi_fichatecnica', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('alto', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('peso', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('espesor', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('diametro_min', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True)),
-            ('diametro_max', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True)),
-            ('color', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('decoracion', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('inscripciones_marcas', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('reparaciones', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('desperfectos', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('desperfectos_fabricacion', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('otras_caracteristicas_distintivas', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('tratamiento', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('observacion', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('adjuntos', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Adjunto'], null=True, blank=True)),
-            ('pieza_conjunto', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.PiezaConjunto'])),
-        ))
-        db.send_create_signal(u'cachi', ['FichaTecnica'])
-
-        # Adding model 'DiagnosticoEstadoConservacion'
-        db.create_table(u'cachi_diagnosticoestadoconservacion', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('fecha', self.gf('django.db.models.fields.DateField')()),
-            ('descripcion', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('autor', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Persona'], null=True, blank=True)),
-            ('adjuntos', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.Adjunto'], null=True, blank=True)),
-        ))
-        db.send_create_signal(u'cachi', ['DiagnosticoEstadoConservacion'])
-
         # Adding model 'InformeCampo'
         db.create_table(u'cachi_informecampo', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -135,8 +134,9 @@ class Migration(SchemaMigration):
         db.create_table(u'cachi_procedencia', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('otra', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('sitio_aqueologico', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.SitioArqueologico'], null=True, blank=True)),
+            ('sitio_arqueologico', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.SitioArqueologico'], null=True, blank=True)),
             ('ubicacion_geografica', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.UbicacionGeografica'], null=True, blank=True)),
+            ('pieza_conjunto', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.PiezaConjunto'])),
         ))
         db.send_create_signal(u'cachi', ['Procedencia'])
 
@@ -168,7 +168,6 @@ class Migration(SchemaMigration):
             ('valor_nuevo', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('pieza_conjunto', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.PiezaConjunto'], null=True, blank=True)),
             ('ficha_tecnica', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.FichaTecnica'], null=True, blank=True)),
-            ('diagnostico_estado_conservacion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.DiagnosticoEstadoConservacion'], null=True, blank=True)),
             ('sitio_aqueologico', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cachi.SitioArqueologico'], null=True, blank=True)),
         ))
         db.send_create_signal(u'cachi', ['Modificacion'])
@@ -177,6 +176,12 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         # Deleting model 'PiezaConjunto'
         db.delete_table(u'cachi_piezaconjunto')
+
+        # Deleting model 'Fragmento'
+        db.delete_table(u'cachi_fragmento')
+
+        # Deleting model 'FichaTecnica'
+        db.delete_table(u'cachi_fichatecnica')
 
         # Deleting model 'Adjunto'
         db.delete_table(u'cachi_adjunto')
@@ -195,12 +200,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Ubicacion'
         db.delete_table(u'cachi_ubicacion')
-
-        # Deleting model 'FichaTecnica'
-        db.delete_table(u'cachi_fichatecnica')
-
-        # Deleting model 'DiagnosticoEstadoConservacion'
-        db.delete_table(u'cachi_diagnosticoestadoconservacion')
 
         # Deleting model 'InformeCampo'
         db.delete_table(u'cachi_informecampo')
@@ -255,23 +254,15 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Adjunto'},
             'adjunto': ('django.db.models.fields.files.FileField', [], {'max_length': '768'}),
             'content_type': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'diagnostico_estado_conservacion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.DiagnosticoEstadoConservacion']", 'null': 'True', 'blank': 'True'}),
             'ficha_relevamiento_sitio': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.FichaRelevamientoSitio']", 'null': 'True', 'blank': 'True'}),
             'ficha_tecnica': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.FichaTecnica']", 'null': 'True', 'blank': 'True'}),
+            'fragmento': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Fragmento']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'informe_campo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.InformeCampo']", 'null': 'True', 'blank': 'True'}),
             'nombre_archivo': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'pieza_conjunto': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.PiezaConjunto']", 'null': 'True', 'blank': 'True'}),
             'tipo': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
             'ubicacion_filesystem': ('django.db.models.fields.CharField', [], {'max_length': '64'})
-        },
-        u'cachi.diagnosticoestadoconservacion': {
-            'Meta': {'object_name': 'DiagnosticoEstadoConservacion'},
-            'adjuntos': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Adjunto']", 'null': 'True', 'blank': 'True'}),
-            'autor': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Persona']", 'null': 'True', 'blank': 'True'}),
-            'descripcion': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'fecha': ('django.db.models.fields.DateField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'cachi.ficharelevamientositio': {
             'Meta': {'object_name': 'FichaRelevamientoSitio'},
@@ -282,23 +273,33 @@ class Migration(SchemaMigration):
         },
         u'cachi.fichatecnica': {
             'Meta': {'object_name': 'FichaTecnica'},
-            'adjuntos': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Adjunto']", 'null': 'True', 'blank': 'True'}),
             'alto': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'autor': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Persona']", 'null': 'True', 'blank': 'True'}),
             'color': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'decoracion': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
-            'desperfectos': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
-            'desperfectos_fabricacion': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
+            'decoracion': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'desperfectos': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'desperfectos_fabricacion': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'diametro_max': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'diametro_min': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'espesor': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'fecha': ('django.db.models.fields.DateField', [], {}),
+            'fragmento': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Fragmento']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'inscripciones_marcas': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
-            'observacion': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
-            'otras_caracteristicas_distintivas': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
+            'inscripciones_marcas': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'observacion': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'otras_caracteristicas_distintivas': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'peso': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'razon_actualizacion': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'reparaciones': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'tratamiento': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'usuario': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'cachi.fragmento': {
+            'Meta': {'object_name': 'Fragmento'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'numero_inventario': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'pieza_conjunto': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.PiezaConjunto']"}),
-            'reparaciones': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
-            'tratamiento': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'})
+            'ultima_version': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'ultima_version'", 'to': u"orm['cachi.FichaTecnica']"})
         },
         u'cachi.informecampo': {
             'Meta': {'object_name': 'InformeCampo'},
@@ -311,7 +312,6 @@ class Migration(SchemaMigration):
         u'cachi.modificacion': {
             'Meta': {'object_name': 'Modificacion'},
             'atributo': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'diagnostico_estado_conservacion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.DiagnosticoEstadoConservacion']", 'null': 'True', 'blank': 'True'}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
             'ficha_tecnica': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.FichaTecnica']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -334,18 +334,15 @@ class Migration(SchemaMigration):
         },
         u'cachi.piezaconjunto': {
             'Meta': {'object_name': 'PiezaConjunto'},
-            'adjuntos': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Adjunto']", 'null': 'True', 'blank': 'True'}),
-            'condicion_hallazgo': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'condicion_hallazgo': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fecha_hallazgo': ('django.db.models.fields.DateField', [], {}),
-            'forma': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'forma': ('django.db.models.fields.TextField', [], {'max_length': '128'}),
             'fragmentos': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'naturaleza': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Naturaleza']"}),
             'nombre_descriptivo': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'numero_inventario': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'persona_colectora': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Persona']", 'null': 'True', 'blank': 'True'}),
-            'procedencia': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Procedencia']", 'null': 'True', 'blank': 'True'}),
-            'tecnica_manufactura': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'tecnica_manufactura': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'tipo_adquisicion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.TipoAdquisicion']", 'null': 'True', 'blank': 'True'}),
             'tipo_condicion_hallazgo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.TipoCondicionHallazgo']", 'null': 'True', 'blank': 'True'}),
             'ubicacion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.Ubicacion']", 'null': 'True', 'blank': 'True'})
@@ -354,7 +351,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Procedencia'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'otra': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'sitio_aqueologico': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.SitioArqueologico']", 'null': 'True', 'blank': 'True'}),
+            'pieza_conjunto': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.PiezaConjunto']"}),
+            'sitio_arqueologico': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.SitioArqueologico']", 'null': 'True', 'blank': 'True'}),
             'ubicacion_geografica': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cachi.UbicacionGeografica']", 'null': 'True', 'blank': 'True'})
         },
         u'cachi.sitioarqueologico': {

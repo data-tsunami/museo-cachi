@@ -5,16 +5,22 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 
+RAZON_ACTUALIZACION_CREACION = 1
+RAZON_ACTUALIZACION_ACTUALIZACION = 2
+RAZON_ACTUALIZACION_DIAGNOSTICO = 3
+RAZON_ACTUALIZACION = (
+    (RAZON_ACTUALIZACION_ACTUALIZACION, 'Actualización Datos'),
+    (RAZON_ACTUALIZACION_DIAGNOSTICO, 'Diagnóstico Estado Conservación'),
+)
+
 
 class PiezaConjunto(models.Model):
     """
     Una pieza o conjunto de piezas del museo.
 
     Ej:
-    - numero_inventario = 212313
     - nombre = Jarra negra pulida
     """
-    numero_inventario = models.PositiveIntegerField()
     nombre_descriptivo = models.CharField(
         max_length=128,
     )
@@ -32,11 +38,6 @@ class PiezaConjunto(models.Model):
     )
     fragmentos = models.BooleanField(
         default=False,
-    )
-    procedencia = models.ForeignKey(
-        'Procedencia',
-        null=True,
-        blank=True,
     )
     ubicacion = models.ForeignKey(
         'Ubicacion',
@@ -61,16 +62,106 @@ class PiezaConjunto(models.Model):
         null=True,
         blank=True,
     )
-    adjuntos = models.ForeignKey(
-        'Adjunto',
-        null=True,
-        blank=True,
+
+    def __unicode__(self):
+        return u'{0}'.format(
+            self.nombre_descriptivo,
+        )
+
+
+class Fragmento(models.Model):
+    """
+    Fragmentos de una pieza en caso de tenerlos, o,
+    fragmento único, en caso de pieza entera.
+    """
+    numero_inventario = models.PositiveIntegerField()
+    ultima_version = models.ForeignKey(
+        'FichaTecnica',
+        related_name='ultima_version'
+    )
+    pieza_conjunto = models.ForeignKey(
+        'PiezaConjunto',
     )
 
     def __unicode__(self):
-        return u'{0}, {1}'.format(
+        return u'{0}'.format(
             self.numero_inventario,
-            self.nombre_descriptivo,
+        )
+
+
+class FichaTecnica(models.Model):
+    """
+    La ficha de características técnicas
+    de una pieza o parte de un conjunto.
+
+    Ej: color, peso.
+    """
+
+    alto = models.PositiveIntegerField()
+    peso = models.PositiveIntegerField()
+    espesor = models.PositiveIntegerField()
+    diametro_min = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+    diametro_max = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+    color = models.CharField(
+        max_length=64,
+    )
+    decoracion = models.TextField(
+        null=True,
+        blank=True,
+    )
+    inscripciones_marcas = models.TextField(
+        null=True,
+        blank=True,
+    )
+    reparaciones = models.TextField(
+        null=True,
+        blank=True,
+    )
+    desperfectos = models.TextField(
+        null=True,
+        blank=True,
+    )
+    desperfectos_fabricacion = models.TextField(
+        null=True,
+        blank=True,
+    )
+    otras_caracteristicas_distintivas = models.TextField(
+        null=True,
+        blank=True,
+    )
+    tratamiento = models.TextField(
+        null=True,
+        blank=True,
+    )
+    observacion = models.TextField(
+        null=True,
+        blank=True,
+    )
+    razon_actualizacion = models.PositiveIntegerField(
+        choices=RAZON_ACTUALIZACION,
+    )
+    fecha = models.DateField()
+    autor = models.ForeignKey(
+        'Persona',
+        null=True,
+        blank=True,
+    )
+    usuario = models.ForeignKey(
+        User,
+    )
+    fragmento = models.ForeignKey(
+        'Fragmento',
+    )
+
+    def __unicode__(self):
+        return u'{0}'.format(
+            self.fragmento.numero_inventario,
         )
 
 
@@ -94,7 +185,7 @@ class Adjunto(models.Model):
         max_length=64,
     )
     adjunto = models.FileField(
-        upload_to='pieza/photo/%Y/%m/%d',
+        upload_to='pieza/adjunto/%Y/%m/%d',
         max_length=768,
     )
     pieza_conjunto = models.ForeignKey(
@@ -102,13 +193,13 @@ class Adjunto(models.Model):
         null=True,
         blank=True,
     )
-    ficha_tecnica = models.ForeignKey(
-        'FichaTecnica',
+    fragmento = models.ForeignKey(
+        'Fragmento',
         null=True,
         blank=True,
     )
-    diagnostico_estado_conservacion = models.ForeignKey(
-        'DiagnosticoEstadoConservacion',
+    ficha_tecnica = models.ForeignKey(
+        'FichaTecnica',
         null=True,
         blank=True,
     )
@@ -172,7 +263,7 @@ class Persona(models.Model):
     Personas involucradas de alguna
     manera en algún dato.
 
-    Ej: Pio Pablo Dias
+    Ej: Pio Pablo Diaz
     """
     nombre = models.CharField(
         max_length=64
@@ -200,94 +291,6 @@ class Ubicacion(models.Model):
 
     def __unicode__(self):
         return self.nombre
-
-
-class FichaTecnica(models.Model):
-    """
-    La ficha de características técnicas
-    de una pieza o parte de un conjunto.
-
-    Ej: color, peso.
-    """
-
-    alto = models.PositiveIntegerField()
-    peso = models.PositiveIntegerField()
-    espesor = models.PositiveIntegerField()
-    diametro_min = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-    )
-    diametro_max = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-    )
-    color = models.CharField(
-        max_length=64,
-    )
-    decoracion = models.TextField(
-        null=True,
-        blank=True,
-    )
-    inscripciones_marcas = models.TextField(
-        null=True,
-        blank=True,
-    )
-    reparaciones = models.TextField(
-        null=True,
-        blank=True,
-    )
-    desperfectos = models.TextField(
-        null=True,
-        blank=True,
-    )
-    desperfectos_fabricacion = models.TextField(
-        null=True,
-        blank=True,
-    )
-    otras_caracteristicas_distintivas = models.TextField(
-        null=True,
-        blank=True,
-    )
-    tratamiento = models.TextField(
-        null=True,
-        blank=True,
-    )
-    observacion = models.TextField(
-        null=True,
-        blank=True,
-    )
-    adjuntos = models.ForeignKey(
-        'Adjunto',
-        null=True,
-        blank=True,
-    )
-    pieza_conjunto = models.ForeignKey(
-        'PiezaConjunto',
-    )
-
-    def __unicode__(self):
-        return u'{0}, {1}'.format(
-            self.numero_inventario,
-            self.nombre_descriptivo,
-        )
-
-
-class DiagnosticoEstadoConservacion(models.Model):
-    fecha = models.DateField()
-    descripcion = models.TextField(
-        null=True,
-        blank=True,
-    )
-    autor = models.ForeignKey(
-       'Persona',
-        null=True,
-        blank=True,
-    )
-    adjuntos = models.ForeignKey(
-        'Adjunto',
-        null=True,
-        blank=True,
-    )
 
 
 class InformeCampo(models.Model):
@@ -336,7 +339,7 @@ class Procedencia(models.Model):
     otra = models.CharField(
         max_length=64,
     )
-    sitio_aqueologico = models.ForeignKey(
+    sitio_arqueologico = models.ForeignKey(
         "SitioArqueologico",
         null=True,
         blank=True,
@@ -345,6 +348,9 @@ class Procedencia(models.Model):
         "UbicacionGeografica",
         null=True,
         blank=True,
+    )
+    pieza_conjunto = models.ForeignKey(
+        'PiezaConjunto'
     )
 
 
@@ -414,11 +420,6 @@ class Modificacion(models.Model):
     )
     ficha_tecnica = models.ForeignKey(
         'FichaTecnica',
-        null=True,
-        blank=True,
-    )
-    diagnostico_estado_conservacion = models.ForeignKey(
-        'DiagnosticoEstadoConservacion',
         null=True,
         blank=True,
     )

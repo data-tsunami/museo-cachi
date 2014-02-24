@@ -9,6 +9,7 @@ RAZON_ACTUALIZACION_CREACION = 1
 RAZON_ACTUALIZACION_ACTUALIZACION = 2
 RAZON_ACTUALIZACION_DIAGNOSTICO = 3
 RAZON_ACTUALIZACION = (
+    (RAZON_ACTUALIZACION_CREACION, 'Creación'),
     (RAZON_ACTUALIZACION_ACTUALIZACION, 'Actualización Datos'),
     (RAZON_ACTUALIZACION_DIAGNOSTICO, 'Diagnóstico Estado Conservación'),
 )
@@ -77,10 +78,13 @@ class Fragmento(models.Model):
     numero_inventario = models.PositiveIntegerField()
     ultima_version = models.ForeignKey(
         'FichaTecnica',
-        related_name='ultima_version'
+        null=True,
+        blank=True,
+        related_name='ultima_version',
     )
     pieza_conjunto = models.ForeignKey(
         'PiezaConjunto',
+        related_name='fragmento'
     )
 
     def __unicode__(self):
@@ -161,7 +165,7 @@ class FichaTecnica(models.Model):
 
     def __unicode__(self):
         return u'{0}'.format(
-            self.fragmento.numero_inventario,
+            self.color,
         )
 
 
@@ -338,6 +342,8 @@ class Procedencia(models.Model):
     """
     otra = models.CharField(
         max_length=64,
+        null=True,
+        blank=True,
     )
     sitio_arqueologico = models.ForeignKey(
         "SitioArqueologico",

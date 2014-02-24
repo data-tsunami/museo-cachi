@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from datetime import date
 
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 from cachi.forms import (
     AdjuntoForm,
@@ -66,34 +67,35 @@ def nueva_pieza(request):
                 request.FILES,
             )
 
-            if form_pieza_conjunto.is_valid():
+            if (form_pieza_conjunto.is_valid() and
+                form_procedencia.is_valid() and
+                formset_fragmento.is_valid() and
+                form_adjunto.is_valid()):
+
                 pieza_conjunto = form_pieza_conjunto.save()
+
+                procedencia = form_procedencia.save(
+                    commit=False,
+                )
+                procedencia.pieza_conjunto = pieza_conjunto
+                procedencia.save()
+
+                adjuntos = request.FILES.getlist('adjuntos')
+                for adjunto in adjuntos:
+                    tipo = adjunto.content_type.split('/')[1]
+                    Adjunto.objects.create(
+                        nombre_archivo=adjunto.name,
+                        content_type=adjunto.content_type,
+                        tipo=tipo,
+                        adjunto=adjunto,
+                        pieza_conjunto=pieza_conjunto,
+                    )
 
                 formset_fragmento = FragmentoFormSet(
                     request.POST,
                     instance=pieza_conjunto,
                 )
-
-                if (form_procedencia.is_valid() and
-                    formset_fragmento.is_valid()):
-
-                    procedencia = form_procedencia.save(
-                        commit=False,
-                    )
-                    procedencia.pieza_conjunto = pieza_conjunto
-                    procedencia.save()
-
-                    #adjuntos = request.FILES.getlist('adjuntos')
-                    #for adjunto in adjuntos:
-                        # Adjunto.objects.create(
-                        #     nombre_archivo=adjunto.name,
-                        #     content_type=adjunto.content_type,
-                        #     ubicacion_filesystem="##",
-                        #     tipo="##",
-                        #     adjunto=adjunto,
-                        #     ficha_tecnica=ficha_tecnica,
-                        # )
-
+                if formset_fragmento.is_valid():
                     fragmentos = formset_fragmento.save()
 
                     dic_forms_ficha_tecnica = {}
@@ -175,10 +177,13 @@ def nueva_pieza(request):
             for ficha_tecnica in lista_fichas_tecnicas:
                 ficha_tecnica.save()
 
-    form_pieza_conjunto = PiezaConjuntoForm()
-    formset_fragmento = FragmentoFormSet()
-    form_procedencia = ProcedenciaForm()
-    form_adjunto = AdjuntoForm()
+            return redirect('nueva_pieza')
+
+    elif request.method == "GET":
+        form_pieza_conjunto = PiezaConjuntoForm()
+        formset_fragmento = FragmentoFormSet()
+        form_procedencia = ProcedenciaForm()
+        form_adjunto = AdjuntoForm()
 
     contexto = {
         'form_pieza_conjunto': form_pieza_conjunto,

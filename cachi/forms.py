@@ -2,58 +2,57 @@
 
 from __future__ import unicode_literals
 from django import forms
+from django.forms.models import inlineformset_factory
 
+from cachi.fields import (
+    MultiFileField,
+)
 from cachi.models import (
+    Adjunto,
     FichaTecnica,
+    Fragmento,
     PiezaConjunto,
+    Procedencia,
 )
 
-
-# class SearchForm(forms.Form):
-#     """A form to search piezas"""
-#     naturaleza = forms.ModelChoiceField(queryset=Naturaleza.objects.all(),
-#         empty_label="(Todas)", required=False)
-#     forma = forms.ModelChoiceField(queryset=Forma.objects.all(),
-#         empty_label="(Todas)", required=False)
-#     color = forms.ModelChoiceField(queryset=Color.objects.all(),
-#         empty_label="(Todos)", required=False)
-#     periodo = forms.ModelChoiceField(queryset=Periodo.objects.all(),
-#         empty_label="(Todos)", required=False)
-#     sitio_arqueologico = forms.ModelChoiceField(queryset=SitioArqueologico.objects.all(),
-#         empty_label="(Todos)", required=False)
-
-#     mostrar_imagenes = forms.BooleanField(required=False)
 
 class PiezaConjuntoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PiezaConjuntoForm, self).__init__(*args, **kwargs)
-        self.fields['numero_inventario'].widget.attrs['class'] = 'form-control'
-        self.fields['numero_inventario'].widget.attrs['placeholder'] = 'Número Inventario'
-
         self.fields['nombre_descriptivo'].widget.attrs['class'] = 'form-control'
         self.fields['nombre_descriptivo'].widget.attrs['placeholder'] = 'Nombre Descriptivo'
 
         self.fields['fecha_hallazgo'].widget.attrs['class'] = 'form-control'
+        self.fields['fecha_hallazgo'].widget.attrs['type'] = 'date'
         self.fields['fecha_hallazgo'].widget.attrs['placeholder'] = 'Fecha Hallazgo'
 
         self.fields['forma'].widget.attrs['class'] = 'form-control'
         self.fields['forma'].widget.attrs['placeholder'] = 'Forma'
-        self.fields['forma'].widget.attrs['rows'] = '3'
+        self.fields['forma'].widget.attrs['rows'] = '2'
 
         self.fields['tecnica_manufactura'].widget.attrs['class'] = 'form-control'
         self.fields['tecnica_manufactura'].widget.attrs['placeholder'] = 'Técnica Manufactura'
-        self.fields['tecnica_manufactura'].widget.attrs['rows'] = '3'
+        self.fields['tecnica_manufactura'].widget.attrs['rows'] = '2'
 
         self.fields['naturaleza'].widget.attrs['class'] = 'form-control'
+        self.fields['naturaleza'].empty_label = 'Naturaleza'
+
         self.fields['tipo_adquisicion'].widget.attrs['class'] = 'form-control'
+        self.fields['tipo_adquisicion'].empty_label = 'Tipo Adquisición'
+
         self.fields['tipo_condicion_hallazgo'].widget.attrs['class'] = 'form-control'
+        self.fields['tipo_condicion_hallazgo'].empty_label = 'Tipo Condición Hallazgo'
+
         self.fields['persona_colectora'].widget.attrs['class'] = 'form-control'
+        self.fields['persona_colectora'].empty_label = 'Persona Colectora'
+
+        self.fields['ubicacion'].widget.attrs['class'] = 'form-control'
+        self.fields['ubicacion'].empty_label = 'Ubicación Actual'
 
     class Meta():
         model = PiezaConjunto
 
         fields = (
-            'numero_inventario',
             'nombre_descriptivo',
             'fecha_hallazgo',
             'naturaleza',
@@ -63,7 +62,31 @@ class PiezaConjuntoForm(forms.ModelForm):
             'tipo_adquisicion',
             'tipo_condicion_hallazgo',
             'persona_colectora',
+            'ubicacion',
         )
+
+
+class FragmentoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FragmentoForm, self).__init__(*args, **kwargs)
+        self.fields['numero_inventario'].widget.attrs['class'] = 'form-control'
+        self.fields['numero_inventario'].widget.attrs['placeholder'] = 'Número Inventario'
+
+    class Meta():
+        model = Fragmento
+
+        fields = (
+            'numero_inventario',
+        )
+
+
+FragmentoFormSet = inlineformset_factory(
+    PiezaConjunto,
+    Fragmento,
+    can_delete=True,
+    extra=1,
+    form=FragmentoForm,
+)
 
 
 class FichaTecnicaForm(forms.ModelForm):
@@ -89,35 +112,35 @@ class FichaTecnicaForm(forms.ModelForm):
 
         self.fields['decoracion'].widget.attrs['class'] = 'form-control'
         self.fields['decoracion'].widget.attrs['placeholder'] = 'Decoración'
-        self.fields['decoracion'].widget.attrs['rows'] = '3'
+        self.fields['decoracion'].widget.attrs['rows'] = '2'
 
         self.fields['inscripciones_marcas'].widget.attrs['class'] = 'form-control'
         self.fields['inscripciones_marcas'].widget.attrs['placeholder'] = 'Inscripciones Marcas'
-        self.fields['inscripciones_marcas'].widget.attrs['rows'] = '3'
+        self.fields['inscripciones_marcas'].widget.attrs['rows'] = '2'
 
         self.fields['reparaciones'].widget.attrs['class'] = 'form-control'
         self.fields['reparaciones'].widget.attrs['placeholder'] = 'Reparaciones'
-        self.fields['reparaciones'].widget.attrs['rows'] = '3'
+        self.fields['reparaciones'].widget.attrs['rows'] = '2'
 
         self.fields['desperfectos'].widget.attrs['class'] = 'form-control'
         self.fields['desperfectos'].widget.attrs['placeholder'] = 'Desperfectos'
-        self.fields['desperfectos'].widget.attrs['rows'] = '3'
+        self.fields['desperfectos'].widget.attrs['rows'] = '2'
 
         self.fields['desperfectos_fabricacion'].widget.attrs['class'] = 'form-control'
         self.fields['desperfectos_fabricacion'].widget.attrs['placeholder'] = 'Desperfectos Fabricación'
-        self.fields['desperfectos_fabricacion'].widget.attrs['rows'] = '3'
+        self.fields['desperfectos_fabricacion'].widget.attrs['rows'] = '2'
 
         self.fields['otras_caracteristicas_distintivas'].widget.attrs['class'] = 'form-control'
         self.fields['otras_caracteristicas_distintivas'].widget.attrs['placeholder'] = 'Otra Caracteristica'
-        self.fields['otras_caracteristicas_distintivas'].widget.attrs['rows'] = '3'
+        self.fields['otras_caracteristicas_distintivas'].widget.attrs['rows'] = '2'
 
         self.fields['tratamiento'].widget.attrs['class'] = 'form-control'
         self.fields['tratamiento'].widget.attrs['placeholder'] = 'Tratamiento'
-        self.fields['tratamiento'].widget.attrs['rows'] = '3'
+        self.fields['tratamiento'].widget.attrs['rows'] = '2'
 
         self.fields['observacion'].widget.attrs['class'] = 'form-control'
         self.fields['observacion'].widget.attrs['placeholder'] = 'Observacion'
-        self.fields['observacion'].widget.attrs['rows'] = '3'
+        self.fields['observacion'].widget.attrs['rows'] = '2'
 
     class Meta():
         model = FichaTecnica
@@ -139,3 +162,42 @@ class FichaTecnicaForm(forms.ModelForm):
             'observacion',
         )
 
+
+FichaTecnicaFormSet = inlineformset_factory(
+    Fragmento,
+    FichaTecnica,
+    can_delete=False,
+    extra=1,
+    form=FichaTecnicaForm,
+)
+
+
+class ProcedenciaForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProcedenciaForm, self).__init__(*args, **kwargs)
+        self.fields['otra'].widget.attrs['class'] = 'form-control'
+        self.fields['otra'].widget.attrs['placeholder'] = 'Otra Ubicación'
+        self.fields['otra'].widget.attrs['rows'] = '2'
+
+        self.fields['ubicacion_geografica'].widget.attrs['class'] = 'form-control'
+        self.fields['ubicacion_geografica'].empty_label = 'Ubicación Geográfica'
+
+        self.fields['sitio_arqueologico'].widget.attrs['class'] = 'form-control'
+        self.fields['sitio_arqueologico'].empty_label = 'Sitio Arqueológico'
+
+    class Meta():
+        model = Procedencia
+
+        fields = (
+            'sitio_arqueologico',
+            'ubicacion_geografica',
+            'otra',
+        )
+
+
+class AdjuntoForm(forms.Form):
+    adjuntos = MultiFileField(
+        max_num=10,
+        min_num=1,
+        maximum_file_size=1024 * 1024 * 5
+    )

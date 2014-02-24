@@ -16,19 +16,22 @@ urlpatterns = patterns('',
         'cachi.views.nueva_pieza',
         name='nueva_pieza',
     ),
-     url(r'^pieza/busca$',
+    url(r'^pieza/busca$',
         'cachi.views.busca_pieza',
         name='busca_pieza',
     ),
 
-    url(r'^search/$',
-        'cachi.views.search',
-        name='search',
-    ),
-    url(r'^pieza/(?P<pk>\d+)/imagen_de_pieza/$',
-        'cachi.views.imagen_de_pieza',
-        name='imagen_de_pieza'
-    ),
+
+    
+
+    # url(r'^search/$',
+    #     'cachi.views.search',
+    #     name='search',
+    # ),
+    # url(r'^pieza/(?P<pk>\d+)/imagen_de_pieza/$',
+    #     'cachi.views.imagen_de_pieza',
+    #     name='imagen_de_pieza'
+    # ),
 
     # Logueo y Deslogueo
     url(r'^logueo/$',

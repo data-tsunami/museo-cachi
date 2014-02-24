@@ -182,9 +182,6 @@ class Adjunto(models.Model):
     content_type = models.CharField(
         max_length=64,
     )
-    ubicacion_filesystem = models.CharField(
-        max_length=64,
-    )
     tipo = models.CharField(
         max_length=64,
     )
@@ -217,6 +214,11 @@ class Adjunto(models.Model):
         null=True,
         blank=True,
     )
+
+    def __unicode__(self):
+        return u'{0}'.format(
+            self.nombre_archivo,
+        )
 
 
 class TipoAdquisicion(models.Model):

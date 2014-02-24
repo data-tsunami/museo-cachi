@@ -6,6 +6,12 @@
 .no-margin {
     margin: 0;
 }
+.inline {
+    display: inline;
+}
+.clear-fix {
+    clear: both;
+}
 
 /*--footer--*/
 #footer {

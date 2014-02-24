@@ -101,9 +101,22 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+#Loguin
 LOGIN_URL = "/logueo/"
 LOGOUT_URL = "/deslogueo/"
 LOGIN_REDIRECT_URL = "/"
+
+#Files Options
+CONTENT_TYPES = [
+    'jpeg', 'png',
+    'pdf', 'msword',
+]
+# 2.5MB - 2621440
+# 5MB - 5242880
+# 10MB - 10485760
+# 20MB - 20971520
+MAX_UPLOAD_SIZE = "2621440"
+
 
 #===============================================================================
 # South

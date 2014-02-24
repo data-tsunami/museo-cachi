@@ -1,66 +1,198 @@
 {% extends "cachi/base.html" %}
+{% load staticfiles %}
+
+
+{% block extras_js %}
+    <script src="{% static 'cachi/js/jquery.formset.js' %}"></script>
+{% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">        
+            <ul class="nav nav-sidebar">            
+                <li class="active"><a href="#">Pieza</a></li>
+                <li><a href="#">Fichas Técnicas</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <form method="post" enctype="multipart/form-data" role="form">
+                 {% csrf_token %}
 
-<div class="row">
-    <div class="col-sm-3 col-md-2 sidebar">        
-        <ul class="nav nav-sidebar">            
-            <li><a href="#">Pieza</a></li>
-            <li><a href="#">Ficha Técnica</a></li>
-            <li><a href="#">Procedencia</a></li>
-        </ul>
-    </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">                
+                        <h3 class="inline">Pieza</h3>
+                        <div class="inline pull-right">
+                            <button type="submit" name="siguiente" class="btn btn-default btn-success">
+                                <span class="glyphicon glyphicon-chevron-down"></span>&nbsp; Siguiente
+                            </button>
+                        </div>
+                        <div class="clear-fix"></div>
+                    </div>
+                    <div class="panel-body col-lg-12">                        
+                        <div class="col-lg-4">
+                            <h5>Pieza</h5>
+                            
+                            <div class="form-group {% if form_pieza_conjunto.numero_inventario.errors %}has-error{% endif %}">
+                                {{ form_pieza_conjunto.numero_inventario }}
+                            </div>
+                            <div class="form-group {% if form_pieza_conjunto.nombre_descriptivo.errors %}has-error{% endif %}">
+                                {{ form_pieza_conjunto.nombre_descriptivo }}
+                            </div>
+                            <div class="form-group {% if form_pieza_conjunto.fecha_hallazgo.errors %}has-error{% endif %}">
+                                {{ form_pieza_conjunto.fecha_hallazgo }}
+                            </div>
+                            <div class="form-group {% if form_pieza_conjunto.naturaleza.errors %}has-error{% endif %}">
+                                {{ form_pieza_conjunto.naturaleza }}
+                            </div>
+                            <div class="form-group {% if form_pieza_conjunto.forma.errors %}has-error{% endif %}">
+                                {{ form_pieza_conjunto.forma }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_pieza_conjunto.tipo_adquisicion }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_pieza_conjunto.tecnica_manufactura }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_pieza_conjunto.tipo_condicion_hallazgo }}
+                            </div>                            
+                            <div class="form-group">
+                                {{ form_pieza_conjunto.persona_colectora }}
+                            </div>
+                           <!--  <div class="checkbox col-lg-4">
+                                <label>
+                                   {{ form_pieza_conjunto.fragmentos }} Fragmento
+                                </label>
+                            </div> -->
+                            <div class="form-group">
+                                {{ form_pieza_conjunto.ubicacion }}
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>Procedencia</h5>
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h3 class="no-margin">Pieza</h3>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                
-                
-                <div>
-                    <button type="button" class="btn btn-default">+ Nueva Pieza </button>
-                    <button type="button" class="btn btn-default btn-sm">+ Adjunto </button>
+                            <div class="form-group">
+                                {{ form_procedencia.sitio_arqueologico }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_procedencia.ubicacion_geografica }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_procedencia.otra }}
+                            </div>
+
+                            <br>
+
+                            <h5>Adjuntos</h5>
+
+                            <div class="form-group">
+                                {{ form_adjunto.adjuntos }}
+                                <div id="adjuntos">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>Fragmentos</h5>                            
+                            {{ formset_fragmento.management_form }}
+
+                            {% for form in formset_fragmento %}                               
+                                <table class="table" id="formset">
+                                    <tr>
+                                        <td>                                            
+                                            {{ form.numero_inventario }}                                                
+                                        </td>
+                                        <td align="center">
+                                            {{ form.DELETE }}
+                                        </td>
+                                    </tr>
+                                </table>
+                                {{ form.id }}
+                                {{ form.pieza_conjunto }} 
+                            {% endfor %}
+
+                           <!--  <div class="form-group col-lg-6 {% if form_ficha_tecnica.alto.errors %}has-error{% endif %}">
+                                {{ form_ficha_tecnica.alto }}
+                            </div>
+                            <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
+                                {{ form_ficha_tecnica.peso }}
+                            </div>
+                            <div class="form-group col-lg-6 {% if form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
+                                {{ form_ficha_tecnica.espesor }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.diametro_min }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.diametro_max }}
+                            </div>
+                            <div class="form-group col-lg-6 {% if form_ficha_tecnica.color.errors %}has-error{% endif %}">
+                                {{ form_ficha_tecnica.color }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.decoracion }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.inscripciones_marcas }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.reparaciones }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.desperfectos }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.desperfectos_fabricacion }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.tratamiento }}
+                            </div>
+                            <div class="form-group col-lg-6">
+                                {{ form_ficha_tecnica.observacion }}
+                            </div>  -->
+
+                        </div> 
+                    </div>
                 </div>
-            </div>
-            <div class="panel-body">
-                <form role="form">
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.numero_inventario }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.nombre_descriptivo }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.fecha_hallazgo }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.naturaleza }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.forma }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.tipo_adquisicion }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.tecnica_manufactura }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_pieza_conjunto.tipo_condicion_hallazgo }}
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                           {{ form_pieza_conjunto.fragmentos }} Fragmento
-                        </label>
-                    </div>
-                    <button type="button" class="btn btn-default">Submit</button>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
-  </div>
+    <script type="text/javascript">
+        $(function() {
+            /*
+            Establece la funcionalidad de los formset.
+            */
+            {% if perms.perfil.usuarios_administrador %}
+                $('#formset tr').formset({
+                    prefix: '{{ formset_fragmento.prefix }}'
+                });
+             {% endif %}
+             
+            /*
+            Maneja los adjuntos.
+            */
+            var files = [];
+            $("#id_adjuntos").change(function (){
+                $("#adjuntos").html('');
 
+                adjuntos = this.files;
+                PreviewImage(adjuntos);
+            });
 
+            function PreviewImage(adjuntos) {
+                $.each(adjuntos, function (index, adjunto){
+                    var oFReader = new FileReader();
+                    oFReader.readAsDataURL(adjunto);                                
 
+                    oFReader.onload = function (oFREvent){                                                                      
+                        $("#adjuntos").append('<img id="uploadPreview_'+index+'" style="width:100px; height: 100px;" />')
+                        $("#uploadPreview_"+index).attr('src', oFREvent.target.result);
+                    };
+                });
+            }
+        });
+    </script>  
 {% endblock %}
+ 

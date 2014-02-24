@@ -1,5 +1,9 @@
-from django.utils.translation import ugettext_lazy as _
+# -*- coding: utf-8 -*-
+
 from django import forms
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.template.defaultfilters import filesizeformat
 
 
 class MultiFileInput(forms.FileInput):
@@ -16,10 +20,12 @@ class MultiFileInput(forms.FileInput):
 
 class MultiFileField(forms.FileField):
     widget = MultiFileInput
+
     default_error_messages = {
         'min_num': u"Ensure at least %(min_num)s files are uploaded (received %(num_files)s).",
         'max_num': u"Ensure at most %(max_num)s files are uploaded (received %(num_files)s).",
-        'file_size' : u"File: %(uploaded_file_name)s, exceeded maximum upload size."
+        'file_size': u"Archivo: %(uploaded_file_name)s, excede el tamaño máximo de subida.",
+        'file_type': u"Archivo: %(uploaded_file_name)s, el tipo de archivo no es soportado.",
     }
 
     def __init__(self, *args, **kwargs):
@@ -37,12 +43,32 @@ class MultiFileField(forms.FileField):
     def validate(self, data):
         super(MultiFileField, self).validate(data)
         num_files = len(data)
+
         if len(data) and not data[0]:
             num_files = 0
+
         if num_files < self.min_num:
-            raise ValidationError(self.error_messages['min_num'] % {'min_num': self.min_num, 'num_files': num_files})
-        elif self.max_num and  num_files > self.max_num:
-            raise ValidationError(self.error_messages['max_num'] % {'max_num': self.max_num, 'num_files': num_files})
+            raise ValidationError(
+                self.error_messages['min_num'] % {'min_num': self.min_num, 'num_files': num_files},
+                code='invalid',
+            )
+        elif self.max_num and num_files > self.max_num:
+            raise ValidationError(
+                self.error_messages['max_num'] % {'max_num': self.max_num, 'num_files': num_files},
+                code='invalid',
+            )
+
         for uploaded_file in data:
+            type = uploaded_file.content_type.split('/')[1]
+
+            if not type in settings.CONTENT_TYPES:
+                raise ValidationError(
+                    self.error_messages['file_type'] % {'uploaded_file_name': uploaded_file.name},
+                    code='invalid',
+                    )
+
             if uploaded_file.size > self.maximum_file_size:
-                raise ValidationError(self.error_messages['file_size'] % { 'uploaded_file_name': uploaded_file.name})
+                raise ValidationError(
+                    self.error_messages['file_size'] % {'uploaded_file_name': uploaded_file.name},
+                    code='invalid',
+                )

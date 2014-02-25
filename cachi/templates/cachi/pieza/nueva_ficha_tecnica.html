@@ -94,7 +94,8 @@
                                             <label class="control-label">{{ ficha_tecnica.form_adjunto.adjuntos.errors }}</label>
                                         {% endif %}
                                         {{ ficha_tecnica.form_adjunto.adjuntos }}
-                                        <div id="adjuntos">
+
+                                        <div class="adjunto">
                                         </div>
                                     </div>
                                 </div>
@@ -113,22 +114,25 @@
             /*
             Maneja los adjuntos.
             */
-            var files = [];
-            $("#id_adjuntos").change(function (){
-                $("#adjuntos").html('');
-
-                adjuntos = this.files;
-                PreviewImage(adjuntos);
+            $(".adjuntos").change(function (){
+                var objeto = $(this).parent().children(".adjunto");
+                objeto.html('');
+                
+                var adjuntos = $(this).prop('files');
+                PreviewImage(objeto, adjuntos);
             });
 
-            function PreviewImage(adjuntos) {
+            function PreviewImage(objeto, adjuntos) {
+                objeto.append('<table><thead><th><td colspan="2">&nbsp;<td><th></thead><tbody></body></table>');
+
                 $.each(adjuntos, function (index, adjunto){
                     var oFReader = new FileReader();
                     oFReader.readAsDataURL(adjunto);                                
 
-                    oFReader.onload = function (oFREvent){                                                                      
-                        $("#adjuntos").append('<img id="uploadPreview_'+index+'" style="width:100px; height: 100px;" />')
-                        $("#uploadPreview_"+index).attr('src', oFREvent.target.result);
+                    oFReader.onload = function (oFREvent){
+                        var id_img = String(index) + Math.floor((Math.random()*10000)+1);                                                                      
+                        objeto.find("table > tbody").append('<tr><td><img id="'+id_img+'" style="width:50px; height: 50px;" /></td><td>'+adjunto.name+'</td></tr>');
+                        $("#"+id_img).attr('src', oFREvent.target.result);
                     };
                 });
             }

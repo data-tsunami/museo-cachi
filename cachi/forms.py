@@ -200,6 +200,10 @@ class ProcedenciaForm(forms.ModelForm):
 
 
 class AdjuntoForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(AdjuntoForm, self).__init__(*args, **kwargs)
+        self.fields['adjuntos'].widget.attrs['class'] = 'form-control adjuntos'
+
     adjuntos = MultiFileField(
         max_num=10,
         min_num=1,

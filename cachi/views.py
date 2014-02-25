@@ -53,6 +53,13 @@ def nueva_pieza(request):
     if request.method == 'POST':
         if (not request.session['pieza_conjunto_pk'] and
             'siguiente' in request.POST):
+            """
+            Si no esta seteada la variable 'pieza_conjunto_pk' en sesión
+            y viene 'siguiente' en el request.POST, se procede a validar
+            los formularios, crear las instancias de los objetos y
+            a armar el contexto para el siguiente paso, crear las
+            instancias de FichaTecnica.
+            """
 
             form_pieza_conjunto = PiezaConjuntoForm(
                 request.POST,
@@ -99,6 +106,12 @@ def nueva_pieza(request):
                 if formset_fragmento.is_valid():
                     fragmentos = formset_fragmento.save()
 
+                    """
+                    Se instancian los formularios según la cantidad de
+                    fragmentos que se hayan creado para la pieza,
+                    se setean las variables de sesión y se establece el
+                    contexto para renderiza el template de fichas técnicas.
+                    """
                     dic_fichas_tecnicas = {}
                     for fragmento in fragmentos:
                         dic_forms = {}
@@ -133,7 +146,10 @@ def nueva_pieza(request):
                     )
         else:
             """
-
+            Se obtienen los fragmentos de la pieza generada y se
+            instancian y validan los formaularios para cada uno.
+            Una vez guardados se redirecciona nuevamente a iniciar
+            el proceso de carga de pieza.
             """
             pieza_conjunto_pk = request.session['pieza_conjunto_pk']
             pieza_conjunto = PiezaConjunto.objects.get(

@@ -32,7 +32,7 @@
                     </div>
                     <div class="panel-body"> 
                         <div id="acordion" class="col-lg-12">
-                            {% for numero_inventario, form_ficha_tecnica in dic_forms_ficha_tecnica.items %}
+                            {% for numero_inventario, ficha_tecnica in dic_fichas_tecnicas.items %}
                             <h4>Número Inventario: {{ numero_inventario }}</h4>
                             <div>
                                 <div class="col-lg-6">
@@ -40,57 +40,57 @@
                                         <h5>Características</h5>
                                     </div>
                                     
-                                    <div class="form-group col-lg-6 {% if form_ficha_tecnica.alto.errors %}has-error{% endif %}">
-                                        {{ form_ficha_tecnica.alto }}
+                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.alto.errors %}has-error{% endif %}">
+                                        {{ ficha_tecnica.form_ficha_tecnica.alto }}
                                     </div>
-                                    <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
-                                        {{ form_ficha_tecnica.peso }}
+                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.peso.errors %}has-error{% endif %}">
+                                        {{ ficha_tecnica.form_ficha_tecnica.peso }}
                                     </div>
-                                    <div class="form-group col-lg-6 {% if form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
-                                        {{ form_ficha_tecnica.espesor }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.diametro_min }}
+                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
+                                        {{ ficha_tecnica.form_ficha_tecnica.espesor }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.diametro_max }}
-                                    </div>
-                                    <div class="form-group col-lg-6 {% if form_ficha_tecnica.color.errors %}has-error{% endif %}">
-                                        {{ form_ficha_tecnica.color }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.diametro_min }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.decoracion }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.diametro_max }}
+                                    </div>
+                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.color.errors %}has-error{% endif %}">
+                                        {{ ficha_tecnica.form_ficha_tecnica.color }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.inscripciones_marcas }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.decoracion }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.reparaciones }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.inscripciones_marcas }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.desperfectos }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.reparaciones }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.desperfectos_fabricacion }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.desperfectos }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.desperfectos_fabricacion }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.tratamiento }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.otras_caracteristicas_distintivas }}
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        {{ form_ficha_tecnica.observacion }}
+                                        {{ ficha_tecnica.form_ficha_tecnica.tratamiento }}
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        {{ ficha_tecnica.form_ficha_tecnica.observacion }}
                                     </div>                            
                                 </div>
                                 <div class="col-lg-6">
                                     <h5>Adjuntos</h5>
 
-                                    <div class="form-group {% if form_adjunto.adjuntos.errors %}has-error{% endif %}">
-                                        {% if form_adjunto.adjuntos.errors %}
-                                            <label class="control-label">{{ form_adjunto.adjuntos.errors }}</label>
+                                    <div class="form-group {% if ficha_tecnica.form_adjunto.adjuntos.errors %}has-error{% endif %}">
+                                        {% if ficha_tecnica.form_adjunto.adjuntos.errors %}
+                                            <label class="control-label">{{ ficha_tecnica.form_adjunto.adjuntos.errors }}</label>
                                         {% endif %}
-                                        {{ form_adjunto.adjuntos }}
+                                        {{ ficha_tecnica.form_adjunto.adjuntos }}
                                         <div id="adjuntos">
                                         </div>
                                     </div>

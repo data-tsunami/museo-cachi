@@ -80,7 +80,8 @@ def nueva_pieza(request):
                 procedencia.pieza_conjunto = pieza_conjunto
                 procedencia.save()
 
-                adjuntos = request.FILES.getlist('adjuntos')
+                #adjuntos = request.FILES.getlist('adjuntos')
+                adjuntos = form_adjunto.cleaned_data['adjuntos']
                 for adjunto in adjuntos:
                     tipo = adjunto.content_type.split('/')[1]
                     Adjunto.objects.create(
@@ -98,22 +99,29 @@ def nueva_pieza(request):
                 if formset_fragmento.is_valid():
                     fragmentos = formset_fragmento.save()
 
-                    dic_forms_ficha_tecnica = {}
+                    dic_fichas_tecnicas = {}
                     for fragmento in fragmentos:
+                        dic_forms = {}
+
                         prefix = 'fragmento-{0}'.format(fragmento.pk)
 
                         form_ficha_tecnica = FichaTecnicaForm(
                             prefix=prefix,
                         )
+                        form_adjunto = AdjuntoForm(
+                            prefix=prefix,
+                        )
 
-                        dic_forms_ficha_tecnica[
+                        dic_forms = {
+                            'form_ficha_tecnica': form_ficha_tecnica,
+                            'form_adjunto': form_adjunto,
+                        }
+                        dic_fichas_tecnicas[
                             fragmento.numero_inventario
-                        ] = form_ficha_tecnica
+                        ] = dic_forms
 
-                    form_adjunto = AdjuntoForm()
                     contexto = {
-                        'dic_forms_ficha_tecnica': dic_forms_ficha_tecnica,
-                        'form_adjunto': form_adjunto,
+                        'dic_fichas_tecnicas': dic_fichas_tecnicas,
                         'pieza_conjunto': pieza_conjunto,
                     }
                     return render_html_dinamico(
@@ -130,24 +138,36 @@ def nueva_pieza(request):
                 pieza_conjunto=pieza_conjunto,
             )
 
-            form_adjunto = AdjuntoForm()
-
             valida = True
-            dic_forms_ficha_tecnica = {}
-            lista_fichas_tecnicas = []
+            dic_fichas_tecnicas = {}
+            lista_fichas_tecnicas_adjuntos = []
             for fragmento in fragmentos:
+                dic_forms = {}
+
                 prefix = 'fragmento-{0}'.format(fragmento.pk)
 
                 form_ficha_tecnica = FichaTecnicaForm(
                     request.POST,
                     prefix=prefix,
                 )
+                form_adjunto = AdjuntoForm(
+                    request.POST,
+                    request.FILES,
+                    prefix=prefix,
+                )
 
-                dic_forms_ficha_tecnica[
+                dic_forms = {
+                    'form_ficha_tecnica': form_ficha_tecnica,
+                    'form_adjunto': form_adjunto,
+                }
+
+                dic_fichas_tecnicas[
                     fragmento.numero_inventario
-                ] = form_ficha_tecnica
+                ] = dic_forms
 
-                if form_ficha_tecnica.is_valid():
+                if (form_ficha_tecnica.is_valid() and
+                    form_adjunto.is_valid()):
+
                     ficha_tecnica = form_ficha_tecnica.save(
                         commit=False,
                     )
@@ -156,16 +176,18 @@ def nueva_pieza(request):
                     ficha_tecnica.usuario = request.user
                     ficha_tecnica.fragmento = fragmento
 
-                    lista_fichas_tecnicas.append(
-                        ficha_tecnica,
+                    lista_fichas_tecnicas_adjuntos.append(
+                        {'ficha_tecnica': ficha_tecnica,
+                         'form_adjunto': form_adjunto,
+                        }
                     )
+
                 else:
                     valida = False
 
             if not valida:
                 contexto = {
-                    'dic_forms_ficha_tecnica': dic_forms_ficha_tecnica,
-                    'form_adjunto': form_adjunto,
+                    'dic_fichas_tecnicas': dic_fichas_tecnicas,
                     'pieza_conjunto': pieza_conjunto,
                 }
                 return render_html_dinamico(
@@ -174,8 +196,21 @@ def nueva_pieza(request):
                     contexto,
                 )
 
-            for ficha_tecnica in lista_fichas_tecnicas:
+            for dic_ficha_tecnica_adjunto in lista_fichas_tecnicas_adjuntos:
+                ficha_tecnica = dic_ficha_tecnica_adjunto['ficha_tecnica']
                 ficha_tecnica.save()
+
+                form_adjunto = dic_ficha_tecnica_adjunto['form_adjunto']
+                adjuntos = form_adjunto.cleaned_data['adjuntos']
+                for adjunto in adjuntos:
+                    tipo = adjunto.content_type.split('/')[1]
+                    Adjunto.objects.create(
+                        nombre_archivo=adjunto.name,
+                        content_type=adjunto.content_type,
+                        tipo=tipo,
+                        adjunto=adjunto,
+                        ficha_tecnica=ficha_tecnica,
+                    )
 
             return redirect('nueva_pieza')
 

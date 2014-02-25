@@ -3,7 +3,6 @@
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.template.defaultfilters import filesizeformat
 
 
 class MultiFileInput(forms.FileInput):
@@ -22,10 +21,10 @@ class MultiFileField(forms.FileField):
     widget = MultiFileInput
 
     default_error_messages = {
-        'min_num': u"Ensure at least %(min_num)s files are uploaded (received %(num_files)s).",
-        'max_num': u"Ensure at most %(max_num)s files are uploaded (received %(num_files)s).",
-        'file_size': u"Archivo: %(uploaded_file_name)s, excede el tamaño máximo de subida.",
-        'file_type': u"Archivo: %(uploaded_file_name)s, el tipo de archivo no es soportado.",
+        'min_num': u"Mínimo %(min_num)s archivos. (Subidos: %(num_files)s).",
+        'max_num': u"Máximo %(max_num)s archivos. (Subidos: %(num_files)s).",
+        'file_size': u"%(uploaded_file_name)s, excede el tamaño de subida.",
+        'file_type': u"%(uploaded_file_name)s, el tipo de archivo es inválido.",
     }
 
     def __init__(self, *args, **kwargs):
@@ -49,12 +48,18 @@ class MultiFileField(forms.FileField):
 
         if num_files < self.min_num:
             raise ValidationError(
-                self.error_messages['min_num'] % {'min_num': self.min_num, 'num_files': num_files},
+                self.error_messages['min_num'] % {
+                    'min_num': self.min_num,
+                    'num_files': num_files,
+                },
                 code='invalid',
             )
         elif self.max_num and num_files > self.max_num:
             raise ValidationError(
-                self.error_messages['max_num'] % {'max_num': self.max_num, 'num_files': num_files},
+                self.error_messages['max_num'] % {
+                    'max_num': self.max_num,
+                    'num_files': num_files,
+                },
                 code='invalid',
             )
 
@@ -63,12 +68,16 @@ class MultiFileField(forms.FileField):
 
             if not type in settings.CONTENT_TYPES:
                 raise ValidationError(
-                    self.error_messages['file_type'] % {'uploaded_file_name': uploaded_file.name},
+                    self.error_messages['file_type'] % {
+                        'uploaded_file_name': uploaded_file.name,
+                    },
                     code='invalid',
-                    )
+                )
 
             if uploaded_file.size > self.maximum_file_size:
                 raise ValidationError(
-                    self.error_messages['file_size'] % {'uploaded_file_name': uploaded_file.name},
+                    self.error_messages['file_size'] % {
+                        'uploaded_file_name': uploaded_file.name,
+                    },
                     code='invalid',
                 )

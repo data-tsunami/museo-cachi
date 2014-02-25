@@ -36,7 +36,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -61,6 +60,11 @@ if DEBUG:
     MIDDLEWARE_CLASSES += (
         'cachi.middleware.AutomaticLoginUserMiddleware',
     )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+)
 
 ROOT_URLCONF = 'cachi.urls'
 

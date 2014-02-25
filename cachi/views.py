@@ -9,7 +9,6 @@ from django.shortcuts import redirect
 from cachi.forms import (
     AdjuntoForm,
     FichaTecnicaForm,
-    FichaTecnicaFormSet,
     FragmentoFormSet,
     PiezaConjuntoForm,
     ProcedenciaForm,
@@ -52,7 +51,9 @@ def busca_pieza(request):
 @login_required(redirect_field_name=None)
 def nueva_pieza(request):
     if request.method == 'POST':
-        if 'siguiente' in request.POST:
+        if (not request.session['pieza_conjunto_pk'] and
+            'siguiente' in request.POST):
+
             form_pieza_conjunto = PiezaConjuntoForm(
                 request.POST,
             )
@@ -80,7 +81,6 @@ def nueva_pieza(request):
                 procedencia.pieza_conjunto = pieza_conjunto
                 procedencia.save()
 
-                #adjuntos = request.FILES.getlist('adjuntos')
                 adjuntos = form_adjunto.cleaned_data['adjuntos']
                 for adjunto in adjuntos:
                     tipo = adjunto.content_type.split('/')[1]
@@ -116,23 +116,28 @@ def nueva_pieza(request):
                             'form_ficha_tecnica': form_ficha_tecnica,
                             'form_adjunto': form_adjunto,
                         }
-                        dic_fichas_tecnicas[
-                            fragmento.numero_inventario
-                        ] = dic_forms
+                        dic_fichas_tecnicas[fragmento.numero_inventario] = \
+                        dic_forms
+
+                    request.session['pieza_conjunto_pk'] = pieza_conjunto.pk
+                    request.session['pieza_conjunto_nombre'] = \
+                    pieza_conjunto.nombre_descriptivo
 
                     contexto = {
                         'dic_fichas_tecnicas': dic_fichas_tecnicas,
-                        'pieza_conjunto': pieza_conjunto,
                     }
                     return render_html_dinamico(
                         request,
                         'cachi/pieza/nueva_ficha_tecnica.html',
                         contexto,
                     )
+        else:
+            """
 
-        elif 'guardar' in request.POST:
+            """
+            pieza_conjunto_pk = request.session['pieza_conjunto_pk']
             pieza_conjunto = PiezaConjunto.objects.get(
-                pk=request.POST["pk_pieza_conjunto"],
+                pk=pieza_conjunto_pk,
             )
             fragmentos = Fragmento.objects.filter(
                 pieza_conjunto=pieza_conjunto,
@@ -171,7 +176,8 @@ def nueva_pieza(request):
                     ficha_tecnica = form_ficha_tecnica.save(
                         commit=False,
                     )
-                    ficha_tecnica.razon_actualizacion = RAZON_ACTUALIZACION_CREACION
+                    ficha_tecnica.razon_actualizacion = \
+                    RAZON_ACTUALIZACION_CREACION
                     ficha_tecnica.fecha = date.today()
                     ficha_tecnica.usuario = request.user
                     ficha_tecnica.fragmento = fragmento
@@ -181,14 +187,12 @@ def nueva_pieza(request):
                          'form_adjunto': form_adjunto,
                         }
                     )
-
                 else:
                     valida = False
 
             if not valida:
                 contexto = {
                     'dic_fichas_tecnicas': dic_fichas_tecnicas,
-                    'pieza_conjunto': pieza_conjunto,
                 }
                 return render_html_dinamico(
                     request,
@@ -215,6 +219,13 @@ def nueva_pieza(request):
             return redirect('nueva_pieza')
 
     elif request.method == "GET":
+        """
+        Se establece una variable en sesión para controlar
+        el proceso de generación de una Pieza.
+        Se instancian los formularios y se renderiza el template.
+        """
+        request.session['pieza_conjunto_pk'] = None
+
         form_pieza_conjunto = PiezaConjuntoForm()
         formset_fragmento = FragmentoFormSet()
         form_procedencia = ProcedenciaForm()

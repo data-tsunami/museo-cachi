@@ -16,7 +16,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <form method="post" enctype="multipart/form-data" role="form">
-                 {% csrf_token %}
+                {% csrf_token %}
 
                 <div class="panel panel-default">
                     <div class="panel-heading">                
@@ -59,11 +59,6 @@
                             <div class="form-group">
                                 {{ form_pieza_conjunto.persona_colectora }}
                             </div>
-                           <!--  <div class="checkbox col-lg-4">
-                                <label>
-                                   {{ form_pieza_conjunto.fragmentos }} Fragmento
-                                </label>
-                            </div> -->
                             <div class="form-group">
                                 {{ form_pieza_conjunto.ubicacion }}
                             </div>

@@ -18,11 +18,11 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <form method="post" enctype="multipart/form-data" role="form">
-                 {% csrf_token %}
-                 <input type="hidden" name="pk_pieza_conjunto" value="{{ pieza_conjunto.pk }}">
+                {% csrf_token %}
+                <input type="hidden" name="pk_pieza_conjunto" value="{{ request.session.pieza_conjunto_pk }}">
                 <div class="panel panel-default">
                     <div class="panel-heading">                
-                        <h3 class="inline">Fichas Técnicas <small> {{ pieza_conjunto }}</small></h3> 
+                        <h3 class="inline">Fichas Técnicas <small> {{ request.session.pieza_conjunto_nombre }}</small></h3> 
                         <div class="inline pull-right">
                             <button type="submit" name="guardar" class="btn btn-default btn-success">
                                 <span class="glyphicon glyphicon-ok"></span>&nbsp; Guardar
@@ -81,6 +81,9 @@
                                     </div>
                                     <div class="form-group col-lg-6">
                                         {{ ficha_tecnica.form_ficha_tecnica.observacion }}
+                                    </div> 
+                                    <div class="form-group col-lg-6">
+                                        {{ ficha_tecnica.form_ficha_tecnica.autor }}
                                     </div>                            
                                 </div>
                                 <div class="col-lg-6">

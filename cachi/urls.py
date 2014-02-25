@@ -12,17 +12,14 @@ urlpatterns = patterns('',
         name='index',
     ),
 
-    url(r'^pieza/nueva$',
-        'cachi.views.nueva_pieza',
-        name='nueva_pieza',
-    ),
     url(r'^pieza/busca$',
         'cachi.views.busca_pieza',
         name='busca_pieza',
     ),
-
-
-    
+    url(r'^pieza/nueva$',
+        'cachi.views.nueva_pieza',
+        name='nueva_pieza',
+    ),
 
     # url(r'^search/$',
     #     'cachi.views.search',

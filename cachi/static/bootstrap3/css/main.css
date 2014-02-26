@@ -48,3 +48,19 @@
     -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
           transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
+
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+  cursor: default;
+  color: #428bca;
+}
+
+.nav > li.active > a:hover,
+.nav > li.active > a:focus {
+  text-decoration: none;
+  background-color: #428bca;
+  cursor:  default;
+  color: #FFF;

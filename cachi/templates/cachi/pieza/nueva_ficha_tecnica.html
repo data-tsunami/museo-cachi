@@ -12,8 +12,8 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">        
             <ul class="nav nav-sidebar">            
-                <li><a href="#">Pieza o Conjunto</a></li>
-                <li class="active"><a href="#">Fichas Técnicas</a></li>
+                <li><a><span class="label label-primary">1</span> Pieza o Conjunto</a></li>
+                <li class="active"><a><span class="label label-primary">2</span> Fichas Técnicas</a></li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -123,15 +123,18 @@
             });
 
             function PreviewImage(objeto, adjuntos) {
-                objeto.append('<table><thead><th><td colspan="2">&nbsp;<td><th></thead><tbody></body></table>');
+                objeto.append('<br><ul class="media-list"></ul>');
 
                 $.each(adjuntos, function (index, adjunto){
                     var oFReader = new FileReader();
                     oFReader.readAsDataURL(adjunto);                                
 
                     oFReader.onload = function (oFREvent){
-                        var id_img = String(index) + Math.floor((Math.random()*10000)+1);                                                                      
-                        objeto.find("table > tbody").append('<tr><td><img id="'+id_img+'" style="width:50px; height: 50px;" /></td><td>'+adjunto.name+'</td></tr>');
+                        var id_img = String(index) + Math.floor((Math.random()*10000)+1);
+                        var tipo = adjunto.type;
+                        var tamaño = (adjunto.size / (1024*1024)).toFixed(2);
+
+                        objeto.find("ul").append('<li class="media"><a class="pull-left"><img id="'+id_img+'"style="width:64px; height: 64px;" /></a><div class="media-body"><h4 class="media-heading">'+adjunto.name+'</h4><small>Tipo: '+tipo+'</small><br><small>Tamaño: '+tamaño+' MB</small></div><li>');
                         $("#"+id_img).attr('src', oFREvent.target.result);
                     };
                 });
@@ -139,4 +142,3 @@
         });
     </script>  
 {% endblock %}
- 

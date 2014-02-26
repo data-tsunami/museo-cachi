@@ -10,13 +10,18 @@
         </div> -->
 
         <div class="col-lg-12 main">
-            <h4 class="no-margin">Busca Pieza</h4>
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">                
-                    <div>
-                        <a href="{% url 'nueva_pieza' %}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Nueva Pieza</button></a>
+                    <h3 class="inline">Busca Pieza</h3>
+                    <div class="inline pull-right">
+                        <a href="{% url 'nueva_pieza' %}">
+                            <button type="button" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-plus"></span> Nueva Pieza
+                            </button>
+                        </a>
                     </div>
+                    <div class="clear-fix"></div>
                 </div>
                 <div class="panel-body">
                         <table class="table">

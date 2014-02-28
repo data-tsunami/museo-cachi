@@ -69,6 +69,20 @@ class PiezaConjunto(models.Model):
             self.nombre_descriptivo,
         )
 
+    def obtiene_procedencia(self):
+        try:
+            return Procedencia.objects.get(
+                pieza_conjunto=self,
+            )
+        except:
+            return None
+
+    def obtiene_adjuntos(self):
+        return self.adjunto_pieza_conjunto.all()
+
+    def obtiene_fragmentos(self):
+        return self.fragmento.all()
+
 
 class Fragmento(models.Model):
     """
@@ -91,6 +105,9 @@ class Fragmento(models.Model):
         return u'{0}'.format(
             self.numero_inventario,
         )
+
+    def obtiene_ficha_tecnica(self):
+        return self.ultima_version
 
 
 class FichaTecnica(models.Model):
@@ -168,6 +185,9 @@ class FichaTecnica(models.Model):
             self.color,
         )
 
+    def obtiene_adjuntos(self):
+        return self.adjunto_ficha_tecnica.all()
+
 
 class Adjunto(models.Model):
     """
@@ -182,6 +202,11 @@ class Adjunto(models.Model):
     content_type = models.CharField(
         max_length=64,
     )
+    size = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True,
+    )
     tipo = models.CharField(
         max_length=64,
     )
@@ -191,16 +216,19 @@ class Adjunto(models.Model):
     )
     pieza_conjunto = models.ForeignKey(
         'PiezaConjunto',
+        related_name='adjunto_pieza_conjunto',
         null=True,
         blank=True,
     )
     fragmento = models.ForeignKey(
         'Fragmento',
+        related_name='adjunto_fragmento',
         null=True,
         blank=True,
     )
     ficha_tecnica = models.ForeignKey(
         'FichaTecnica',
+        related_name='adjunto_ficha_tecnica',
         null=True,
         blank=True,
     )
@@ -358,7 +386,8 @@ class Procedencia(models.Model):
         blank=True,
     )
     pieza_conjunto = models.ForeignKey(
-        'PiezaConjunto'
+        'PiezaConjunto',
+        related_name='procedencia',
     )
 
 

@@ -2,9 +2,12 @@
 
 from __future__ import unicode_literals
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 
 from django.contrib import admin
 admin.autodiscover()
+
+from cachi import settings
 
 urlpatterns = patterns('',
     url(r'^$',
@@ -12,23 +15,32 @@ urlpatterns = patterns('',
         name='index',
     ),
 
-    url(r'^pieza/busca$',
+    url(r'^pieza/busca/$',
         'cachi.views.busca_pieza',
         name='busca_pieza',
     ),
-    url(r'^pieza/nueva$',
-        'cachi.views.nueva_pieza',
-        name='nueva_pieza',
+    url(r'^pieza/nueva/$',
+        'cachi.views.nueva_edita_pieza_conjunto',
+        name='nueva_pieza_conjunto',
+    ),
+    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/$',
+        'cachi.views.nueva_edita_pieza_conjunto',
+        name='edita_pieza_conjunto'
+    ),
+    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/ficha_tecnica/nueva/$',
+        'cachi.views.nueva_edita_ficha_tecnica',
+        name='nueva_ficha_tecnica'
+    ),
+    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/ficha_tecnica/(?P<fragmento_pk>\d+)/$',
+        'cachi.views.nueva_edita_ficha_tecnica',
+        name='edita_ficha_tecnica'
     ),
 
     # url(r'^search/$',
     #     'cachi.views.search',
     #     name='search',
     # ),
-    # url(r'^pieza/(?P<pk>\d+)/imagen_de_pieza/$',
-    #     'cachi.views.imagen_de_pieza',
-    #     name='imagen_de_pieza'
-    # ),
+
 
     # Logueo y Deslogueo
     url(r'^logueo/$',
@@ -44,3 +56,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 )
+
+urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)

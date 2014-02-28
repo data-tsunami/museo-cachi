@@ -64,3 +64,16 @@
   background-color: #428bca;
   cursor:  default;
   color: #FFF;
+}
+
+
+#formset_ul input[type="text"]{
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fff;
+}

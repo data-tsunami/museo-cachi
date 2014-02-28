@@ -1,21 +1,13 @@
 {% extends "cachi/base.html" %}
 {% block content %}
     <div class="row">
-        <!-- <div class="col-sm-3 col-md-2 sidebar">        
-            <ul class="nav nav-sidebar">            
-                <li><a href="#">Pieza</a></li>
-                <li><a href="#">Ficha Técnica</a></li>
-                <li><a href="#">Procedencia</a></li>
-            </ul>
-        </div> -->
-
         <div class="col-lg-12 main">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">                
                     <h3 class="inline">Busca Pieza</h3>
                     <div class="inline pull-right">
-                        <a href="{% url 'nueva_pieza' %}">
+                        <a href="{% url 'nueva_pieza_conjunto' %}">
                             <button type="button" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-plus"></span> Nueva Pieza
                             </button>

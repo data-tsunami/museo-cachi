@@ -9,6 +9,7 @@ from cachi.fields import (
     MultiFileField,
 )
 from cachi.models import (
+    Adjunto,
     FichaTecnica,
     Fragmento,
     PiezaConjunto,

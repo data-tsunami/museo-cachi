@@ -41,43 +41,43 @@ class MultiFileField(forms.FileField):
 
     def validate(self, data):
         super(MultiFileField, self).validate(data)
-        num_files = len(data)
+        # num_files = len(data)
 
-        if len(data) and not data[0]:
-            num_files = 0
+        # if len(data) and not data[0]:
+        #     num_files = 0
 
-        if num_files < self.min_num:
-            raise ValidationError(
-                self.error_messages['min_num'] % {
-                    'min_num': self.min_num,
-                    'num_files': num_files,
-                },
-                code='invalid',
-            )
-        elif self.max_num and num_files > self.max_num:
-            raise ValidationError(
-                self.error_messages['max_num'] % {
-                    'max_num': self.max_num,
-                    'num_files': num_files,
-                },
-                code='invalid',
-            )
+        # if num_files < self.min_num:
+        #     raise ValidationError(
+        #         self.error_messages['min_num'] % {
+        #             'min_num': self.min_num,
+        #             'num_files': num_files,
+        #         },
+        #         code='invalid',
+        #     )
+        # elif self.max_num and num_files > self.max_num:
+        #     raise ValidationError(
+        #         self.error_messages['max_num'] % {
+        #             'max_num': self.max_num,
+        #             'num_files': num_files,
+        #         },
+        #         code='invalid',
+        #     )
 
-        for uploaded_file in data:
-            type = uploaded_file.content_type.split('/')[1]
+        # for uploaded_file in data:
+        #     type = uploaded_file.content_type.split('/')[1]
 
-            if not type in settings.CONTENT_TYPES:
-                raise ValidationError(
-                    self.error_messages['file_type'] % {
-                        'uploaded_file_name': uploaded_file.name,
-                    },
-                    code='invalid',
-                )
+        #     if not type in settings.CONTENT_TYPES:
+        #         raise ValidationError(
+        #             self.error_messages['file_type'] % {
+        #                 'uploaded_file_name': uploaded_file.name,
+        #             },
+        #             code='invalid',
+        #         )
 
-            if uploaded_file.size > self.maximum_file_size:
-                raise ValidationError(
-                    self.error_messages['file_size'] % {
-                        'uploaded_file_name': uploaded_file.name,
-                    },
-                    code='invalid',
-                )
+        #     if uploaded_file.size > self.maximum_file_size:
+        #         raise ValidationError(
+        #             self.error_messages['file_size'] % {
+        #                 'uploaded_file_name': uploaded_file.name,
+        #             },
+        #             code='invalid',
+        #         )

@@ -130,12 +130,12 @@
                 // If forms are laid out as table rows, insert the
                 // "add" button in a new table row:
                 var numCols = $$.eq(0).children().length;
-                $$.parent().append('<tr><td colspan="' + numCols + '"><a title="Agregar" class="btn btn-primary btn-primary' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a></tr>');
+                $$.parent().append('<tr><td colspan="' + numCols + '"><a title="Agregar" class="btn btn-primary btn-primary' + options.addCssClass + '" href="javascript:void(0)"><span class="glyphicon glyphicon-plus"></span></a></tr>');
                 addButton = $$.parent().find('tr:last a');
                 addButton.parents('tr').addClass(options.formCssClass + '-add');
             } else {
                 // Otherwise, insert it immediately after the last form:
-                $$.filter(':last').after('<a id="id_add_row" title="Agregar" class="btn btn-primary btn-primary ' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a>');
+                $$.filter(':last').after('<a id="id_add_row" title="Agregar" class="btn btn-primary btn-primary ' + options.addCssClass + '" href="javascript:void(0)"><span class="glyphicon glyphicon-plus"></span></a>');
                 addButton = $$.filter(':last').next();
             }
 

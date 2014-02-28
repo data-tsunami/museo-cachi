@@ -1,106 +1,112 @@
 {% extends "cachi/base.html" %}
 {% load staticfiles %}
 
-
-{% block extras_js %}
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-    <script src="{% static 'cachi/js/jquery.formset.js' %}"></script>
-    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-{% endblock %}
-
 {% block content %}
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">        
-            <ul class="nav nav-sidebar">            
-                <li><a><span class="label label-primary">1</span> Pieza o Conjunto</a></li>
-                <li class="active"><a><span class="label label-primary">2</span> Fichas Técnicas</a></li>
-            </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-lg-12 main">
             <form method="post" enctype="multipart/form-data" role="form">
                 {% csrf_token %}
-                <input type="hidden" name="pk_pieza_conjunto" value="{{ request.session.pieza_conjunto_pk }}">
+                <input type="hidden" name="pieza_conjunto_pk" value="{{ pieza_conjunto.pk }}">
                 <div class="panel panel-default">
                     <div class="panel-heading">                
-                        <h3 class="inline">Fichas Técnicas <small> {{ request.session.pieza_conjunto_nombre }}</small></h3> 
+                        <h3 class="inline">Fichas Técnicas <small> {{ pieza_conjunto.nombre_descriptivo }}</small></h3> 
                         <div class="inline pull-right">
                             <button type="submit" name="guardar" class="btn btn-default btn-success">
-                                <span class="glyphicon glyphicon-ok"></span>&nbsp; Guardar
+                                <span class="glyphicon glyphicon-ok"></span> Guardar
                             </button>
                         </div>
                         <div class="clear-fix"></div>
                     </div>
                     <div class="panel-body"> 
-                        <div id="acordion" class="col-lg-12">
-                            {% for numero_inventario, ficha_tecnica in dic_fichas_tecnicas.items %}
-                            <h4>Número Inventario: {{ numero_inventario }}</h4>
-                            <div>
-                                <div class="col-lg-6">
-                                    <div class="form-group col-lg-12">
-                                        <h5>Características</h5>
+                        <div class="col-lg-12">                            
+                            <div class="col-lg-6">
+                                <div class="form-group col-lg-12">
+                                    <h5>Inventario</h5>
+                                
+                                    <div class="form-group {% if form_fragmento.numero_inventario.errors %}has-error{% endif %}">
+                                        {{ form_fragmento.numero_inventario }}
                                     </div>
-                                    
-                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.alto.errors %}has-error{% endif %}">
-                                        {{ ficha_tecnica.form_ficha_tecnica.alto }}
-                                    </div>
-                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.peso.errors %}has-error{% endif %}">
-                                        {{ ficha_tecnica.form_ficha_tecnica.peso }}
-                                    </div>
-                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
-                                        {{ ficha_tecnica.form_ficha_tecnica.espesor }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.diametro_min }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.diametro_max }}
-                                    </div>
-                                    <div class="form-group col-lg-6 {% if ficha_tecnica.form_ficha_tecnica.color.errors %}has-error{% endif %}">
-                                        {{ ficha_tecnica.form_ficha_tecnica.color }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.decoracion }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.inscripciones_marcas }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.reparaciones }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.desperfectos }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.desperfectos_fabricacion }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.otras_caracteristicas_distintivas }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.tratamiento }}
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.observacion }}
-                                    </div> 
-                                    <div class="form-group col-lg-6">
-                                        {{ ficha_tecnica.form_ficha_tecnica.autor }}
-                                    </div>                            
                                 </div>
-                                <div class="col-lg-6">
-                                    <h5>Adjuntos</h5>
+                                <div class="form-group col-lg-12">
+                                    <h5>Características</h5>
+                                </div>
+                                
+                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.alto.errors %}has-error{% endif %}">
+                                    {{ form_ficha_tecnica.alto }}
+                                </div>
+                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
+                                    {{ form_ficha_tecnica.peso }}
+                                </div>
+                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
+                                    {{ form_ficha_tecnica.espesor }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.diametro_min }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.diametro_max }}
+                                </div>
+                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.color.errors %}has-error{% endif %}">
+                                    {{ form_ficha_tecnica.color }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.decoracion }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.inscripciones_marcas }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.reparaciones }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.desperfectos }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.desperfectos_fabricacion }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.tratamiento }}
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.observacion }}
+                                </div> 
+                                <div class="form-group col-lg-6">
+                                    {{ form_ficha_tecnica.autor }}
+                                </div>                            
+                            </div>
+                            <div class="col-lg-6">
+                                <h5>Adjuntos</h5>
 
-                                    <div class="form-group {% if ficha_tecnica.form_adjunto.adjuntos.errors %}has-error{% endif %}">
-                                        {% if ficha_tecnica.form_adjunto.adjuntos.errors %}
-                                            <label class="control-label">{{ ficha_tecnica.form_adjunto.adjuntos.errors }}</label>
-                                        {% endif %}
-                                        {{ ficha_tecnica.form_adjunto.adjuntos }}
+                                <div class="form-group {% if form_adjunto.adjuntos.errors %}has-error{% endif %}">
+                                    {% if form_adjunto.adjuntos.errors %}
+                                        <label class="control-label">{{ form_adjunto.adjuntos.errors }}</label>
+                                    {% endif %}
+                                    {{ form_adjunto.adjuntos }}
 
-                                        <div class="adjunto">
-                                        </div>
-                                    </div>
+                                    <div id="adjuntos">
+                                    {% if ficha_tecnica_adjuntos %}
+                                        <br>
+                                        {% for adjunto in ficha_tecnica_adjuntos %}
+                                            <ul class="media-list">                              
+                                                <li class="media">                                                   
+                                                    <a class="pull-left">
+                                                        <img style="width:64px; height: 64px;" src="{{ adjunto.adjunto.url }}" />
+                                                    </a> 
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading">{{ adjunto.nombre_archivo }}</h4>
+                                                        <small>Tipo: {{ adjunto.content_type }}</small><br>
+                                                        <small>Tamaño: {{ adjunto.size }}</small>
+                                                    </div>
+                                                <li>
+                                            </ul>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>                       
                     </div>
                 </div>
@@ -109,33 +115,30 @@
     </div>
     <script type="text/javascript">
         $(function() {
-            $("#acordion").accordion();
-             
-            /*
+           /*
             Maneja los adjuntos.
             */
-            $(".adjuntos").change(function (){
-                var objeto = $(this).parent().children(".adjunto");
-                objeto.html('');
-                
-                var adjuntos = $(this).prop('files');
-                PreviewImage(objeto, adjuntos);
+            var files = [];
+            $("#id_adjuntos").change(function (){
+                $("#adjuntos").html('');
+
+                adjuntos = this.files;
+                PreviewImage(adjuntos);
             });
 
-            function PreviewImage(objeto, adjuntos) {
-                objeto.append('<br><ul class="media-list"></ul>');
+            function PreviewImage(adjuntos) {
+                $("#adjuntos").append('<br><ul id="id_ul" class="media-list"></ul>');
 
                 $.each(adjuntos, function (index, adjunto){
                     var oFReader = new FileReader();
                     oFReader.readAsDataURL(adjunto);                                
 
-                    oFReader.onload = function (oFREvent){
-                        var id_img = String(index) + Math.floor((Math.random()*10000)+1);
+                    oFReader.onload = function (oFREvent){  
                         var tipo = adjunto.type;
                         var tamaño = (adjunto.size / (1024*1024)).toFixed(2);
 
-                        objeto.find("ul").append('<li class="media"><a class="pull-left"><img id="'+id_img+'"style="width:64px; height: 64px;" /></a><div class="media-body"><h4 class="media-heading">'+adjunto.name+'</h4><small>Tipo: '+tipo+'</small><br><small>Tamaño: '+tamaño+' MB</small></div><li>');
-                        $("#"+id_img).attr('src', oFREvent.target.result);
+                        $("#id_ul").append('<li class="media"><a class="pull-left"><img id="uploadPreview_'+index+'"style="width:64px; height: 64px;" /></a><div class="media-body"><h4 class="media-heading">'+adjunto.name+'</h4><small>Tipo: '+tipo+'</small><br><small>Tamaño: '+tamaño+' MB</small></div><li>');
+                        $("#uploadPreview_"+index).attr('src', oFREvent.target.result);
                     };
                 });
             }

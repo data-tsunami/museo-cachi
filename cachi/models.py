@@ -363,7 +363,10 @@ class UbicacionGeografica(models.Model):
     )
 
     def __unicode__(self):
-        return self.nombre
+        if self.padre:
+            return "{0} ({1})".format(self.nombre, self.padre.nombre)
+        else:
+            return self.nombre
 
 
 class Procedencia(models.Model):

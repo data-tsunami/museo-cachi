@@ -48,7 +48,7 @@
 	                                                  <tr>
 	                                                    <td>(nro inv.)</td>
                                                         <td>{{ pieza.naturaleza }}</td>
-                                                        <td>{{ pieza.nombre_descriptivo }}</td>
+                                                        <td><a href="{% url 'edita_pieza_conjunto' pieza.id %}">{{ pieza.nombre_descriptivo }}</a></td>
                                                         <td>(sitio arq.)</td>
 	                                                  </tr>
 	                                              {% empty %}

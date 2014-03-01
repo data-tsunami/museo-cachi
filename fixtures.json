@@ -1,0 +1,124 @@
+[
+{
+  "pk": 1, 
+  "model": "cachi.tipoadquisicion", 
+  "fields": {
+    "nombre": "Explorada"
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.tipoadquisicion", 
+  "fields": {
+    "nombre": "Excavada"
+  }
+},
+{
+  "pk": 3, 
+  "model": "cachi.tipoadquisicion", 
+  "fields": {
+    "nombre": "Adquirida"
+  }
+},
+{
+  "pk": 4, 
+  "model": "cachi.tipoadquisicion", 
+  "fields": {
+    "nombre": "Donada"
+  }
+},
+{
+  "pk": 5, 
+  "model": "cachi.tipoadquisicion", 
+  "fields": {
+    "nombre": "Decomisada"
+  }
+},
+{
+  "pk": 6, 
+  "model": "cachi.tipoadquisicion", 
+  "fields": {
+    "nombre": "Confiscada"
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Cer\u00e1mica"
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Hierro"
+  }
+},
+{
+  "pk": 3, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Madera"
+  }
+},
+{
+  "pk": 4, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Metal"
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.ubicaciongeografica", 
+  "fields": {
+    "nombre": "Argentina", 
+    "padre": null
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.ubicaciongeografica", 
+  "fields": {
+    "nombre": "Salta", 
+    "padre": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "cachi.ubicaciongeografica", 
+  "fields": {
+    "nombre": "Cachi", 
+    "padre": 2
+  }
+},
+{
+  "pk": 4, 
+  "model": "cachi.ubicaciongeografica", 
+  "fields": {
+    "nombre": "Cachi", 
+    "padre": 3
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.sitioarqueologico", 
+  "fields": {
+    "nombre": "S-Sal-Cac-2-Otro Sitio", 
+    "ubicacion_geografica": 4, 
+    "coordenada_y": null, 
+    "coordenada_x": null
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.sitioarqueologico", 
+  "fields": {
+    "nombre": "S-Sal-Cac-1-Un Sitio", 
+    "ubicacion_geografica": 4, 
+    "coordenada_y": null, 
+    "coordenada_x": null
+  }
+}
+]

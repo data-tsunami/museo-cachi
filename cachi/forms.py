@@ -218,10 +218,10 @@ class AdjuntoForm(forms.Form):
 class BusquedaPiezaForm(forms.Form):
     # FIXME: no usar objects.all() para obtener queryset. Estos querysets deberian
     # ser devueltos por los managers de los models
-    nro_inventario = forms.CharField()
-    naturaleza = forms.ModelChoiceField(Naturaleza.objects.all())
-    sitio_arqueologico = forms.ModelChoiceField(SitioArqueologico.objects.all())
-    ubicacion = forms.ModelChoiceField(UbicacionGeografica.objects.all())
+    nro_inventario = forms.IntegerField(required=False)
+    naturaleza = forms.ModelChoiceField(Naturaleza.objects.all(), required=False)
+    sitio_arqueologico = forms.ModelChoiceField(SitioArqueologico.objects.all(), required=False)
+    ubicacion = forms.ModelChoiceField(UbicacionGeografica.objects.all(), required=False)
 
     def __init__(self, *args, **kwargs):
         super(BusquedaPiezaForm, self).__init__(*args, **kwargs)

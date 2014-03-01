@@ -15,6 +15,24 @@ RAZON_ACTUALIZACION = (
 )
 
 
+class PiezaConjuntoManager(models.Manager):
+
+    def buscar_piezas(self, nro_inventario, naturaleza, sitio_arqueologico, ubicacion_geografica):
+        if nro_inventario:
+            try:
+                return self.filter(fragmento__numero_inventario=nro_inventario).distinct()
+            except PiezaConjunto.DoesNotExist:
+                return self.none()
+        qs = self.all()
+        if naturaleza:
+            qs = qs.filter(naturaleza=naturaleza)
+        if sitio_arqueologico:
+            qs = qs.filter(sitio_arqueologico=sitio_arqueologico)
+        if ubicacion_geografica:
+            qs = qs.filter(procedencia__ubicacion_geografica=ubicacion_geografica)
+        return qs
+
+
 class PiezaConjunto(models.Model):
     """
     Una pieza o conjunto de piezas del museo.
@@ -64,6 +82,8 @@ class PiezaConjunto(models.Model):
         blank=True,
     )
 
+    objects = PiezaConjuntoManager()
+
     def __unicode__(self):
         return u'{0}'.format(
             self.nombre_descriptivo,
@@ -96,6 +116,7 @@ class Fragmento(models.Model):
         blank=True,
         related_name='ultima_version',
     )
+    # FIXME: `related_name` deberia ser 'fragmentos' (plural)
     pieza_conjunto = models.ForeignKey(
         'PiezaConjunto',
         related_name='fragmento'

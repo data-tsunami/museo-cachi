@@ -44,12 +44,29 @@ def index(request):
 def busca_pieza(request):
     form = BusquedaPiezaForm(request.POST)
     if request.method == 'POST':
+        if not form.is_valid():
+            return render_html_dinamico(
+                request,
+                'cachi/pieza/busca_pieza_conjunto.html',
+                {
+                    'form': form,
+                    'piezas': [],
+                },
+            )
+
+        resultado = PiezaConjunto.objects.buscar_piezas(
+            form.cleaned_data['nro_inventario'],
+            form.cleaned_data['naturaleza'],
+            form.cleaned_data['sitio_arqueologico'],
+            form.cleaned_data['ubicacion']
+        )
+
         return render_html_dinamico(
             request,
             'cachi/pieza/busca_pieza_conjunto.html',
             {
                 'form': form,
-                'piezas': PiezaConjunto.objects.all(), # FIXME: implementar busqueda
+                'piezas': resultado,
             },
         )
 

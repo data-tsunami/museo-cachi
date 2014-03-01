@@ -20,44 +20,45 @@
                             <tbody>
                                 <tr>
                                     <td width="35%">
-                                        <form class="form-inline" role="form">
+                                        <form class="form-inline" role="form" method="post">
+                                        {% csrf_token %}
                                             <div class="form-group col-lg-8">
-                                                <label class="sr-only" for="id_numero_inventario">Número Inventario</label>
-                                                <input type="text" class="form-control " id="id_numero_inventario" placeholder="Número Inventario">
+                                                {{ form.nro_inventario }}
                                             </div>                                        
-                                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+                                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
                                         </form>
-
-                                        
-                                        
                                     </td>
                                     <td width="65%">
-                                        <table class="table table-bordered table-hover">
-                                            <thead>
-                                              <tr>                                
-                                                <th>Número Inventario</th>
-                                                <th>Nombre Descriptivo</th>
-                                                <th>Naturaleza</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <tr>
-                                                <td>345560</td>
-                                                <td>Plato Sopero</td>
-                                                <td>Cerámica</td>
-                                              </tr>
-                                              <tr>
-                                                <td>355677</td>
-                                                <td>Jarrón Aceite</td>
-                                                <td>Cerámica</td>
-                                              </tr>
-                                              <tr>
-                                                <td>365687</td>
-                                                <td>Punta Flecha</td>
-                                                <td>Metal</td>
-                                              </tr>
-                                            </tbody>
-                                        </table>
+                                        {% if mostrar_ayuda_busqueda %}
+                                            <p>
+                                            Para buscar piezas, ingrese los criterios de búsqueda en el formulario de la izquierda.
+                                            </p>
+                                        {% else %}
+	                                        <table class="table table-bordered table-hover">
+	                                            <thead>
+	                                              <tr>                                
+	                                                <th>Nro Inventario</th>
+                                                    <th>Naturaleza</th>
+                                                    <th>Nombre Descriptivo</th>
+                                                    <th>Sitio Arq.</th>
+	                                              </tr>
+	                                            </thead>
+	                                            <tbody>
+	                                            {% for pieza in piezas %}
+	                                                  <tr>
+	                                                    <td>(nro inv.)</td>
+                                                        <td>{{ pieza.naturaleza }}</td>
+                                                        <td>{{ pieza.nombre_descriptivo }}</td>
+                                                        <td>(sitio arq.)</td>
+	                                                  </tr>
+	                                              {% empty %}
+	                                                  <tr>
+	                                                    <td colspan="4"><em>No se encontraron piezas con el criterio seleccionado.</em></td>
+	                                                  </tr>
+                                                  {% endfor %}
+	                                            </tbody>
+	                                        </table>
+                                        {% endif %}
                                     </td>
                                 </tr>                                
                             </tbody>

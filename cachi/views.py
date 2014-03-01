@@ -15,7 +15,7 @@ from cachi.forms import (
     FragmentoForm,
     PiezaConjuntoForm,
     ProcedenciaForm,
-)
+    BusquedaPiezaForm)
 
 from cachi.models import (
     Adjunto,
@@ -42,13 +42,24 @@ def index(request):
 
 @login_required(redirect_field_name=None)
 def busca_pieza(request):
+    form = BusquedaPiezaForm(request.POST)
     if request.method == 'POST':
-        pass
+        return render_html_dinamico(
+            request,
+            'cachi/pieza/busca_pieza_conjunto.html',
+            {
+                'form': form,
+                'piezas': PiezaConjunto.objects.all(), # FIXME: implementar busqueda
+            },
+        )
 
     return render_html_dinamico(
         request,
         'cachi/pieza/busca_pieza_conjunto.html',
-        {},
+        {
+            'mostrar_ayuda_busqueda': True,
+            'form': form
+        },
     )
 
 

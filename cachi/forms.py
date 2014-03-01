@@ -210,3 +210,12 @@ class AdjuntoForm(forms.Form):
         min_num=1,
         maximum_file_size=1024 * 1024 * 5
     )
+
+
+class BusquedaPiezaForm(forms.Form):
+    nro_inventario = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super(BusquedaPiezaForm, self).__init__(*args, **kwargs)
+        self.fields['nro_inventario'].widget.attrs['class'] = 'form-control'
+        self.fields['nro_inventario'].widget.attrs['placeholder'] = 'Nro de inventario'

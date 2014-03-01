@@ -2,12 +2,12 @@
 
 from __future__ import unicode_literals
 from django.conf.urls import patterns, include, url
-from django.conf.urls.static import static
 
 from django.contrib import admin
 admin.autodiscover()
 
-from cachi import settings
+from django.conf import settings
+
 
 urlpatterns = patterns('',
     url(r'^$',
@@ -56,5 +56,3 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 )
-
-urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)

@@ -91,10 +91,12 @@ class PiezaConjunto(models.Model):
 
     def obtiene_procedencia(self):
         try:
-            return Procedencia.objects.get(
-                pieza_conjunto=self,
-            )
+            return self.procedencia.get()
+            #    return Procedencia.objects.get(
+            #        pieza_conjunto=self,
+            #    )
         except:
+            # FIXME: esta bien que pueda no tener procedencia?
             return None
 
     def obtiene_adjuntos(self):
@@ -409,10 +411,22 @@ class Procedencia(models.Model):
         null=True,
         blank=True,
     )
+    # FIXME: ya que una Pieza no puede tener mas de una
+    # Procedencia, quiza sea mejor modelar esto con
+    # una relacion OneToOne, y que Pieza tenga
+    # la referencia
     pieza_conjunto = models.ForeignKey(
         'PiezaConjunto',
         related_name='procedencia',
     )
+
+    def __unicode__(self):
+        if self.sitio_arqueologico:
+            return "Sitio: {0}".format(self.sitio_arqueologico.nombre)
+        elif self.ubicacion_geografica:
+            return "Ubicacion: {0}".format(self.ubicacion_geografica.nombre)
+        else:
+            return "Otra: {0}".format(self.otra)
 
 
 class SitioArqueologico(models.Model):

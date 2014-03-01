@@ -49,7 +49,7 @@
 	                                                <th>Nro Inventario</th>
                                                     <th>Naturaleza</th>
                                                     <th>Nombre Descriptivo</th>
-                                                    <th>Sitio Arq.</th>
+                                                    <th>Procedencia</th>
 	                                              </tr>
 	                                            </thead>
 	                                            <tbody>
@@ -58,7 +58,7 @@
 	                                                    <td>(nro inv.)</td>
                                                         <td>{{ pieza.naturaleza }}</td>
                                                         <td><a href="{% url 'edita_pieza_conjunto' pieza.id %}">{{ pieza.nombre_descriptivo }}</a></td>
-                                                        <td>(sitio arq.)</td>
+                                                        <td>{{ pieza.obtiene_procedencia }}</td>
 	                                                  </tr>
 	                                              {% empty %}
 	                                                  <tr>

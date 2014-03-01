@@ -14,6 +14,9 @@ from cachi.models import (
     Fragmento,
     PiezaConjunto,
     Procedencia,
+    Naturaleza,
+    UbicacionGeografica,
+    SitioArqueologico
 )
 
 
@@ -213,9 +216,20 @@ class AdjuntoForm(forms.Form):
 
 
 class BusquedaPiezaForm(forms.Form):
+    # FIXME: no usar objects.all() para obtener queryset. Estos querysets deberian
+    # ser devueltos por los managers de los models
     nro_inventario = forms.CharField()
+    naturaleza = forms.ModelChoiceField(Naturaleza.objects.all())
+    sitio_arqueologico = forms.ModelChoiceField(SitioArqueologico.objects.all())
+    ubicacion = forms.ModelChoiceField(UbicacionGeografica.objects.all())
 
     def __init__(self, *args, **kwargs):
         super(BusquedaPiezaForm, self).__init__(*args, **kwargs)
         self.fields['nro_inventario'].widget.attrs['class'] = 'form-control'
         self.fields['nro_inventario'].widget.attrs['placeholder'] = 'Nro de inventario'
+        self.fields['naturaleza'].widget.attrs['class'] = 'form-control'
+        self.fields['naturaleza'].widget.attrs['placeholder'] = 'Naturaleza'
+        self.fields['sitio_arqueologico'].widget.attrs['class'] = 'form-control'
+        self.fields['sitio_arqueologico'].widget.attrs['placeholder'] = 'Sitio Arq.'
+        self.fields['ubicacion'].widget.attrs['class'] = 'form-control'
+        self.fields['ubicacion'].widget.attrs['placeholder'] = 'Ubicacion Geografica'

@@ -25,6 +25,15 @@
                                             <div class="form-group col-lg-8">
                                                 {{ form.nro_inventario }}
                                             </div>                                        
+                                            <div class="form-group col-lg-8">
+                                                {{ form.naturaleza }}
+                                            </div>                                        
+                                            <div class="form-group col-lg-8">
+                                                {{ form.sitio_arqueologico }}
+                                            </div>                                        
+                                            <div class="form-group col-lg-8">
+                                                {{ form.ubicacion }}
+                                            </div>                                        
                                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
                                         </form>
                                     </td>
@@ -34,6 +43,7 @@
                                             Para buscar piezas, ingrese los criterios de búsqueda en el formulario de la izquierda.
                                             </p>
                                         {% else %}
+                                            <em>Por ahora, la busqueda devuelve todas las piezas.</em>
 	                                        <table class="table table-bordered table-hover">
 	                                            <thead>
 	                                              <tr>                                

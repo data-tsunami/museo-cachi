@@ -23,7 +23,7 @@ class PiezaConjuntoManager(models.Manager):
                 return self.filter(fragmento__numero_inventario=nro_inventario).distinct()
             except PiezaConjunto.DoesNotExist:
                 return self.none()
-        qs = self.all()
+        qs = self.select_related('fragmento').all()
         if naturaleza:
             qs = qs.filter(naturaleza=naturaleza)
         if sitio_arqueologico:

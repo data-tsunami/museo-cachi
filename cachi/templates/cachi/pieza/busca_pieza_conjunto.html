@@ -55,7 +55,13 @@
 	                                            <tbody>
 	                                            {% for pieza in piezas %}
 	                                                  <tr>
-	                                                    <td>(nro inv.)</td>
+	                                                    <td>
+	                                                       {% for frag in pieza.obtiene_fragmentos %}
+	                                                           {% if frag.numero_inventario %}
+	                                                               <a href="javascript:void(0);">{{ frag.numero_inventario }}</a>
+	                                                           {% endif %}
+	                                                       {% endfor %}
+	                                                    </td>
                                                         <td>{{ pieza.naturaleza }}</td>
                                                         <td><a href="{% url 'edita_pieza_conjunto' pieza.id %}">{{ pieza.nombre_descriptivo }}</a></td>
                                                         <td>{{ pieza.obtiene_procedencia }}</td>

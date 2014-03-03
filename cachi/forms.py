@@ -3,13 +3,10 @@
 from __future__ import unicode_literals
 from django import forms
 
-from django.forms.models import inlineformset_factory
-
 from cachi.fields import (
     MultiFileField,
 )
 from cachi.models import (
-    Adjunto,
     FichaTecnica,
     Fragmento,
     PiezaConjunto,
@@ -82,15 +79,6 @@ class FragmentoForm(forms.ModelForm):
         fields = (
             'numero_inventario',
         )
-
-
-FragmentoFormSet = inlineformset_factory(
-    PiezaConjunto,
-    Fragmento,
-    can_delete=True,
-    extra=1,
-    form=FragmentoForm,
-)
 
 
 class FichaTecnicaForm(forms.ModelForm):
@@ -169,15 +157,6 @@ class FichaTecnicaForm(forms.ModelForm):
             'observacion',
             'autor',
         )
-
-
-FichaTecnicaFormSet = inlineformset_factory(
-    Fragmento,
-    FichaTecnica,
-    can_delete=False,
-    extra=1,
-    form=FichaTecnicaForm,
-)
 
 
 class ProcedenciaForm(forms.ModelForm):

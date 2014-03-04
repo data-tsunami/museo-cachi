@@ -2,8 +2,9 @@
 
 from __future__ import unicode_literals
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.http import Http404
 
 RAZON_ACTUALIZACION_CREACION = 1
 RAZON_ACTUALIZACION_ACTUALIZACION = 2
@@ -20,14 +21,14 @@ class PiezaConjuntoManager(models.Manager):
     def buscar_piezas(self, nro_inventario, naturaleza, sitio_arqueologico, ubicacion_geografica):
         if nro_inventario:
             try:
-                return self.filter(fragmento__numero_inventario=nro_inventario).distinct()
+                return self.filter(fragmentos_pieza_conjunto__numero_inventario=nro_inventario).distinct()
             except PiezaConjunto.DoesNotExist:
                 return self.none()
-        qs = self.select_related('fragmento').all()
+        qs = self.select_related('fragmentos_pieza_conjunto').all()
         if naturaleza:
             qs = qs.filter(naturaleza=naturaleza)
         if sitio_arqueologico:
-            qs = qs.filter(sitio_arqueologico=sitio_arqueologico)
+            qs = qs.filter(procedencia__sitio_arqueologico=sitio_arqueologico)
         if ubicacion_geografica:
             qs = qs.filter(procedencia__ubicacion_geografica=ubicacion_geografica)
         return qs
@@ -92,12 +93,8 @@ class PiezaConjunto(models.Model):
     def obtiene_procedencia(self):
         try:
             return self.procedencia.get()
-            #    return Procedencia.objects.get(
-            #        pieza_conjunto=self,
-            #    )
-        except:
-            # FIXME: esta bien que pueda no tener procedencia?
-            return None
+        except Procedencia.DoesNotExist:
+            raise Http404
 
     def obtiene_adjuntos(self):
         return self.adjunto_pieza_conjunto.all()

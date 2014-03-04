@@ -132,6 +132,16 @@ class Fragmento(models.Model):
     def obtiene_ficha_tecnica(self):
         return self.ultima_version
 
+    def obtiene_ficha_tecnica_diagnostico(self, ficha_tecnica_pk):
+        return self.fichas_tecnicas.get(
+            pk=ficha_tecnica_pk,
+        )
+
+    def obtiene_fichas_tecnicas_diagnosticos(self):
+        return self.fichas_tecnicas.filter(
+            razon_actualizacion=RAZON_ACTUALIZACION_DIAGNOSTICO,
+        ).order_by('-fecha')
+
 
 class FichaTecnica(models.Model):
     """
@@ -187,6 +197,10 @@ class FichaTecnica(models.Model):
         null=True,
         blank=True,
     )
+    diagnostico_estado = models.TextField(
+        null=True,
+        blank=True,
+    )
     razon_actualizacion = models.PositiveIntegerField(
         choices=RAZON_ACTUALIZACION,
     )
@@ -201,6 +215,7 @@ class FichaTecnica(models.Model):
     )
     fragmento = models.ForeignKey(
         'Fragmento',
+        related_name='fichas_tecnicas'
     )
 
     def __unicode__(self):

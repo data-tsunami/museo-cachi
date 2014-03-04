@@ -60,13 +60,22 @@
                             <h5>Procedencia</h5>
 
                             <div class="form-group">
-                                {{ form_procedencia.sitio_arqueologico }}
+                                <div class="radio">
+                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios1">
+                                    {{ form_procedencia.sitio_arqueologico }}
+                                </div>                               
                             </div>
                             <div class="form-group">
-                                {{ form_procedencia.ubicacion_geografica }}
+                                <div class="radio">
+                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios2">
+                                    {{ form_procedencia.ubicacion_geografica }}
+                                </div>                                
                             </div>
                             <div class="form-group">
-                                {{ form_procedencia.otra }}
+                                <div class="radio">
+                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios3">
+                                    {{ form_procedencia.otra }}
+                                </div>                               
                             </div>
 
                             <br>
@@ -126,7 +135,28 @@
         </div>
     </div>
     <script type="text/javascript">
-        $(function() {             
+        $(function() { 
+            $('.radio input[type=text], .radio select').attr('disabled', true);
+            $.each($('.radio'), function () {
+                var objeto = $(this).find(':not(.option)');
+                if(objeto.is('select') && objeto.get(0).selectedIndex > 0 ) {
+
+                    $(this).find('input[type=radio]').attr('checked', true);
+                    objeto.attr('disabled', false);
+
+                }else if (objeto.is(' input[type=text]') && objeto.val() != '') {
+
+                    $(this).find('input[type=radio]').attr('checked', true);
+                    objeto.attr('disabled', false);
+                    
+                }
+            });
+            $('.option').click(function () {
+                $('.radio input[type=text], .radio select').attr('disabled', true);
+                $(this).parent().find('input, select').attr('disabled', false);
+            });
+
+
             /*
             Maneja los adjuntos.
             */

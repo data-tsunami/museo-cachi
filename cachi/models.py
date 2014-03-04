@@ -103,7 +103,7 @@ class PiezaConjunto(models.Model):
         return self.adjunto_pieza_conjunto.all()
 
     def obtiene_fragmentos(self):
-        return self.fragmento.all()
+        return self.fragmentos_pieza_conjunto.all()
 
 
 class Fragmento(models.Model):
@@ -118,10 +118,9 @@ class Fragmento(models.Model):
         blank=True,
         related_name='ultima_version',
     )
-    # FIXME: `related_name` deberia ser 'fragmentos' (plural)
     pieza_conjunto = models.ForeignKey(
         'PiezaConjunto',
-        related_name='fragmento'
+        related_name='fragmentos_pieza_conjunto'
     )
 
     def __unicode__(self):

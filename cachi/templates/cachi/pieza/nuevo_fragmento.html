@@ -16,11 +16,12 @@
 
                         <a href="{% url 'edita_pieza_conjunto'  pieza_conjunto.pk %}">
                             {{ pieza_conjunto.nombre_descriptivo }}
-                        </a> /
-
-                        <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
-                            {{ fragmento.numero_inventario }}
-                        </a>
+                        </a> 
+                        {% if fragmento %}
+                            / <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
+                                {{ fragmento.numero_inventario }}
+                            </a>
+                        {% endif %}
 
                         {% if fecha_diagnostico %}
                             / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}">

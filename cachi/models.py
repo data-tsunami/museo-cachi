@@ -92,7 +92,7 @@ class PiezaConjunto(models.Model):
 
     def obtiene_procedencia(self):
         try:
-            return self.procedencia.get()
+            return self.procedencia
         except Procedencia.DoesNotExist:
             raise Http404
 
@@ -422,11 +422,7 @@ class Procedencia(models.Model):
         null=True,
         blank=True,
     )
-    # FIXME: ya que una Pieza no puede tener mas de una
-    # Procedencia, quiza sea mejor modelar esto con
-    # una relacion OneToOne, y que Pieza tenga
-    # la referencia
-    pieza_conjunto = models.ForeignKey(
+    pieza_conjunto = models.OneToOneField(
         'PiezaConjunto',
         related_name='procedencia',
     )

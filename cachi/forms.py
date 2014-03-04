@@ -186,6 +186,21 @@ class ProcedenciaForm(forms.ModelForm):
             'otra',
         )
 
+    def clean(self):
+        cleaned_data = super(ProcedenciaForm, self).clean()
+
+        validate = False
+        for key, value in cleaned_data.items():
+            if value:
+                validate = True
+
+        if not validate:
+            raise forms.ValidationError(
+                "Tiene que seleccionar al menos una Procedencia.",
+            )
+
+        return cleaned_data
+
 
 class AdjuntoForm(forms.Form):
     def __init__(self, *args, **kwargs):

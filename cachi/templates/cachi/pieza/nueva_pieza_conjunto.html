@@ -77,7 +77,11 @@
                                     {{ form_procedencia.otra }}
                                 </div>                               
                             </div>
-
+                            {% if form_procedencia.errors %}
+                                {% for key, value in form_procedencia.errors.items %}
+                                     <p class="text-danger text-center">{{ value.as_text }}</p>
+                                {% endfor %}                               
+                            {% endif %}
                             <br>
 
                             <h5>Adjuntos</h5>
@@ -148,7 +152,7 @@
 
                     $(this).find('input[type=radio]').attr('checked', true);
                     objeto.attr('disabled', false);
-                    
+
                 }
             });
             $('.option').click(function () {

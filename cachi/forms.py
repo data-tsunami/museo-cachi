@@ -137,6 +137,10 @@ class FichaTecnicaForm(forms.ModelForm):
         self.fields['autor'].widget.attrs['class'] = 'form-control'
         self.fields['autor'].empty_label = 'Autor'
 
+        self.fields['diagnostico_estado'].widget.attrs['class'] = 'form-control'
+        self.fields['diagnostico_estado'].widget.attrs['placeholder'] = 'Diagnóstico Estado Conservación'
+        self.fields['diagnostico_estado'].widget.attrs['rows'] = '2'
+
     class Meta():
         model = FichaTecnica
 
@@ -155,6 +159,7 @@ class FichaTecnicaForm(forms.ModelForm):
             'otras_caracteristicas_distintivas',
             'tratamiento',
             'observacion',
+            'diagnostico_estado',
             'autor',
         )
 

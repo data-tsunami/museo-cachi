@@ -24,6 +24,8 @@ from cachi.models import (
 )
 from cachi.models import (
     RAZON_ACTUALIZACION_CREACION,
+    RAZON_ACTUALIZACION_ACTUALIZACION,
+    RAZON_ACTUALIZACION_DIAGNOSTICO,
 )
 from cachi.utils import (
     render_html_dinamico,
@@ -171,7 +173,7 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
 
 
 @login_required(redirect_field_name=None)
-def nueva_edita_ficha_tecnica(request, pieza_conjunto_pk, fragmento_pk=None):
+def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_tecnica_pk=None):
     if pieza_conjunto_pk:
         pieza_conjunto = get_object_or_404(
             PiezaConjunto,
@@ -181,16 +183,28 @@ def nueva_edita_ficha_tecnica(request, pieza_conjunto_pk, fragmento_pk=None):
         fragmento = None
         ficha_tecnica = None
         ficha_tecnica_adjuntos = None
+        fichas_tecnicas_diagnosticos = None
+        fecha_diagnostico = None
         if fragmento_pk:
             fragmento = get_object_or_404(
                 Fragmento,
                 pk=fragmento_pk,
             )
+
             ficha_tecnica = fragmento.obtiene_ficha_tecnica()
+            if ficha_tecnica_pk:
+                ficha_tecnica = fragmento.obtiene_ficha_tecnica_diagnostico(
+                    ficha_tecnica_pk,
+                )
+                fecha_diagnostico = ficha_tecnica.fecha
+
             ficha_tecnica_adjuntos = ficha_tecnica.obtiene_adjuntos()
+            fichas_tecnicas_diagnosticos = \
+            fragmento.obtiene_fichas_tecnicas_diagnosticos()
 
         if request.method == 'POST':
             if pieza_conjunto_pk == request.POST['pieza_conjunto_pk']:
+
                 form_fragmento = FragmentoForm(
                     request.POST,
                     instance=fragmento,
@@ -203,6 +217,7 @@ def nueva_edita_ficha_tecnica(request, pieza_conjunto_pk, fragmento_pk=None):
                     request.POST,
                     request.FILES,
                 )
+
                 if (form_fragmento.is_valid() and
                     form_ficha_tecnica.is_valid() and
                     form_adjunto.is_valid()):
@@ -216,8 +231,20 @@ def nueva_edita_ficha_tecnica(request, pieza_conjunto_pk, fragmento_pk=None):
                     ficha_tecnica = form_ficha_tecnica.save(
                         commit=False,
                     )
-                    ficha_tecnica.razon_actualizacion = \
-                    RAZON_ACTUALIZACION_CREACION
+                    ficha_tecnica.pk = None
+
+                    if 'guardar' in request.POST:
+                        ficha_tecnica.razon_actualizacion = \
+                        RAZON_ACTUALIZACION_CREACION
+
+                    elif 'edita_ficha_tecnica' in request.POST:
+                        ficha_tecnica.razon_actualizacion = \
+                        RAZON_ACTUALIZACION_ACTUALIZACION
+
+                    elif 'nuevo_diagnostico_estado' in request.POST:
+                        ficha_tecnica.razon_actualizacion = \
+                        RAZON_ACTUALIZACION_DIAGNOSTICO
+
                     ficha_tecnica.fecha = date.today()
                     ficha_tecnica.usuario = request.user
                     ficha_tecnica.fragmento = fragmento
@@ -239,7 +266,11 @@ def nueva_edita_ficha_tecnica(request, pieza_conjunto_pk, fragmento_pk=None):
                                 ficha_tecnica=ficha_tecnica,
                             )
 
-                    return redirect('edita_pieza_conjunto', pieza_conjunto_pk)
+                    return redirect(
+                        'edita_fragmento',
+                        pieza_conjunto.pk,
+                        fragmento.pk,
+                    )
             else:
                 #TODO: 404?
                 pass
@@ -256,13 +287,17 @@ def nueva_edita_ficha_tecnica(request, pieza_conjunto_pk, fragmento_pk=None):
 
         contexto = {
             'pieza_conjunto': pieza_conjunto,
+            'fragmento': fragmento,
+            'ficha_tecnica_pk': ficha_tecnica_pk,
             'form_fragmento': form_fragmento,
             'form_ficha_tecnica': form_ficha_tecnica,
             'form_adjunto': form_adjunto,
             'ficha_tecnica_adjuntos': ficha_tecnica_adjuntos,
+            'fichas_tecnicas_diagnosticos': fichas_tecnicas_diagnosticos,
+            'fecha_diagnostico': fecha_diagnostico
         }
         return render_html_dinamico(
             request,
-            'cachi/pieza/nueva_ficha_tecnica.html',
+            'cachi/pieza/nuevo_fragmento.html',
             contexto,
         )

@@ -9,7 +9,11 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">                
-                        <h3 class="inline">Pieza o Conjunto</h3>
+                        <h4 class="inline">Pieza o Conjunto</h4>
+                        {% if pieza_conjunto %}
+                            <a href=""> {{ pieza_conjunto.nombre_descriptivo }}</a>
+                        {% endif %}
+
                         <div class="inline pull-right">
                             <button type="submit" name="guardar" class="btn btn-default btn-success">
                                 <span class="glyphicon glyphicon-ok"></span> Guardar
@@ -77,20 +81,15 @@
                                 <div id="adjuntos">
                                     {% if pieza_conjunto_adjuntos %}
                                         <br>
-                                        {% for adjunto in pieza_conjunto_adjuntos %}
-                                            <ul class="media-list">                              
-                                                <li class="media">                                                   
-                                                    <a class="pull-left">
-                                                        <img style="width:64px; height: 64px;" src="{{ adjunto.adjunto.url }}" />
-                                                    </a> 
-                                                    <div class="media-body">
-                                                        <h4 class="media-heading">{{ adjunto.nombre_archivo }}</h4>
-                                                        <small>Tipo: {{ adjunto.content_type }}</small><br>
-                                                        <small>Tamaño: {{ adjunto.size }}</small>
-                                                    </div>
-                                                <li>
-                                            </ul>
-                                        {% endfor %}
+                                        <div class="row">
+                                            {% for adjunto in pieza_conjunto_adjuntos %}
+                                                <div class="col-xs-6 col-md-6 col-lg-4">
+                                                    <a href="#" class="thumbnail">
+                                                        <img src="{{ adjunto.adjunto.url }}">
+                                                    </a>
+                                                </div>                                                                                    
+                                            {% endfor %}
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -101,7 +100,7 @@
                                 {% if pieza_conjunto_fragmentos %}
                                     {% for pieza_conjunto_fragmento in pieza_conjunto_fragmentos %}
                                         <li class="list-group-item">
-                                            <a href="{% url 'edita_ficha_tecnica' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
+                                            <a href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
                                                 {{ pieza_conjunto_fragmento.numero_inventario }}
                                             </a> 
                                         </li>
@@ -116,7 +115,7 @@
                             </ul>
                             
                             {% if pieza_conjunto %}
-                                <a href="{% url 'nueva_ficha_tecnica' pieza_conjunto.pk %}" class="btn btn-primary btn-block" role="button">
+                                <a href="{% url 'nuevo_fragmento' pieza_conjunto.pk %}" class="btn btn-primary btn-block" role="button">
                                     <span class="glyphicon glyphicon-plus"></span> Nueva Ficha Técnica
                                 </a>
                             {% endif %}

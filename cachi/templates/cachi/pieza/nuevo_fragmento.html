@@ -6,14 +6,67 @@
         <div class="col-lg-12 main">
             <form method="post" enctype="multipart/form-data" role="form">
                 {% csrf_token %}
-                <input type="hidden" name="pieza_conjunto_pk" value="{{ pieza_conjunto.pk }}">
+                <input type="hidden" id="pieza_conjunto_pk" name="pieza_conjunto_pk" value="{{ pieza_conjunto.pk }}">
+                <input type="hidden" id="fragmento_pk" name="fragmento_pk" value="{{ fragmento.pk }}">
+                <input type="hidden" id="ficha_tecnica_pk" name="ficha_tecnica_pk" value="{{ ficha_tecnica_pk }}">
                 <div class="panel panel-default">
-                    <div class="panel-heading">                
-                        <h3 class="inline">Fichas Técnicas <small> {{ pieza_conjunto.nombre_descriptivo }}</small></h3> 
+                    <div class="panel-heading">
+
+                        <h4 class="inline">Ficha Técnica </h4>
+
+                        <a href="{% url 'edita_pieza_conjunto'  pieza_conjunto.pk %}">
+                            {{ pieza_conjunto.nombre_descriptivo }}
+                        </a> /
+
+                        <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
+                            {{ fragmento.numero_inventario }}
+                        </a>
+
+                        {% if fecha_diagnostico %}
+                            / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}">
+                                {{ fecha_diagnostico|date:"d/m/Y" }}
+                            </a>
+                        {% endif %}
+
                         <div class="inline pull-right">
-                            <button type="submit" name="guardar" class="btn btn-default btn-success">
+                            {% if not ficha_tecnica_pk %}
+                                <button type="button" id="edita_ficha_tecnica" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-edit"></span> Editar Ficha Técnica
+                                </button>
+                                <button type="button" id="nuevo_diagnostico_estado" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-plus"></span> Nuevo Diagnóstico Estado
+                                </button>
+                            {% endif %}
+                            {% if fichas_tecnicas_diagnosticos %}
+                                <div id="historial_diagnostico" class="btn-group">                                
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        Historial Diagnósticos Estados <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li role="presentation" class="dropdown-header">Fechas</li>
+                                        {% for ficha_tecnica_diagnostico in fichas_tecnicas_diagnosticos %}
+                                            <li>
+                                                <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_diagnostico.pk %}">
+                                                    {{ ficha_tecnica_diagnostico.fecha|date:"d/m/Y" }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            <button type="submit" id="guardar" name="guardar" class="btn btn-default btn-success">
                                 <span class="glyphicon glyphicon-ok"></span> Guardar
                             </button>
+                            {% if fragmento %}
+                                <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
+                            {% else %}
+                                <a href="{% url 'edita_pieza_conjunto' pieza_conjunto.pk %}">
+                            {% endif %}
+                                <button type="button" id="cancelar" name="cancelar" class="btn btn-default btn-warning">
+                                    <span class="glyphicon glyphicon-remove"></span> Cancelar
+                                </button>
+                            </a>
                         </div>
                         <div class="clear-fix"></div>
                     </div>
@@ -73,8 +126,11 @@
                                 <div class="form-group col-lg-6">
                                     {{ form_ficha_tecnica.observacion }}
                                 </div> 
-                                <div class="form-group col-lg-6">
+                                <div class="form-group col-lg-12">
                                     {{ form_ficha_tecnica.autor }}
+                                </div> 
+                                <div class="form-group col-lg-12">
+                                    {{ form_ficha_tecnica.diagnostico_estado }}
                                 </div>                            
                             </div>
                             <div class="col-lg-6">
@@ -89,20 +145,15 @@
                                     <div id="adjuntos">
                                     {% if ficha_tecnica_adjuntos %}
                                         <br>
-                                        {% for adjunto in ficha_tecnica_adjuntos %}
-                                            <ul class="media-list">                              
-                                                <li class="media">                                                   
-                                                    <a class="pull-left">
-                                                        <img style="width:64px; height: 64px;" src="{{ adjunto.adjunto.url }}" />
-                                                    </a> 
-                                                    <div class="media-body">
-                                                        <h4 class="media-heading">{{ adjunto.nombre_archivo }}</h4>
-                                                        <small>Tipo: {{ adjunto.content_type }}</small><br>
-                                                        <small>Tamaño: {{ adjunto.size }}</small>
-                                                    </div>
-                                                <li>
-                                            </ul>
-                                        {% endfor %}
+                                        <div class="row">
+                                            {% for adjunto in ficha_tecnica_adjuntos %}
+                                                <div class="col-xs-6 col-md-6 col-lg-4">
+                                                    <a href="#" class="thumbnail">
+                                                        <img src="{{ adjunto.adjunto.url }}">
+                                                    </a>
+                                                </div>                                                                                    
+                                            {% endfor %}
+                                        </div>
                                     {% endif %}
                                 </div>
                                 </div>
@@ -115,6 +166,52 @@
     </div>
     <script type="text/javascript">
         $(function() {
+            $('#id_diagnostico_estado').hide();
+            if($('#ficha_tecnica_pk').val() != "None") {
+                $('#id_diagnostico_estado').show();
+            }
+
+            if($('#fragmento_pk').val()) {
+                $('input, textarea').attr('readonly', true);
+                $('select, input[type=file]').attr('disabled', true);
+                $('#guardar').hide();
+                $('#cancelar').hide();
+            } else {
+                $('#nuevo_diagnostico_estado').hide();
+                $('#edita_ficha_tecnica').hide();
+                $('#historial_diagnostico').hide();                
+            }
+
+            $('#edita_ficha_tecnica').click(function (){
+                $('input, textarea').attr('readonly', false);
+                $('select, input[type=file]').attr('disabled', false);
+
+                $('#nuevo_diagnostico_estado').hide();
+                $('#edita_ficha_tecnica').hide();
+                $('#historial_diagnostico').hide();
+
+                $('#guardar').attr('name', 'edita_ficha_tecnica');
+
+                $('#guardar').show();
+                $('#cancelar').show();
+            });
+
+            $('#nuevo_diagnostico_estado').click(function (){
+                $('input, textarea').attr('readonly', false);
+                $('select, input[type=file]').attr('disabled', false);
+
+                $('#nuevo_diagnostico_estado').hide();
+                $('#edita_ficha_tecnica').hide();
+                $('#historial_diagnostico').hide();
+
+                $('#id_diagnostico_estado').show();
+
+                $('#guardar').attr('name', 'nuevo_diagnostico_estado');
+
+                $('#guardar').show();
+                $('#cancelar').show();
+            });
+
            /*
             Maneja los adjuntos.
             */

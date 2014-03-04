@@ -28,13 +28,17 @@ urlpatterns = patterns('',
         'cachi.views.nueva_edita_pieza_conjunto',
         name='edita_pieza_conjunto'
     ),
-    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/ficha_tecnica/nueva/$',
-        'cachi.views.nueva_edita_ficha_tecnica',
-        name='nueva_ficha_tecnica'
+    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/fragmento/$',
+        'cachi.views.nueva_edita_fragmento',
+        name='nuevo_fragmento'
     ),
-    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/ficha_tecnica/(?P<fragmento_pk>\d+)/$',
-        'cachi.views.nueva_edita_ficha_tecnica',
-        name='edita_ficha_tecnica'
+    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/fragmento/(?P<fragmento_pk>\d+)/$',
+        'cachi.views.nueva_edita_fragmento',
+        name='edita_fragmento'
+    ),
+    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/fragmento/(?P<fragmento_pk>\d+)/ficha_tecnica/(?P<ficha_tecnica_pk>\d+)/$',
+        'cachi.views.nueva_edita_fragmento',
+        name='ver_ficha_tecnica_diagnostico'
     ),
 
 

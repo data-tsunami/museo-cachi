@@ -5,7 +5,8 @@
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">                
-                    <h3 class="inline">Busca Pieza</h3>
+                    <h4 class="inline">Busca Pieza</h4>
+
                     <div class="inline pull-right">
                         <a href="{% url 'nueva_pieza_conjunto' %}">
                             <button type="button" class="btn btn-primary">
@@ -15,70 +16,73 @@
                     </div>
                     <div class="clear-fix"></div>
                 </div>
-                <div class="panel-body">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td width="35%">
-                                        <form class="form-inline" role="form" method="post">
-                                        {% csrf_token %}
-                                            <div class="form-group col-lg-8">
-                                                {{ form.nro_inventario }}
-                                            </div>                                        
-                                            <div class="form-group col-lg-8">
-                                                {{ form.naturaleza }}
-                                            </div>                                        
-                                            <div class="form-group col-lg-8">
-                                                {{ form.sitio_arqueologico }}
-                                            </div>                                        
-                                            <div class="form-group col-lg-8">
-                                                {{ form.ubicacion }}
-                                            </div>                                        
-                                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
-                                        </form>
-                                    </td>
-                                    <td width="65%">
-                                        {% if mostrar_ayuda_busqueda %}
-                                            <p>
-                                            Para buscar piezas, ingrese los criterios de búsqueda en el formulario de la izquierda.
-                                            </p>
-                                        {% else %}
-	                                        <table class="table table-bordered table-hover">
-	                                            <thead>
-	                                              <tr>                                
-	                                                <th>Nro Inventario</th>
-                                                    <th>Naturaleza</th>
-                                                    <th>Nombre Descriptivo</th>
-                                                    <th>Procedencia</th>
-	                                              </tr>
-	                                            </thead>
-	                                            <tbody>
-	                                            {% for pieza in piezas %}
-	                                                  <tr>
-	                                                    <td>
-	                                                       {% for frag in pieza.obtiene_fragmentos %}
-	                                                           {% if frag.numero_inventario %}
-	                                                               <a href="javascript:void(0);">{{ frag.numero_inventario }}</a>
-	                                                           {% endif %}
-	                                                       {% endfor %}
-	                                                    </td>
-                                                        <td>{{ pieza.naturaleza }}</td>
-                                                        <td><a href="{% url 'edita_pieza_conjunto' pieza.id %}">{{ pieza.nombre_descriptivo }}</a></td>
-                                                        <td>{{ pieza.obtiene_procedencia }}</td>
-	                                                  </tr>
-	                                              {% empty %}
-	                                                  <tr>
-	                                                    <td colspan="4"><em>No se encontraron piezas con el criterio seleccionado.</em></td>
-	                                                  </tr>
-                                                  {% endfor %}
-	                                            </tbody>
-	                                        </table>
-                                        {% endif %}
-                                    </td>
-                                </tr>                                
-                            </tbody>
-                        </table>
-                       
+                <div class="panel-body col-lg-12">
+                    <div class="col-lg-4">
+                        <form role="form" method="post">
+                            {% csrf_token %}
+                            <div class="form-group col-lg-12">
+                                <div class="form-group col-lg-12">
+                                    {{ form.nro_inventario }}
+                                </div>                                        
+                                <div class="form-group col-lg-12">
+                                    {{ form.naturaleza }}
+                                </div>                                        
+                                <div class="form-group col-lg-12">
+                                    {{ form.sitio_arqueologico }}
+                                </div>                                        
+                                <div class="form-group col-lg-12">
+                                    {{ form.ubicacion }}
+                                </div> 
+                                <div class="form-group col-lg-12">                                       
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <span class="glyphicon glyphicon-search"></span> Buscar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-8">                        
+                        {% if not mostrar_ayuda_busqueda %}
+                           
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                  <tr>                                
+                                    <th>Número Inventario</th>
+                                    <th>Naturaleza</th>
+                                    <th>Nombre Descriptivo</th>
+                                    <th>Procedencia</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% for pieza_conjunto in piezas %}
+                                      <tr>
+                                        <td>
+                                           {% for pieza_conjunto_fragmento in pieza_conjunto.obtiene_fragmentos %}
+                                               {% if pieza_conjunto_fragmento.numero_inventario %}
+                                                   <a href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
+                                                        {{ pieza_conjunto_fragmento.numero_inventario }}
+                                                    </a>
+                                               {% endif %}
+                                           {% endfor %}
+                                        </td>
+                                        <td><a href="{% url 'edita_pieza_conjunto' pieza_conjunto.id %}">{{ pieza_conjunto.nombre_descriptivo }}</a></td>
+                                        <td>{{ pieza_conjunto.naturaleza }}</td>
+                                        <td>{{ pieza_conjunto.obtiene_procedencia }}</td>
+                                      </tr>
+                                  {% empty %}
+                                      <tr>
+                                        <td colspan="4"><em>No se encontraron piezas con el criterio seleccionado.</em></td>
+                                      </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="bs-callout bs-callout-info">
+                                <h4>Ayuda Búsqueda</h4>
+                                <p>Para buscar Piezas o Conjuntos puede ingresar el númerode inventario para encontrar una pieza determinada, o puede seleccionar alguno de los criterios de búsqueda para hacer un filtrado de piezas con esa característica.</p>
+                            </div>
+                        {% endif %}
+                    </div>  
                 </div>
             </div>
         </div>

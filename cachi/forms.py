@@ -210,10 +210,13 @@ class BusquedaPiezaForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(BusquedaPiezaForm, self).__init__(*args, **kwargs)
         self.fields['nro_inventario'].widget.attrs['class'] = 'form-control'
-        self.fields['nro_inventario'].widget.attrs['placeholder'] = 'Nro de inventario'
+        self.fields['nro_inventario'].widget.attrs['placeholder'] = 'Número Inventario'
+
         self.fields['naturaleza'].widget.attrs['class'] = 'form-control'
-        self.fields['naturaleza'].widget.attrs['placeholder'] = 'Naturaleza'
+        self.fields['naturaleza'].empty_label = 'Naturaleza'
+
         self.fields['sitio_arqueologico'].widget.attrs['class'] = 'form-control'
-        self.fields['sitio_arqueologico'].widget.attrs['placeholder'] = 'Sitio Arq.'
+        self.fields['sitio_arqueologico'].empty_label = 'Sitio Arqueológico'
+
         self.fields['ubicacion'].widget.attrs['class'] = 'form-control'
-        self.fields['ubicacion'].widget.attrs['placeholder'] = 'Ubicacion Geografica'
+        self.fields['ubicacion'].empty_label = 'Ubicacion Geográfica'

@@ -9,18 +9,21 @@
     
     <title>{% block title %} Museo Cachi {% endblock %}</title>
 
-    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap's CSS -->
     <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap3/css/dashboard.css' %}">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap-theme.min.css' %}">    
-    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap-theme.min.css' %}"> 
     <link rel="stylesheet" href="{% static 'bootstrap3/css/main.css' %}">
-    <!-- Font Awesome -->
+    
+    <!-- Cachi's  CSS -->
+    <link rel="stylesheet" href="{% static 'cachi/css/jquery-ui-1.10.4.custom.min.css' %}">   
+    
+    <!-- FontAwesome's CSS -->
     <link rel="stylesheet"  href="{% static 'font-awesome4/css/font-awesome.min.css' %}">
     
      <!-- JS -->
     <script src="{% static 'cachi/js/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'cachi/js/jquery-ui-1.10.4.custom.min.js' %}"></script>
     <script src="{% static 'bootstrap3/js/bootstrap.min.js' %}"></script>
 
     {% block extras_js %}

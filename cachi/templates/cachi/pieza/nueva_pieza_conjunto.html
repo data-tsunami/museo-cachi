@@ -24,56 +24,65 @@
                     <div class="panel-body col-lg-12">                        
                         <div class="col-lg-4">
                             <h5>Pieza o Cojunto</h5>
-                            
-                            <div class="form-group {% if form_pieza_conjunto.numero_inventario.errors %}has-error{% endif %}">
-                                {{ form_pieza_conjunto.numero_inventario }}
-                            </div>
+                        
                             <div class="form-group {% if form_pieza_conjunto.nombre_descriptivo.errors %}has-error{% endif %}">
+                                <small>{{ form_pieza_conjunto.nombre_descriptivo.label }}</small>
                                 {{ form_pieza_conjunto.nombre_descriptivo }}
                             </div>
                             <div class="form-group {% if form_pieza_conjunto.fecha_hallazgo.errors %}has-error{% endif %}">
+                                <small>{{ form_pieza_conjunto.fecha_hallazgo.label }}</small>
                                 {{ form_pieza_conjunto.fecha_hallazgo }}
                             </div>
                             <div class="form-group {% if form_pieza_conjunto.naturaleza.errors %}has-error{% endif %}">
+                                <small>{{ form_pieza_conjunto.naturaleza.label }}</small>
                                 {{ form_pieza_conjunto.naturaleza }}
                             </div>
                             <div class="form-group {% if form_pieza_conjunto.forma.errors %}has-error{% endif %}">
+                                <small>{{ form_pieza_conjunto.forma.label }}</small>
                                 {{ form_pieza_conjunto.forma }}
                             </div>
                             <div class="form-group">
+                                <small>{{ form_pieza_conjunto.tipo_adquisicion.label }}</small>
                                 {{ form_pieza_conjunto.tipo_adquisicion }}
                             </div>
                             <div class="form-group">
+                                <small>{{ form_pieza_conjunto.tecnica_manufactura.label }}</small>
                                 {{ form_pieza_conjunto.tecnica_manufactura }}
                             </div>
                             <div class="form-group">
+                                <small>{{ form_pieza_conjunto.tipo_condicion_hallazgo.label }}</small>
                                 {{ form_pieza_conjunto.tipo_condicion_hallazgo }}
                             </div>                            
                             <div class="form-group">
+                                <small>{{ form_pieza_conjunto.persona_colectora.label }}</small>
                                 {{ form_pieza_conjunto.persona_colectora }}
                             </div>
                             <div class="form-group">
+                                <small>{{ form_pieza_conjunto.ubicacion.label }}</small>
                                 {{ form_pieza_conjunto.ubicacion }}
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" >
                             <h5>Procedencia</h5>
 
                             <div class="form-group">
                                 <div class="radio">
-                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios1">
+                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios1" title="Puede seleccione un Sitio Arqueológico como procedencia de la pieza.">
+                                    <small  class="option">{{ form_procedencia.sitio_arqueologico.label }}</small>
                                     {{ form_procedencia.sitio_arqueologico }}
                                 </div>                               
                             </div>
                             <div class="form-group">
                                 <div class="radio">
-                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios2">
+                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios2" title="Puede seleccione una Ubicacón Geográfica específica como procedencia de la pieza que no sea un sitio arqueológico precisamente.">
+                                    <small  class="option">{{ form_procedencia.ubicacion_geografica.label }}</small>
                                     {{ form_procedencia.ubicacion_geografica }}
                                 </div>                                
                             </div>
                             <div class="form-group">
                                 <div class="radio">
-                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios3">
+                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios3" title="Puede especificar una Procedencia que no sea un sitio arqueológico y que tampoco sea una ubicación geográfica predefinida de la pieza. Ejemplo: Titicaca">
+                                    <small  class="option">{{ form_procedencia.otra.label }}</small>
                                     {{ form_procedencia.otra }}
                                 </div>                               
                             </div>
@@ -139,7 +148,15 @@
         </div>
     </div>
     <script type="text/javascript">
-        $(function() { 
+        $(function() {
+            /*
+            Setea el ToolTip
+            */
+            var tooltips = $( "[title]" ).tooltip();
+            
+            /*
+            Maneja los Options
+            */ 
             $('.radio input[type=text], .radio select').attr('disabled', true);
             $.each($('.radio'), function () {
                 var objeto = $(this).find(':not(.option)');

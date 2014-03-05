@@ -22,6 +22,7 @@
                             {% csrf_token %}
                             <div class="form-group col-lg-12">
                                 <div class="form-group col-lg-12">
+                                    <small>{{ form.nro_inventario.label }}</small>
                                     {{ form.nro_inventario }}
                                 </div>                                        
                                 <div class="form-group col-lg-12">
@@ -47,15 +48,16 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                   <tr>                                
+                                    <th>Nombre Descriptivo</th>
                                     <th>Número Inventario</th>
                                     <th>Naturaleza</th>
-                                    <th>Nombre Descriptivo</th>
                                     <th>Procedencia</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                 {% for pieza_conjunto in piezas %}
                                       <tr>
+                                        <td><a href="{% url 'edita_pieza_conjunto' pieza_conjunto.id %}">{{ pieza_conjunto.nombre_descriptivo }}</a></td>
                                         <td>
                                            {% for pieza_conjunto_fragmento in pieza_conjunto.obtiene_fragmentos %}
                                                {% if pieza_conjunto_fragmento.numero_inventario %}
@@ -65,7 +67,6 @@
                                                {% endif %}
                                            {% endfor %}
                                         </td>
-                                        <td><a href="{% url 'edita_pieza_conjunto' pieza_conjunto.id %}">{{ pieza_conjunto.nombre_descriptivo }}</a></td>
                                         <td>{{ pieza_conjunto.naturaleza }}</td>
                                         <td>{{ pieza_conjunto.obtiene_procedencia }}</td>
                                       </tr>
@@ -87,6 +88,14 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(function() {
+            /*
+            Setea el ToolTip
+            */
+            var tooltips = $( "[title]" ).tooltip();
+        });
+    </script>
 {% endblock %}
 
 

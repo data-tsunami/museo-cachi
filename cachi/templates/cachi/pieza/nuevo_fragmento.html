@@ -78,6 +78,7 @@
                                     <h5>Inventario</h5>
                                 
                                     <div class="form-group {% if form_fragmento.numero_inventario.errors %}has-error{% endif %}">
+                                        <small>{{ form_fragmento.numero_inventario.label }}</small>
                                         {{ form_fragmento.numero_inventario }}
                                     </div>
                                 </div>
@@ -86,51 +87,67 @@
                                 </div>
                                 
                                 <div class="form-group col-lg-6 {% if form_ficha_tecnica.alto.errors %}has-error{% endif %}">
+                                    <small>{{ form_ficha_tecnica.alto.label }}</small>
                                     {{ form_ficha_tecnica.alto }}
                                 </div>
                                 <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
+                                    <small>{{ form_ficha_tecnica.peso.label }}</small>
                                     {{ form_ficha_tecnica.peso }}
                                 </div>
                                 <div class="form-group col-lg-6 {% if form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
+                                    <small>{{ form_ficha_tecnica.espesor.label }}</small>
                                     {{ form_ficha_tecnica.espesor }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.diametro_min.label }}</small>
                                     {{ form_ficha_tecnica.diametro_min }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.diametro_max.label }}</small>
                                     {{ form_ficha_tecnica.diametro_max }}
                                 </div>
                                 <div class="form-group col-lg-6 {% if form_ficha_tecnica.color.errors %}has-error{% endif %}">
+                                    <small>{{ form_ficha_tecnica.color.label }}</small>
                                     {{ form_ficha_tecnica.color }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.decoracion.label }}</small>
                                     {{ form_ficha_tecnica.decoracion }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.inscripciones_marcas.label }}</small>
                                     {{ form_ficha_tecnica.inscripciones_marcas }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.reparaciones.label }}</small>
                                     {{ form_ficha_tecnica.reparaciones }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.desperfectos.label }}</small>
                                     {{ form_ficha_tecnica.desperfectos }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.desperfectos_fabricacion.label }}</small>
                                     {{ form_ficha_tecnica.desperfectos_fabricacion }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.otras_caracteristicas_distintivas.label }}</small>
                                     {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.tratamiento.label }}</small>
                                     {{ form_ficha_tecnica.tratamiento }}
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <small>{{ form_ficha_tecnica.observacion.label }}</small>
                                     {{ form_ficha_tecnica.observacion }}
                                 </div> 
                                 <div class="form-group col-lg-12">
+                                    <small>{{ form_ficha_tecnica.autor.label }}</small>
                                     {{ form_ficha_tecnica.autor }}
                                 </div> 
-                                <div class="form-group col-lg-12">
+                                <div id="diagnostico_estado" class="form-group col-lg-12">
+                                    <small>{{ form_ficha_tecnica.diagnostico_estado.label }}</small>
                                     {{ form_ficha_tecnica.diagnostico_estado }}
                                 </div>                            
                             </div>
@@ -167,9 +184,17 @@
     </div>
     <script type="text/javascript">
         $(function() {
-            $('#id_diagnostico_estado').hide();
+            /*
+            Setea el ToolTip
+            */
+            var tooltips = $( "[title]" ).tooltip();
+            
+            /*
+            Maneja los botones 
+            */
+            $('#diagnostico_estado').hide();
             if($('#ficha_tecnica_pk').val() != "None") {
-                $('#id_diagnostico_estado').show();
+                $('#diagnostico_estado').show();
             }
 
             if($('#fragmento_pk').val()) {
@@ -205,7 +230,7 @@
                 $('#edita_ficha_tecnica').hide();
                 $('#historial_diagnostico').hide();
 
-                $('#id_diagnostico_estado').show();
+                $('#diagnostico_estado').show();
 
                 $('#guardar').attr('name', 'nuevo_diagnostico_estado');
 

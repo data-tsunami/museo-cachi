@@ -2,158 +2,154 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-lg-12 main">
-            <form method="post" enctype="multipart/form-data" role="form">
-                {% csrf_token %}
+    <form method="post" enctype="multipart/form-data" role="form">
+        {% csrf_token %}
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">                
-                        <h4 class="inline">Pieza o Conjunto</h4>
-                        {% if pieza_conjunto %}
-                            <a href=""> {{ pieza_conjunto.nombre_descriptivo }}</a>
-                        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">                
+                <h4 class="inline">Pieza o Conjunto</h4>
+                {% if pieza_conjunto %}
+                    <a href=""> {{ pieza_conjunto.nombre_descriptivo }}</a>
+                {% endif %}
 
-                        <div class="inline pull-right">
-                            <button type="submit" name="guardar" class="btn btn-default btn-success">
-                                <span class="glyphicon glyphicon-ok"></span> Guardar
-                            </button>
-                        </div>
-                        <div class="clear-fix"></div>
+                <div class="inline pull-right">
+                    <button type="submit" name="guardar" class="btn btn-default btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> Guardar
+                    </button>
+                </div>
+                <div class="clear-fix"></div>
+            </div>
+            <div class="panel-body">                        
+                <div class="col-lg-4">
+                    <h5>Pieza o Cojunto</h5>
+                
+                    <div class="form-group {% if form_pieza_conjunto.nombre_descriptivo.errors %}has-error{% endif %}">
+                        <small>{{ form_pieza_conjunto.nombre_descriptivo.label }}</small>
+                        {{ form_pieza_conjunto.nombre_descriptivo }}
                     </div>
-                    <div class="panel-body col-lg-12">                        
-                        <div class="col-lg-4">
-                            <h5>Pieza o Cojunto</h5>
-                        
-                            <div class="form-group {% if form_pieza_conjunto.nombre_descriptivo.errors %}has-error{% endif %}">
-                                <small>{{ form_pieza_conjunto.nombre_descriptivo.label }}</small>
-                                {{ form_pieza_conjunto.nombre_descriptivo }}
-                            </div>
-                            <div class="form-group {% if form_pieza_conjunto.fecha_hallazgo.errors %}has-error{% endif %}">
-                                <small>{{ form_pieza_conjunto.fecha_hallazgo.label }}</small>
-                                {{ form_pieza_conjunto.fecha_hallazgo }}
-                            </div>
-                            <div class="form-group {% if form_pieza_conjunto.naturaleza.errors %}has-error{% endif %}">
-                                <small>{{ form_pieza_conjunto.naturaleza.label }}</small>
-                                {{ form_pieza_conjunto.naturaleza }}
-                            </div>
-                            <div class="form-group {% if form_pieza_conjunto.forma.errors %}has-error{% endif %}">
-                                <small>{{ form_pieza_conjunto.forma.label }}</small>
-                                {{ form_pieza_conjunto.forma }}
-                            </div>
-                            <div class="form-group">
-                                <small>{{ form_pieza_conjunto.tipo_adquisicion.label }}</small>
-                                {{ form_pieza_conjunto.tipo_adquisicion }}
-                            </div>
-                            <div class="form-group">
-                                <small>{{ form_pieza_conjunto.tecnica_manufactura.label }}</small>
-                                {{ form_pieza_conjunto.tecnica_manufactura }}
-                            </div>
-                            <div class="form-group">
-                                <small>{{ form_pieza_conjunto.tipo_condicion_hallazgo.label }}</small>
-                                {{ form_pieza_conjunto.tipo_condicion_hallazgo }}
-                            </div>                            
-                            <div class="form-group">
-                                <small>{{ form_pieza_conjunto.persona_colectora.label }}</small>
-                                {{ form_pieza_conjunto.persona_colectora }}
-                            </div>
-                            <div class="form-group">
-                                <small>{{ form_pieza_conjunto.ubicacion.label }}</small>
-                                {{ form_pieza_conjunto.ubicacion }}
-                            </div>
-                        </div>
-                        <div class="col-lg-4" >
-                            <h5>Procedencia</h5>
-
-                            <div class="form-group">
-                                <div class="radio">
-                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios1" title="Puede seleccione un Sitio Arqueológico como procedencia de la pieza.">
-                                    <small  class="option">{{ form_procedencia.sitio_arqueologico.label }}</small>
-                                    {{ form_procedencia.sitio_arqueologico }}
-                                </div>                               
-                            </div>
-                            <div class="form-group">
-                                <div class="radio">
-                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios2" title="Puede seleccione una Ubicacón Geográfica específica como procedencia de la pieza que no sea un sitio arqueológico precisamente.">
-                                    <small  class="option">{{ form_procedencia.ubicacion_geografica.label }}</small>
-                                    {{ form_procedencia.ubicacion_geografica }}
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <div class="radio">
-                                    <input type="radio" class="option" name="optionsRadios" id="optionsRadios3" title="Puede especificar una Procedencia que no sea un sitio arqueológico y que tampoco sea una ubicación geográfica predefinida de la pieza. Ejemplo: Titicaca">
-                                    <small  class="option">{{ form_procedencia.otra.label }}</small>
-                                    {{ form_procedencia.otra }}
-                                </div>                               
-                            </div>
-                            {% if form_procedencia.errors %}
-                                {% for key, value in form_procedencia.errors.items %}
-                                     <p class="text-danger text-center">{{ value.as_text }}</p>
-                                {% endfor %}                               
-                            {% endif %}
-                            <br>
-
-                            <h5>Adjuntos</h5>
-
-                             <div class="form-group {% if form_adjunto.errors %}has-error{% endif %}">
-                                {% if form_adjunto.errors %}
-                                    <label class="control-label">{{ form_adjunto.adjuntos.errors }}</label>
-                                {% endif %}
-                                {{ form_adjunto.adjuntos }}
-                                <div id="adjuntos">
-                                    {% if pieza_conjunto_adjuntos %}
-                                        <br>
-                                        <div class="row">
-                                            {% for adjunto in pieza_conjunto_adjuntos %}
-                                                <div class="col-xs-6 col-md-6 col-lg-4">
-                                                    <a href="#" class="thumbnail">
-                                                        <img src="{{ adjunto.adjunto.url }}">
-                                                    </a>
-                                                </div>                                                                                    
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <h5>Fichas Técnicas</h5>                            
-                            <ul class="list-group">
-                                {% if pieza_conjunto_fragmentos %}
-                                    {% for pieza_conjunto_fragmento in pieza_conjunto_fragmentos %}
-                                        <li class="list-group-item">
-                                            <a href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
-                                                {{ pieza_conjunto_fragmento.numero_inventario }}
-                                            </a> 
-                                        </li>
-                                    {% endfor %}
-                                {% else %}    
-                                    <li class="list-group-item">
-                                        <p class="text-center">
-                                            <em>No se encontraron Fichas Técnicas en esta Pieza.</em>
-                                        </p>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                            
-                            {% if pieza_conjunto %}
-                                <a href="{% url 'nuevo_fragmento' pieza_conjunto.pk %}" class="btn btn-primary btn-block" role="button">
-                                    <span class="glyphicon glyphicon-plus"></span> Nueva Ficha Técnica
-                                </a>
-                            {% endif %}
-                        </div> 
+                    <div class="form-group {% if form_pieza_conjunto.fecha_hallazgo.errors %}has-error{% endif %}">
+                        <small>{{ form_pieza_conjunto.fecha_hallazgo.label }}</small>
+                        {{ form_pieza_conjunto.fecha_hallazgo }}
+                    </div>
+                    <div class="form-group {% if form_pieza_conjunto.naturaleza.errors %}has-error{% endif %}">
+                        <small>{{ form_pieza_conjunto.naturaleza.label }}</small>
+                        {{ form_pieza_conjunto.naturaleza }}
+                    </div>
+                    <div class="form-group {% if form_pieza_conjunto.forma.errors %}has-error{% endif %}">
+                        <small>{{ form_pieza_conjunto.forma.label }}</small>
+                        {{ form_pieza_conjunto.forma }}
+                    </div>
+                    <div class="form-group">
+                        <small>{{ form_pieza_conjunto.tipo_adquisicion.label }}</small>
+                        {{ form_pieza_conjunto.tipo_adquisicion }}
+                    </div>
+                    <div class="form-group">
+                        <small>{{ form_pieza_conjunto.tecnica_manufactura.label }}</small>
+                        {{ form_pieza_conjunto.tecnica_manufactura }}
+                    </div>
+                    <div class="form-group">
+                        <small>{{ form_pieza_conjunto.tipo_condicion_hallazgo.label }}</small>
+                        {{ form_pieza_conjunto.tipo_condicion_hallazgo }}
+                    </div>                            
+                    <div class="form-group">
+                        <small>{{ form_pieza_conjunto.persona_colectora.label }}</small>
+                        {{ form_pieza_conjunto.persona_colectora }}
+                    </div>
+                    <div class="form-group">
+                        <small>{{ form_pieza_conjunto.ubicacion.label }}</small>
+                        {{ form_pieza_conjunto.ubicacion }}
                     </div>
                 </div>
-            </form>
+                <div class="col-lg-4" >
+                    <h5>Procedencia</h5>
+
+                    <div class="form-group">
+                        <div class="radio">
+                            <input type="radio" class="option" name="optionsRadios" id="optionsRadios1" title="Puede seleccione un Sitio Arqueológico como procedencia de la pieza.">
+                            <small  class="option">{{ form_procedencia.sitio_arqueologico.label }}</small>
+                            {{ form_procedencia.sitio_arqueologico }}
+                        </div>                               
+                    </div>
+                    <div class="form-group">
+                        <div class="radio">
+                            <input type="radio" class="option" name="optionsRadios" id="optionsRadios2" title="Puede seleccione una Ubicacón Geográfica específica como procedencia de la pieza que no sea un sitio arqueológico precisamente.">
+                            <small  class="option">{{ form_procedencia.ubicacion_geografica.label }}</small>
+                            {{ form_procedencia.ubicacion_geografica }}
+                        </div>                                
+                    </div>
+                    <div class="form-group">
+                        <div class="radio">
+                            <input type="radio" class="option" name="optionsRadios" id="optionsRadios3" title="Puede especificar una Procedencia que no sea un sitio arqueológico y que tampoco sea una ubicación geográfica predefinida de la pieza. Ejemplo: Titicaca">
+                            <small  class="option">{{ form_procedencia.otra.label }}</small>
+                            {{ form_procedencia.otra }}
+                        </div>                               
+                    </div>
+                    {% if form_procedencia.errors %}
+                        {% for key, value in form_procedencia.errors.items %}
+                             <p class="text-danger text-center">{{ value.as_text }}</p>
+                        {% endfor %}                               
+                    {% endif %}
+                    <br>
+
+                    <h5>Adjuntos</h5>
+
+                     <div class="form-group {% if form_adjunto.errors %}has-error{% endif %}">
+                        {% if form_adjunto.errors %}
+                            <label class="control-label">{{ form_adjunto.adjuntos.errors }}</label>
+                        {% endif %}
+                        {{ form_adjunto.adjuntos }}
+                        <div id="adjuntos">
+                            {% if pieza_conjunto_adjuntos %}
+                                <br>
+                                <div class="row">
+                                    {% for adjunto in pieza_conjunto_adjuntos %}
+                                        <div class="col-xs-6 col-md-6 col-lg-4">
+                                            <a href="#" class="thumbnail">
+                                                <img src="{{ adjunto.adjunto.url }}">
+                                            </a>
+                                        </div>                                                                                    
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Fichas Técnicas</h5>                            
+                    <ul class="list-group">
+                        {% if pieza_conjunto_fragmentos %}
+                            {% for pieza_conjunto_fragmento in pieza_conjunto_fragmentos %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
+                                        {{ pieza_conjunto_fragmento.numero_inventario }}
+                                    </a> 
+                                </li>
+                            {% endfor %}
+                        {% else %}    
+                            <li class="list-group-item">
+                                <p class="text-center">
+                                    <em>No se encontraron Fichas Técnicas en esta Pieza.</em>
+                                </p>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    
+                    {% if pieza_conjunto %}
+                        <a href="{% url 'nuevo_fragmento' pieza_conjunto.pk %}" class="btn btn-primary btn-block" role="button">
+                            <span class="glyphicon glyphicon-plus"></span> Nueva Ficha Técnica
+                        </a>
+                    {% endif %}
+                </div> 
+            </div>
         </div>
-    </div>
+    </form>
     <script type="text/javascript">
         $(function() {
             /*
             Setea el ToolTip
             */
             var tooltips = $( "[title]" ).tooltip();
-            
+
             /*
             Maneja los Options
             */ 

@@ -64,17 +64,19 @@
     </div>
 
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 main">          
+        		{% for message in messages %}
+        	        <div class="alert alert-dismissable {{ message.tags }}">
+        	           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        	           {{ message|safe }}
+        	        </div>
+        		{% endfor %}
 
-		{% for message in messages %}
-	        <div class="alert alert-dismissable {{ message.tags }}">
-	           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-	           {{ message }}
-	        </div>
-		{% endfor %}
-
-	    {% block content %}
-	    {% endblock %}
-
+        	    {% block content %}
+        	    {% endblock %}
+            </div>
+        </div>
     </div>
    <!--  <div id="footer">
         <div class="container">
@@ -84,5 +86,20 @@
             </p>
         </div>
     </div> -->
+
+    <script type="text/javascript">
+        $(function(){
+            message_remove(function(){});
+            function message_remove(callback){
+                window.setTimeout(function() {
+                    $(".alert-dismissable").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                        callback();
+                    });
+                }, 8000);
+            }
+             
+        });
+    </script>
 </body>
 </html>

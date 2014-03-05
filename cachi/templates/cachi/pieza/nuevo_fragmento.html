@@ -2,193 +2,190 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-lg-12 main">
-            <form method="post" enctype="multipart/form-data" role="form">
-                {% csrf_token %}
-                <input type="hidden" id="pieza_conjunto_pk" name="pieza_conjunto_pk" value="{{ pieza_conjunto.pk }}">
-                <input type="hidden" id="fragmento_pk" name="fragmento_pk" value="{{ fragmento.pk }}">
-                <input type="hidden" id="ficha_tecnica_pk" name="ficha_tecnica_pk" value="{{ ficha_tecnica_pk }}">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+    
+    <form method="post" enctype="multipart/form-data" role="form">
+        {% csrf_token %}
+        <input type="hidden" id="pieza_conjunto_pk" name="pieza_conjunto_pk" value="{{ pieza_conjunto.pk }}">
+        <input type="hidden" id="fragmento_pk" name="fragmento_pk" value="{{ fragmento.pk }}">
+        <input type="hidden" id="ficha_tecnica_pk" name="ficha_tecnica_pk" value="{{ ficha_tecnica_pk }}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
 
-                        <h4 class="inline">Ficha Técnica </h4>
+                <h4 class="inline">Ficha Técnica </h4>
 
-                        <a href="{% url 'edita_pieza_conjunto'  pieza_conjunto.pk %}">
-                            {{ pieza_conjunto.nombre_descriptivo }}
-                        </a> 
-                        {% if fragmento %}
-                            / <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
-                                {{ fragmento.numero_inventario }}
-                            </a>
-                        {% endif %}
+                <a href="{% url 'edita_pieza_conjunto'  pieza_conjunto.pk %}">
+                    {{ pieza_conjunto.nombre_descriptivo }}
+                </a> 
+                {% if fragmento %}
+                    / <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
+                        {{ fragmento.numero_inventario }}
+                    </a>
+                {% endif %}
 
-                        {% if fecha_diagnostico %}
-                            / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}">
-                                {{ fecha_diagnostico|date:"d/m/Y" }}
-                            </a>
-                        {% endif %}
+                {% if fecha_diagnostico %}
+                    / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}">
+                        {{ fecha_diagnostico|date:"d/m/Y" }}
+                    </a>
+                {% endif %}
 
-                        <div class="inline pull-right">
-                            {% if not ficha_tecnica_pk %}
-                                <button type="button" id="edita_ficha_tecnica" class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-edit"></span> Editar Ficha Técnica
-                                </button>
-                                <button type="button" id="nuevo_diagnostico_estado" class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-plus"></span> Nuevo Diagnóstico Estado
-                                </button>
-                            {% endif %}
-                            {% if fichas_tecnicas_diagnosticos %}
-                                <div id="historial_diagnostico" class="btn-group">                                
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                        Historial Diagnósticos Estados <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li role="presentation" class="dropdown-header">Fechas</li>
-                                        {% for ficha_tecnica_diagnostico in fichas_tecnicas_diagnosticos %}
-                                            <li>
-                                                <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_diagnostico.pk %}">
-                                                    {{ ficha_tecnica_diagnostico.fecha|date:"d/m/Y" }}
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% endif %}
-                            <button type="submit" id="guardar" name="guardar" class="btn btn-default btn-success">
-                                <span class="glyphicon glyphicon-ok"></span> Guardar
+                <div class="inline pull-right">
+                    {% if not ficha_tecnica_pk %}
+                        <button type="button" id="edita_ficha_tecnica" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-edit"></span> Editar Ficha Técnica
+                        </button>
+                        <button type="button" id="nuevo_diagnostico_estado" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus"></span> Nuevo Diagnóstico Estado
+                        </button>
+                    {% endif %}
+                    {% if fichas_tecnicas_diagnosticos %}
+                        <div id="historial_diagnostico" class="btn-group">                                
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-time"></span>
+                                Historial Diagnósticos Estados <span class="caret"></span>
                             </button>
-                            {% if fragmento %}
-                                <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
-                            {% else %}
-                                <a href="{% url 'edita_pieza_conjunto' pieza_conjunto.pk %}">
-                            {% endif %}
-                                <button type="button" id="cancelar" name="cancelar" class="btn btn-default btn-warning">
-                                    <span class="glyphicon glyphicon-remove"></span> Cancelar
-                                </button>
-                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" class="dropdown-header">Fechas</li>
+                                {% for ficha_tecnica_diagnostico in fichas_tecnicas_diagnosticos %}
+                                    <li>
+                                        <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_diagnostico.pk %}">
+                                            {{ ficha_tecnica_diagnostico.fecha|date:"d/m/Y" }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        <div class="clear-fix"></div>
-                    </div>
-                    <div class="panel-body"> 
-                        <div class="col-lg-12">                            
-                            <div class="col-lg-6">
-                                <div class="form-group col-lg-12">
-                                    <h5>Inventario</h5>
-                                
-                                    <div class="form-group {% if form_fragmento.numero_inventario.errors %}has-error{% endif %}">
-                                        <small>{{ form_fragmento.numero_inventario.label }}</small>
-                                        {{ form_fragmento.numero_inventario }}
-                                    </div>
-                                </div>
-                                <div class="form-group col-lg-12">
-                                    <h5>Características</h5>
-                                </div>
-                                
-                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.alto.errors %}has-error{% endif %}">
-                                    <small>{{ form_ficha_tecnica.alto.label }}</small>
-                                    {{ form_ficha_tecnica.alto }}
-                                </div>
-                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
-                                    <small>{{ form_ficha_tecnica.peso.label }}</small>
-                                    {{ form_ficha_tecnica.peso }}
-                                </div>
-                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
-                                    <small>{{ form_ficha_tecnica.espesor.label }}</small>
-                                    {{ form_ficha_tecnica.espesor }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.diametro_min.label }}</small>
-                                    {{ form_ficha_tecnica.diametro_min }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.diametro_max.label }}</small>
-                                    {{ form_ficha_tecnica.diametro_max }}
-                                </div>
-                                <div class="form-group col-lg-6 {% if form_ficha_tecnica.color.errors %}has-error{% endif %}">
-                                    <small>{{ form_ficha_tecnica.color.label }}</small>
-                                    {{ form_ficha_tecnica.color }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.decoracion.label }}</small>
-                                    {{ form_ficha_tecnica.decoracion }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.inscripciones_marcas.label }}</small>
-                                    {{ form_ficha_tecnica.inscripciones_marcas }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.reparaciones.label }}</small>
-                                    {{ form_ficha_tecnica.reparaciones }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.desperfectos.label }}</small>
-                                    {{ form_ficha_tecnica.desperfectos }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.desperfectos_fabricacion.label }}</small>
-                                    {{ form_ficha_tecnica.desperfectos_fabricacion }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.otras_caracteristicas_distintivas.label }}</small>
-                                    {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.tratamiento.label }}</small>
-                                    {{ form_ficha_tecnica.tratamiento }}
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <small>{{ form_ficha_tecnica.observacion.label }}</small>
-                                    {{ form_ficha_tecnica.observacion }}
-                                </div> 
-                                <div class="form-group col-lg-12">
-                                    <small>{{ form_ficha_tecnica.autor.label }}</small>
-                                    {{ form_ficha_tecnica.autor }}
-                                </div> 
-                                <div id="diagnostico_estado" class="form-group col-lg-12">
-                                    <small>{{ form_ficha_tecnica.diagnostico_estado.label }}</small>
-                                    {{ form_ficha_tecnica.diagnostico_estado }}
-                                </div>                            
-                            </div>
-                            <div class="col-lg-6">
-                                <h5>Adjuntos</h5>
-
-                                <div class="form-group {% if form_adjunto.adjuntos.errors %}has-error{% endif %}">
-                                    {% if form_adjunto.adjuntos.errors %}
-                                        <label class="control-label">{{ form_adjunto.adjuntos.errors }}</label>
-                                    {% endif %}
-                                    {{ form_adjunto.adjuntos }}
-
-                                    <div id="adjuntos">
-                                    {% if ficha_tecnica_adjuntos %}
-                                        <br>
-                                        <div class="row">
-                                            {% for adjunto in ficha_tecnica_adjuntos %}
-                                                <div class="col-xs-6 col-md-6 col-lg-4">
-                                                    <a href="#" class="thumbnail">
-                                                        <img src="{{ adjunto.adjunto.url }}">
-                                                    </a>
-                                                </div>                                                                                    
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                </div>
-                            </div>
-                        </div>                       
-                    </div>
+                    {% endif %}
+                    <button type="submit" id="guardar" name="guardar" class="btn btn-default btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> Guardar
+                    </button>
+                    {% if fragmento %}
+                        <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
+                    {% else %}
+                        <a href="{% url 'edita_pieza_conjunto' pieza_conjunto.pk %}">
+                    {% endif %}
+                        <button type="button" id="cancelar" name="cancelar" class="btn btn-default btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Cancelar
+                        </button>
+                    </a>
                 </div>
-            </form>
+                <div class="clear-fix"></div>
+            </div>
+            <div class="panel-body"> 
+                <div class="col-lg-12">                            
+                    <div class="col-lg-6">
+                        <div class="form-group col-lg-12">
+                            <h5>Inventario</h5>
+                        
+                            <div class="form-group {% if form_fragmento.numero_inventario.errors %}has-error{% endif %}">
+                                <small>{{ form_fragmento.numero_inventario.label }}</small>
+                                {{ form_fragmento.numero_inventario }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <h5>Características</h5>
+                        </div>
+                        
+                        <div class="form-group col-lg-6 {% if form_ficha_tecnica.alto.errors %}has-error{% endif %}">
+                            <small>{{ form_ficha_tecnica.alto.label }}</small>
+                            {{ form_ficha_tecnica.alto }}
+                        </div>
+                        <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
+                            <small>{{ form_ficha_tecnica.peso.label }}</small>
+                            {{ form_ficha_tecnica.peso }}
+                        </div>
+                        <div class="form-group col-lg-6 {% if form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
+                            <small>{{ form_ficha_tecnica.espesor.label }}</small>
+                            {{ form_ficha_tecnica.espesor }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.diametro_min.label }}</small>
+                            {{ form_ficha_tecnica.diametro_min }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.diametro_max.label }}</small>
+                            {{ form_ficha_tecnica.diametro_max }}
+                        </div>
+                        <div class="form-group col-lg-6 {% if form_ficha_tecnica.color.errors %}has-error{% endif %}">
+                            <small>{{ form_ficha_tecnica.color.label }}</small>
+                            {{ form_ficha_tecnica.color }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.decoracion.label }}</small>
+                            {{ form_ficha_tecnica.decoracion }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.inscripciones_marcas.label }}</small>
+                            {{ form_ficha_tecnica.inscripciones_marcas }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.reparaciones.label }}</small>
+                            {{ form_ficha_tecnica.reparaciones }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.desperfectos.label }}</small>
+                            {{ form_ficha_tecnica.desperfectos }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.desperfectos_fabricacion.label }}</small>
+                            {{ form_ficha_tecnica.desperfectos_fabricacion }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.otras_caracteristicas_distintivas.label }}</small>
+                            {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.tratamiento.label }}</small>
+                            {{ form_ficha_tecnica.tratamiento }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <small>{{ form_ficha_tecnica.observacion.label }}</small>
+                            {{ form_ficha_tecnica.observacion }}
+                        </div> 
+                        <div class="form-group col-lg-12">
+                            <small>{{ form_ficha_tecnica.autor.label }}</small>
+                            {{ form_ficha_tecnica.autor }}
+                        </div> 
+                        <div id="diagnostico_estado" class="form-group col-lg-12">
+                            <small>{{ form_ficha_tecnica.diagnostico_estado.label }}</small>
+                            {{ form_ficha_tecnica.diagnostico_estado }}
+                        </div>                            
+                    </div>
+                    <div class="col-lg-6">
+                        <h5>Adjuntos</h5>
+
+                        <div class="form-group {% if form_adjunto.adjuntos.errors %}has-error{% endif %}">
+                            {% if form_adjunto.adjuntos.errors %}
+                                <label class="control-label">{{ form_adjunto.adjuntos.errors }}</label>
+                            {% endif %}
+                            {{ form_adjunto.adjuntos }}
+
+                            <div id="adjuntos">
+                            {% if ficha_tecnica_adjuntos %}
+                                <br>
+                                <div class="row">
+                                    {% for adjunto in ficha_tecnica_adjuntos %}
+                                        <div class="col-xs-6 col-md-6 col-lg-4">
+                                            <a href="#" class="thumbnail">
+                                                <img src="{{ adjunto.adjunto.url }}">
+                                            </a>
+                                        </div>                                                                                    
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        </div>
+                    </div>
+                </div>                       
+            </div>
         </div>
-    </div>
+    </form>
     <script type="text/javascript">
         $(function() {
             /*
             Setea el ToolTip
             */
             var tooltips = $( "[title]" ).tooltip();
-            
+
             /*
             Maneja los botones 
             */

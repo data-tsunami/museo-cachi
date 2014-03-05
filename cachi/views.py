@@ -3,7 +3,10 @@ from __future__ import unicode_literals
 
 from datetime import date
 
+#from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
 from django.shortcuts import (
     get_object_or_404,
     redirect,
@@ -145,7 +148,23 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
                         adjunto=adjunto,
                         pieza_conjunto=pieza_conjunto,
                     )
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                '<strong>Operación Exitosa!</strong>\
+                Se llevó a cabo con éxito la creación de la\
+                nueva pieza o conjunto.',
+            )
+
             return redirect('edita_pieza_conjunto', pieza_conjunto.pk)
+        else:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                '<strong>Operación Errónea!</strong>\
+                Revise y complete todos los campos obligatorios\
+                para la creación de una nueva pieza o conjunto.',
+            )
 
     elif request.method == "GET":
         form_pieza_conjunto = PiezaConjuntoForm(
@@ -203,6 +222,8 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
             fragmento.obtiene_fichas_tecnicas_diagnosticos()
 
         if request.method == 'POST':
+            mensaje = ''
+
             if pieza_conjunto_pk == request.POST['pieza_conjunto_pk']:
 
                 form_fragmento = FragmentoForm(
@@ -237,13 +258,23 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
                         ficha_tecnica.razon_actualizacion = \
                         RAZON_ACTUALIZACION_CREACION
 
+                        mensaje = 'Se llevó a cabo con éxito la\
+                        creación de la nueva ficha técnica.'
+
                     elif 'edita_ficha_tecnica' in request.POST:
                         ficha_tecnica.razon_actualizacion = \
                         RAZON_ACTUALIZACION_ACTUALIZACION
 
+                        mensaje = 'Se llevó a cabo con éxito la\
+                        actualización de la ficha técnica.'
+
                     elif 'nuevo_diagnostico_estado' in request.POST:
                         ficha_tecnica.razon_actualizacion = \
                         RAZON_ACTUALIZACION_DIAGNOSTICO
+
+                        mensaje = 'Se llevó a cabo con éxito la\
+                        creación del nuevo diagnóstico de estado\
+                        de la ficha técnica.'
 
                     ficha_tecnica.fecha = date.today()
                     ficha_tecnica.usuario = request.user
@@ -266,14 +297,24 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
                                 ficha_tecnica=ficha_tecnica,
                             )
 
+                    messages.add_message(
+                        request,
+                        messages.SUCCESS,
+                        '<strong>Operación Exitosa!</strong> {0}'.format(mensaje),
+                    )
+
                     return redirect(
                         'edita_fragmento',
                         pieza_conjunto.pk,
                         fragmento.pk,
                     )
-            else:
-                #TODO: 404?
-                pass
+            messages.add_message(
+                request,
+                messages.ERROR,
+                '<strong>Operación Errónea!</strong>\
+                Revise y complete todos los campos obligatorios\
+                para realizar la operación requerida.',
+            )
 
         elif request.method == 'GET':
 

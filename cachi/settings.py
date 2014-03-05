@@ -107,9 +107,9 @@ MESSAGE_TAGS = {
 }
 
 #Loguin
-LOGIN_URL = "/logueo/"
-LOGOUT_URL = "/deslogueo/"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "logueo"
+LOGOUT_URL = "deslogueo"
+LOGIN_REDIRECT_URL = "busca_pieza"
 
 #Files Options
 CONTENT_TYPES = [

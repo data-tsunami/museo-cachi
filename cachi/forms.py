@@ -21,50 +21,41 @@ class PiezaConjuntoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PiezaConjuntoForm, self).__init__(*args, **kwargs)
         self.fields['nombre_descriptivo'].widget.attrs['class'] = 'form-control'
-        self.fields['nombre_descriptivo'].widget.attrs['placeholder'] = 'Nombre Descriptivo'
         self.fields['nombre_descriptivo'].widget.attrs['title'] = \
         'Ingrese un nombre descriptivo con el que se referencie a la pieza. Ejemplo: Jarra Cuadrada.'
 
         self.fields['fecha_hallazgo'].widget.attrs['class'] = 'form-control'
         self.fields['fecha_hallazgo'].widget.attrs['type'] = 'date'
-        self.fields['fecha_hallazgo'].widget.attrs['placeholder'] = 'Fecha Hallazgo'
         self.fields['fecha_hallazgo'].widget.attrs['title'] = \
         'Ingrese la fecha de hallazgo de la pieza. Ejemplo: 09/06/1984.'
 
         self.fields['forma'].widget.attrs['class'] = 'form-control'
-        self.fields['forma'].widget.attrs['placeholder'] = 'Forma'
         self.fields['forma'].widget.attrs['rows'] = '2'
         self.fields['forma'].widget.attrs['title'] = \
         'Ingrese un breve detalle de la forma de la pieza. Ejemplo: Tubo. Fragmento de seccn circular.'
 
         self.fields['tecnica_manufactura'].widget.attrs['class'] = 'form-control'
-        self.fields['tecnica_manufactura'].widget.attrs['placeholder'] = 'Técnica Manufactura'
         self.fields['tecnica_manufactura'].widget.attrs['rows'] = '2'
         self.fields['tecnica_manufactura'].widget.attrs['title'] = \
         'Ingrese la técnica de manufactura de la pieza.'
 
         self.fields['naturaleza'].widget.attrs['class'] = 'form-control'
-        self.fields['naturaleza'].empty_label = 'Naturaleza'
         self.fields['naturaleza'].widget.attrs['title'] = \
         'Ingrese la naturaleza de fabricación de la pieza. Ejemplo: Cerámica.'
 
         self.fields['tipo_adquisicion'].widget.attrs['class'] = 'form-control'
-        self.fields['tipo_adquisicion'].empty_label = 'Tipo Adquisición'
         self.fields['tipo_adquisicion'].widget.attrs['title'] = \
         'Ingrese el tipo de adquisición de la pieza. Ejemplo: Donación.'
 
         self.fields['tipo_condicion_hallazgo'].widget.attrs['class'] = 'form-control'
-        self.fields['tipo_condicion_hallazgo'].empty_label = 'Tipo Condición Hallazgo'
         self.fields['tipo_condicion_hallazgo'].widget.attrs['title'] = \
         'Ingrese la condición de hallazgo de la pieza. Ejemplo: Recolección Superficial.'
 
         self.fields['persona_colectora'].widget.attrs['class'] = 'form-control'
-        self.fields['persona_colectora'].empty_label = 'Persona Colectora'
         self.fields['persona_colectora'].widget.attrs['title'] = \
         'Seleccione la persona que recolecto de la pieza. Ejemplo: Pio Pablo Diaz.'
 
         self.fields['ubicacion'].widget.attrs['class'] = 'form-control'
-        self.fields['ubicacion'].empty_label = 'Ubicación Actual'
         self.fields['ubicacion'].widget.attrs['title'] = \
         'Seleccione la ubicación actual de la pieza. Ejemplo: Almacén - Estantería A5.'
 
@@ -103,7 +94,7 @@ class FragmentoForm(forms.ModelForm):
         self.fields['numero_inventario'].widget.attrs['class'] = 'form-control'
         self.fields['numero_inventario'].widget.attrs['title'] = \
         'Especifique el Número de Inventario pieza o fragmento. Ejemplo: 1165.'
- 
+
     class Meta():
         model = Fragmento
 
@@ -183,7 +174,6 @@ class FichaTecnicaForm(forms.ModelForm):
         'Especifique alguna otra observación de la pieza o fragmento.'
 
         self.fields['autor'].widget.attrs['class'] = 'form-control'
-        self.fields['autor'].empty_label = 'Autor'
         self.fields['autor'].widget.attrs['title'] = \
         'Seleccione el autor de la Ficha Técnica.'
 
@@ -242,12 +232,10 @@ class ProcedenciaForm(forms.ModelForm):
         'Seleccione Sitio Arqueológico o Ubicacion Geográfica o especifique una procedencia distinta.'
 
         self.fields['ubicacion_geografica'].widget.attrs['class'] = 'form-control'
-        self.fields['ubicacion_geografica'].empty_label = 'Ubicación Geográfica'
         self.fields['ubicacion_geografica'].widget.attrs['title'] = \
         'Seleccione Sitio Arqueológico o Ubicacion Geográfica o especifique una procedencia distinta.'
 
         self.fields['sitio_arqueologico'].widget.attrs['class'] = 'form-control'
-        self.fields['sitio_arqueologico'].empty_label = 'Sitio Arqueológico'
         self.fields['sitio_arqueologico'].widget.attrs['title'] = \
         'Seleccione Sitio Arqueológico o Ubicacion Geográfica o especifique una procedencia distinta.'
 
@@ -324,16 +312,16 @@ class BusquedaPiezaForm(forms.Form):
         'Especifique el número de inventario para realizar la búsqueda de la pieza específica.'
 
         self.fields['naturaleza'].widget.attrs['class'] = 'form-control'
-        self.fields['naturaleza'].empty_label = 'Naturaleza'
+        self.fields['naturaleza'].label = 'Naturaleza'
         self.fields['naturaleza'].widget.attrs['title'] = \
         'Seleccione la naturaleza para realizar una búsqueda filtrando las piezas con esta carcterística.'
 
         self.fields['sitio_arqueologico'].widget.attrs['class'] = 'form-control'
-        self.fields['sitio_arqueologico'].empty_label = 'Sitio Arqueológico'
+        self.fields['sitio_arqueologico'].label = 'Sitio Arqueológico'
         self.fields['sitio_arqueologico'].widget.attrs['title'] = \
         'Seleccione el sitio arqueológico para realizar una búsqueda filtrando las piezas de este lugar.'
 
         self.fields['ubicacion'].widget.attrs['class'] = 'form-control'
-        self.fields['ubicacion'].empty_label = 'Ubicacion Geográfica'
+        self.fields['ubicacion'].label = 'Ubicacion Geográfica'
         self.fields['ubicacion'].widget.attrs['title'] = \
         'Seleccione la ubicación geográfica para realizar una búsqueda filtrando las piezas de este lugar.'

@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Max
 from django.http import Http404
 
 RAZON_ACTUALIZACION_CREACION = 1
@@ -137,6 +138,11 @@ class Fragmento(models.Model):
         return self.fichas_tecnicas.filter(
             razon_actualizacion=RAZON_ACTUALIZACION_DIAGNOSTICO,
         ).order_by('-fecha')
+
+    def obtiene_ficha_tecnica_ultimo_diagnostico(self):
+        return self.fichas_tecnicas.filter(
+            razon_actualizacion=RAZON_ACTUALIZACION_DIAGNOSTICO,
+        ).order_by('fecha').last()
 
 
 class FichaTecnica(models.Model):

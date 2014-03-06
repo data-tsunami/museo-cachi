@@ -116,23 +116,45 @@
                 </div>
                 <div class="col-lg-4">
                     <h5>Fichas Técnicas</h5>                            
-                    <ul class="list-group">
-                        {% if pieza_conjunto_fragmentos %}
-                            {% for pieza_conjunto_fragmento in pieza_conjunto_fragmentos %}
-                                <li class="list-group-item">
-                                    <a href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
-                                        {{ pieza_conjunto_fragmento.numero_inventario }}
-                                    </a> 
-                                </li>
+                    
+                    {% if pieza_conjunto_fragmentos %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Número Inventario</th>
+                                    <th>Último Diagnóstico</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                             {% for pieza_conjunto_fragmento in pieza_conjunto_fragmentos %}                                
+                                <tr>
+                                    <td>
+                                        <p class="text-justify">#{{ pieza_conjunto_fragmento.pk }}#</p>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
+                                            <p class="text-justify">{{ pieza_conjunto_fragmento.numero_inventario }}</p>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if pieza_conjunto_fragmento.obtiene_ficha_tecnica_ultimo_diagnostico.fecha %}
+                                            <p class="text-justify">{{ pieza_conjunto_fragmento.obtiene_ficha_tecnica_ultimo_diagnostico.fecha|date:"d/m/Y" }}</p>
+                                        {% else %}
+                                            <p class="text-justify">No tiene diagnósticos.</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>                                                        
                             {% endfor %}
-                        {% else %}    
-                            <li class="list-group-item">
-                                <p class="text-center">
-                                    <em>No se encontraron Fichas Técnicas en esta Pieza.</em>
-                                </p>
-                            </li>
-                        {% endif %}
-                    </ul>
+                            </tbody>
+                        </table>
+                    {% else %}  
+                        <li class="list-group-item">
+                            <p class="text-center">
+                                <em>No se encontraron Fichas Técnicas en esta Pieza.</em>
+                            </p>
+                        </li>
+                    {% endif %}
                     
                     {% if pieza_conjunto %}
                         <a href="{% url 'nuevo_fragmento' pieza_conjunto.pk %}" class="btn btn-primary btn-block" role="button">

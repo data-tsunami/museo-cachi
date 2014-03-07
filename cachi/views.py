@@ -123,8 +123,8 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
             instance=pieza_conjunto
         )
         form_procedencia = ProcedenciaForm(
-                request.POST,
-                instance=procedencia
+            request.POST,
+            instance=procedencia
         )
         form_adjunto = AdjuntoForm(
             request.POST,

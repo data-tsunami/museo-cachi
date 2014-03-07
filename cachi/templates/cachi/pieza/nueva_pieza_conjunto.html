@@ -71,21 +71,21 @@
                     <div class="form-group">
                         <div class="radio">
                             <input type="radio" class="option" name="optionsRadios" id="optionsRadios1" title="Puede seleccione un Sitio Arqueológico como procedencia de la pieza.">
-                            <small  class="option">{{ form_procedencia.sitio_arqueologico.label }}</small>
+                            <small  class="titulo">{{ form_procedencia.sitio_arqueologico.label }}</small>
                             {{ form_procedencia.sitio_arqueologico }}
                         </div>                               
                     </div>
                     <div class="form-group">
                         <div class="radio">
                             <input type="radio" class="option" name="optionsRadios" id="optionsRadios2" title="Puede seleccione una Ubicacón Geográfica específica como procedencia de la pieza que no sea un sitio arqueológico precisamente.">
-                            <small  class="option">{{ form_procedencia.ubicacion_geografica.label }}</small>
+                            <small  class="titulo">{{ form_procedencia.ubicacion_geografica.label }}</small>
                             {{ form_procedencia.ubicacion_geografica }}
                         </div>                                
                     </div>
                     <div class="form-group">
                         <div class="radio">
                             <input type="radio" class="option" name="optionsRadios" id="optionsRadios3" title="Puede especificar una Procedencia que no sea un sitio arqueológico y que tampoco sea una ubicación geográfica predefinida de la pieza. Ejemplo: Titicaca">
-                            <small  class="option">{{ form_procedencia.otra.label }}</small>
+                            <small  class="titulo">{{ form_procedencia.otra.label }}</small>
                             {{ form_procedencia.otra }}
                         </div>                               
                     </div>
@@ -231,7 +231,7 @@
             */ 
             $('.radio input[type=text], .radio select').attr('disabled', true);
             $.each($('.radio'), function () {
-                var objeto = $(this).find(':not(.option)');
+                var objeto = $(this).find(':not(.option, .titulo)');
                 if(objeto.is('select') && objeto.get(0).selectedIndex > 0 ) {
 
                     $(this).find('input[type=radio]').attr('checked', true);

@@ -126,7 +126,7 @@ class Fragmento(models.Model):
     Fragmentos de una pieza en caso de tenerlos, o,
     fragmento único, en caso de pieza entera.
     """
-    numero_inventario = models.PositiveIntegerField()
+    numero_inventario = models.PositiveIntegerField(null=True, blank=True)
     ultima_version = models.ForeignKey(
         'FichaTecnica',
         null=True,

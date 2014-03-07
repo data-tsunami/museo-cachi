@@ -164,7 +164,18 @@
                             </p>
                         </li>
                     {% endif %}
-                    
+
+                     {% if cantidad_fragmentos_invalido %}
+
+                        <div class="alert alert-danger">
+                            Anteción! La pieza o coleccion posee configurado
+                            {{ pieza_conjunto.cantidad_fragmentos }} fragmento{{ pieza_conjunto.cantidad_fragmentos|pluralize }},
+                            pero en el sistema hay {{ cantidad_instancias_fragmentos }}
+                            fragmento{{ cantidad_instancias_fragmentos|pluralize }}.
+                        </div>
+
+                     {% endif %}
+
                     {% if pieza_conjunto %}
                         <a href="{% url 'nuevo_fragmento' pieza_conjunto.pk %}" class="btn btn-primary btn-block" role="button">
                             <span class="glyphicon glyphicon-plus"></span> Nueva Ficha Técnica

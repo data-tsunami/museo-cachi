@@ -103,6 +103,11 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
     procedencia = None
     pieza_conjunto_adjuntos = None
     pieza_conjunto_fragmentos = None
+    # Si `cantidad_fragmentos_invalido` es True, entonces hay que setear también
+    # la variable `cantidad_instancias_fragmentos`
+    cantidad_fragmentos_invalido = False
+    cantidad_instancias_fragmentos = None
+
     if pieza_conjunto_pk:
         pieza_conjunto = get_object_or_404(
             PiezaConjunto,
@@ -174,6 +179,9 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
             instance=procedencia,
         )
         form_adjunto = AdjuntoForm()
+        cantidad_instancias_fragmentos = pieza_conjunto_fragmentos.count()
+        if pieza_conjunto.cantidad_fragmentos != cantidad_instancias_fragmentos:
+            cantidad_fragmentos_invalido = True
 
     contexto = {
         'pieza_conjunto': pieza_conjunto,
@@ -182,6 +190,8 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
         'form_adjunto': form_adjunto,
         'pieza_conjunto_adjuntos': pieza_conjunto_adjuntos,
         'pieza_conjunto_fragmentos': pieza_conjunto_fragmentos,
+        'cantidad_fragmentos_invalido': cantidad_fragmentos_invalido,
+        'cantidad_instancias_fragmentos': cantidad_instancias_fragmentos
     }
 
     return render_html_dinamico(

@@ -7,11 +7,16 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">                
-                <h4 class="inline">
+
+                <h4>
                     {{ pieza_conjunto.get_pieza_o_conjunto }}
                 </h4>
+                
                 {% if pieza_conjunto %}
+                    <small>
+                    /
                     <a href=""> {{ pieza_conjunto.nombre_descriptivo }}</a>
+                    </small>
                 {% endif %}
 
                 <div class="inline pull-right">
@@ -139,12 +144,19 @@
                              {% for pieza_conjunto_fragmento in pieza_conjunto_fragmentos %}                                
                                 <tr>
                                     <td>
-                                        <p class="text-justify">#{{ pieza_conjunto_fragmento.pk }}#</p>
+                                        <p class="text-justify"><a
+                                            href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}"
+                                            >#{{ pieza_conjunto_fragmento.pk }}#</a></p>
+                                        
                                     </td>
                                     <td>
+                                        {% if pieza_conjunto_fragmento.numero_inventario %}
                                         <a href="{% url 'edita_fragmento' pieza_conjunto.pk pieza_conjunto_fragmento.pk %}">
                                             <p class="text-justify">{{ pieza_conjunto_fragmento.numero_inventario }}</p>
                                         </a>
+                                        {% else %}
+                                            <p class="text-justify">N/A</p>
+                                        {% endif %}
                                     </td>
                                     <td>
                                         {% if pieza_conjunto_fragmento.obtiene_ficha_tecnica_ultimo_diagnostico.fecha %}

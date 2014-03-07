@@ -11,14 +11,16 @@
         <div class="panel panel-default">
             <div class="panel-heading">
 
-                <h4 class="inline">Ficha Técnica </h4>
+                <h4>Ficha Técnica </h4>
 
+                <small>
+                /
                 <a href="{% url 'edita_pieza_conjunto'  pieza_conjunto.pk %}">
                     {{ pieza_conjunto.nombre_descriptivo }}
                 </a> 
                 {% if fragmento %}
                     / <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
-                        {{ fragmento.numero_inventario }}
+                        {{ fragmento.get_identificador }}
                     </a>
                 {% endif %}
 
@@ -27,6 +29,7 @@
                         {{ fecha_diagnostico|date:"d/m/Y" }}
                     </a>
                 {% endif %}
+                </small>
 
                 <div class="inline pull-right">
                     {% if not ficha_tecnica_pk %}

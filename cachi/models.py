@@ -148,6 +148,14 @@ class Fragmento(models.Model):
                 self.id,
             )
 
+    def get_identificador(self):
+        if self.numero_inventario:
+            return str(self.numero_inventario)
+        else:
+            return u'#{0}#'.format(
+                self.id,
+            )
+
     def obtiene_ficha_tecnica(self):
         return self.ultima_version
 

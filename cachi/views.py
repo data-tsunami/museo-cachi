@@ -181,9 +181,11 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
             instance=procedencia,
         )
         form_adjunto = AdjuntoForm()
-        cantidad_instancias_fragmentos = pieza_conjunto_fragmentos.count()
-        if pieza_conjunto.cantidad_fragmentos != cantidad_instancias_fragmentos:
-            cantidad_fragmentos_invalido = True
+
+        if pieza_conjunto:
+            cantidad_instancias_fragmentos = pieza_conjunto_fragmentos.count()
+            if pieza_conjunto.cantidad_fragmentos != cantidad_instancias_fragmentos:
+                cantidad_fragmentos_invalido = True
 
     contexto = {
         'pieza_conjunto': pieza_conjunto,

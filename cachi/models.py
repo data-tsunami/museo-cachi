@@ -2,9 +2,12 @@
 
 from __future__ import unicode_literals
 
+from cachi.validators import validador_cantidad_fragmentos
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.http import Http404
+
 
 RAZON_ACTUALIZACION_CREACION = 1
 RAZON_ACTUALIZACION_ACTUALIZACION = 2
@@ -58,6 +61,7 @@ class PiezaConjunto(models.Model):
     )
     cantidad_fragmentos = models.PositiveIntegerField(
         default=1,
+        validators=[validador_cantidad_fragmentos]
     )
     ubicacion = models.ForeignKey(
         'Ubicacion',
@@ -86,9 +90,15 @@ class PiezaConjunto(models.Model):
     objects = PiezaConjuntoManager()
 
     def __unicode__(self):
-        return u'{0}'.format(
-            self.nombre_descriptivo,
-        )
+        if self.cantidad_fragmentos == 1:
+            return u"Pieza '{0}'".format(
+                self.nombre_descriptivo,
+            )
+        else:
+            return u"Conjunto '{0}' ({1} fragmentos)".format(
+                self.nombre_descriptivo,
+                self.cantidad_fragmentos
+            )
 
     def obtiene_procedencia(self):
         try:

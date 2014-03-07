@@ -51,6 +51,7 @@
                         <thead>
                           <tr>                                
                             <th>Nombre Descriptivo</th>
+                            <th>Cant. Frag.</th>
                             <th>Número Inventario</th>
                             <th>Naturaleza</th>
                             <th>Procedencia</th>
@@ -60,6 +61,7 @@
                         {% for pieza_conjunto in piezas %}
                               <tr>
                                 <td><a href="{% url 'edita_pieza_conjunto' pieza_conjunto.id %}">{{ pieza_conjunto.nombre_descriptivo }}</a></td>
+                                <td>{{ pieza_conjunto.cantidad_fragmentos }}</td>
                                 <td>
                                    {% for pieza_conjunto_fragmento in pieza_conjunto.obtiene_fragmentos %}
                                        {% if pieza_conjunto_fragmento.numero_inventario %}

@@ -85,7 +85,7 @@ class PiezaConjuntoForm(forms.ModelForm):
             'forma': 'Forma',
             'tecnica_manufactura': 'Técnica Manufactura',
             'tipo_adquisicion': 'Tipo Adquisición',
-            'tipo_condicion_hallazgo': 'Tipo Condición Hallazgo',
+            'tipo_condicion_hallazgo': 'Condición de Hallazgo',
             'persona_colectora': 'Persona Colectora',
             'ubicacion': 'Ubicación Actual',
             'cantidad_fragmentos': 'Cantidad de fragmentos',

@@ -7,7 +7,9 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">                
-                <h4 class="inline">Pieza o Conjunto</h4>
+                <h4 class="inline">
+                    {{ pieza_conjunto.get_pieza_o_conjunto }}
+                </h4>
                 {% if pieza_conjunto %}
                     <a href=""> {{ pieza_conjunto.nombre_descriptivo }}</a>
                 {% endif %}
@@ -61,6 +63,13 @@
                     </div>
                 </div>
                 <div class="col-lg-4" >
+                
+                    <h5>Cantidad de fragmentos</h5>
+                    <div class="form-group">
+                        <small>{{ form_pieza_conjunto.cantidad_fragmentos.label }}</small>
+                        {{ form_pieza_conjunto.cantidad_fragmentos }}
+                    </div>
+                
                     <h5>Procedencia</h5>
 
                     <div class="form-group">

@@ -112,6 +112,14 @@ class PiezaConjunto(models.Model):
     def obtiene_fragmentos(self):
         return self.fragmentos_pieza_conjunto.all()
 
+    def get_pieza_o_conjunto(self):
+        if type(self.cantidad_fragmentos) == int:
+            if self.cantidad_fragmentos == 1:
+                return u"Pieza"
+            else:
+                return u"Conjunto"
+        return u"Pieza o conjunto"
+
 
 class Fragmento(models.Model):
     """

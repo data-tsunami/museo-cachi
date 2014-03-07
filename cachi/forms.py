@@ -59,6 +59,10 @@ class PiezaConjuntoForm(forms.ModelForm):
         self.fields['ubicacion'].widget.attrs['title'] = \
         'Seleccione la ubicación actual de la pieza. Ejemplo: Almacén - Estantería A5.'
 
+        self.fields['cantidad_fragmentos'].widget.attrs['class'] = 'form-control'
+        self.fields['cantidad_fragmentos'].widget.attrs['title'] = \
+            'Ingrese la cantidad de fragmentos del conjunto.'
+
     class Meta():
         model = PiezaConjunto
 
@@ -68,11 +72,11 @@ class PiezaConjuntoForm(forms.ModelForm):
             'naturaleza',
             'forma',
             'tecnica_manufactura',
-            'fragmentos',
             'tipo_adquisicion',
             'tipo_condicion_hallazgo',
             'persona_colectora',
             'ubicacion',
+            'cantidad_fragmentos',
         )
         labels = {
             'nombre_descriptivo': 'Nombre Descriptivo',
@@ -80,11 +84,11 @@ class PiezaConjuntoForm(forms.ModelForm):
             'naturaleza': 'Naturaleza',
             'forma': 'Forma',
             'tecnica_manufactura': 'Técnica Manufactura',
-            'fragmentos': 'Fragmentos',
             'tipo_adquisicion': 'Tipo Adquisición',
             'tipo_condicion_hallazgo': 'Tipo Condición Hallazgo',
             'persona_colectora': 'Persona Colectora',
             'ubicacion': 'Ubicación Actual',
+            'cantidad_fragmentos': 'Cantidad de fragmentos',
         }
 
 

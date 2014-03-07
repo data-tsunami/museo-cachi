@@ -56,9 +56,9 @@ class PiezaConjunto(models.Model):
         null=True,
         blank=True,
     )
-    #    fragmentos = models.BooleanField(
-    #        default=False,
-    #    )
+    cantidad_fragmentos = models.PositiveIntegerField(
+        default=1,
+    )
     ubicacion = models.ForeignKey(
         'Ubicacion',
         null=True,

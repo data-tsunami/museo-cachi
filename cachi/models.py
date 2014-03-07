@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Max
 from django.http import Http404
 
 RAZON_ACTUALIZACION_CREACION = 1
@@ -122,9 +121,14 @@ class Fragmento(models.Model):
     )
 
     def __unicode__(self):
-        return u'{0}'.format(
-            self.numero_inventario,
-        )
+        if self.numero_inventario:
+            return u'Frag@{0} - Nº Inv: {1}'.format(
+                self.id, self.numero_inventario
+            )
+        else:
+            return u'Frag@{0}'.format(
+                self.id,
+            )
 
     def obtiene_ficha_tecnica(self):
         return self.ultima_version

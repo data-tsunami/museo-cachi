@@ -94,7 +94,9 @@
                              <p class="text-danger text-center">{{ value.as_text }}</p>
                         {% endfor %}                               
                     {% endif %}
-                    <br>
+                    <hr>
+                    
+                    <h4>Hallazgo</h4>
 
                     <div class="form-group">
                         <small>{{ form_pieza_conjunto.tipo_condicion_hallazgo.label }}</small>
@@ -170,7 +172,7 @@
                     {% endif %}
 
                      {% if cantidad_fragmentos_invalido %}
-
+                        <br>
                         <div class="alert alert-danger">
                             Anteción! La pieza o conjunto debe poseer
                             {{ pieza_conjunto.cantidad_fragmentos }} fragmento{{ pieza_conjunto.cantidad_fragmentos|pluralize }},

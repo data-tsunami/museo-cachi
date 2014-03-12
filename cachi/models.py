@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 from cachi.validators import validador_cantidad_fragmentos
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.http import Http404
 
@@ -139,14 +138,6 @@ class Fragmento(models.Model):
         return u'Frag@{0}'.format(
             self.id,
         )
-        # if self.numero_inventario:
-        #     return u'Frag@{0} - Nº Inv: {1}'.format(
-        #         self.id, self.numero_inventario
-        #     )
-        # else:
-        #     return u'Frag@{0}'.format(
-        #         self.id,
-        #     )
 
     def get_identificador(self):
         return u'#{0}#'.format(

@@ -15,7 +15,6 @@ from django.shortcuts import (
 from cachi.forms import (
     AdjuntoForm,
     FichaTecnicaForm,
-    #FragmentoForm,
     PiezaConjuntoForm,
     ProcedenciaForm,
     BusquedaPiezaForm)
@@ -240,10 +239,6 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
 
             if pieza_conjunto_pk == request.POST['pieza_conjunto_pk']:
 
-                # form_fragmento = FragmentoForm(
-                #     request.POST,
-                #     instance=fragmento,
-                # )
                 form_ficha_tecnica = FichaTecnicaForm(
                     request.POST,
                     instance=ficha_tecnica,
@@ -253,15 +248,8 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
                     request.FILES,
                 )
 
-                if (#form_fragmento.is_valid() and
-                    form_ficha_tecnica.is_valid() and
+                if (form_ficha_tecnica.is_valid() and
                     form_adjunto.is_valid()):
-
-                    # fragmento = form_fragmento.save(
-                    #     commit=False,
-                    # )
-                    # fragmento.pieza_conjunto = pieza_conjunto
-                    # fragmento.save()
 
                     if not fragmento and not ficha_tecnica:
                         fragmento = Fragmento.objects.create(
@@ -337,9 +325,6 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
 
         elif request.method == 'GET':
 
-            # form_fragmento = FragmentoForm(
-            #     instance=fragmento,
-            # )
             form_ficha_tecnica = FichaTecnicaForm(
                 instance=ficha_tecnica,
             )
@@ -349,7 +334,6 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
             'pieza_conjunto': pieza_conjunto,
             'fragmento': fragmento,
             'ficha_tecnica_pk': ficha_tecnica_pk,
-            #'form_fragmento': form_fragmento,
             'form_ficha_tecnica': form_ficha_tecnica,
             'form_adjunto': form_adjunto,
             'ficha_tecnica_adjuntos': ficha_tecnica_adjuntos,

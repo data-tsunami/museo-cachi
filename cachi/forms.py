@@ -8,7 +8,6 @@ from cachi.fields import (
 )
 from cachi.models import (
     FichaTecnica,
-    Fragmento,
     PiezaConjunto,
     Procedencia,
     Naturaleza,
@@ -96,24 +95,6 @@ class PiezaConjuntoForm(forms.ModelForm):
             'ubicacion': 'Ubicación Actual',
             'cantidad_fragmentos': 'Cantidad de fragmentos',
         }
-
-
-# class FragmentoForm(forms.ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(FragmentoForm, self).__init__(*args, **kwargs)
-#         self.fields['numero_inventario'].widget.attrs['class'] = 'form-control'
-#         self.fields['numero_inventario'].widget.attrs['title'] = \
-#         'Especifique el Número de Inventario pieza o fragmento. Ejemplo: 1165.'
-
-#     class Meta():
-#         model = Fragmento
-
-#         fields = (
-#             'numero_inventario',
-#         )
-#         labels = {
-#             'numero_inventario': 'Número Inventario',
-#         }
 
 
 class FichaTecnicaForm(forms.ModelForm):

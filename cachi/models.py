@@ -40,10 +40,8 @@ class PiezaConjuntoManager(models.Manager):
 class PiezaConjunto(models.Model):
     """
     Una pieza o conjunto de piezas del museo.
-
-    Ej:
-    - nombre = Jarra negra pulida
     """
+    numero_inventario = models.PositiveIntegerField()
     nombre_descriptivo = models.CharField(
         max_length=128,
     )
@@ -126,7 +124,6 @@ class Fragmento(models.Model):
     Fragmentos de una pieza en caso de tenerlos, o,
     fragmento único, en caso de pieza entera.
     """
-    numero_inventario = models.PositiveIntegerField(null=True, blank=True)
     ultima_version = models.ForeignKey(
         'FichaTecnica',
         null=True,
@@ -139,22 +136,22 @@ class Fragmento(models.Model):
     )
 
     def __unicode__(self):
-        if self.numero_inventario:
-            return u'Frag@{0} - Nº Inv: {1}'.format(
-                self.id, self.numero_inventario
-            )
-        else:
-            return u'Frag@{0}'.format(
-                self.id,
-            )
+        return u'Frag@{0}'.format(
+            self.id,
+        )
+        # if self.numero_inventario:
+        #     return u'Frag@{0} - Nº Inv: {1}'.format(
+        #         self.id, self.numero_inventario
+        #     )
+        # else:
+        #     return u'Frag@{0}'.format(
+        #         self.id,
+        #     )
 
     def get_identificador(self):
-        if self.numero_inventario:
-            return str(self.numero_inventario)
-        else:
-            return u'#{0}#'.format(
-                self.id,
-            )
+        return u'#{0}#'.format(
+            self.id,
+        )
 
     def obtiene_ficha_tecnica(self):
         return self.ultima_version
@@ -179,8 +176,6 @@ class FichaTecnica(models.Model):
     """
     La ficha de características técnicas
     de una pieza o parte de un conjunto.
-
-    Ej: color, peso.
     """
 
     alto = models.PositiveIntegerField()
@@ -263,8 +258,6 @@ class Adjunto(models.Model):
     """
     Adjuntos que puedan contener alguno
     de los objetos.
-
-    Ej: fotos, pdf
     """
     nombre_archivo = models.CharField(
         max_length=128,
@@ -322,8 +315,6 @@ class Adjunto(models.Model):
 class TipoAdquisicion(models.Model):
     """
     Tipo de Adquisición de la pieza.
-
-    Ej: Donación.
     """
     nombre = models.CharField(
         max_length=64,
@@ -337,8 +328,6 @@ class TipoCondicionHallazgo(models.Model):
     """
     Tipo de condición de condicion_de_hallazgo
     de la pieza.
-
-    Ej: ??.
     """
     nombre = models.CharField(
         max_length=64,
@@ -351,8 +340,6 @@ class TipoCondicionHallazgo(models.Model):
 class Naturaleza(models.Model):
     """
     Naturaleza de la pieza.
-
-    Ej: vasija de cerámica
     """
     nombre = models.CharField(
         max_length=64,
@@ -366,8 +353,6 @@ class Persona(models.Model):
     """
     Personas involucradas de alguna
     manera en algún dato.
-
-    Ej: Pio Pablo Diaz
     """
     nombre = models.CharField(
         max_length=64
@@ -378,6 +363,8 @@ class Persona(models.Model):
     user = models.OneToOneField(
         User,
         unique=True,
+        null=True,
+        blank=True,
     )
 
     def __unicode__(self):
@@ -387,8 +374,8 @@ class Persona(models.Model):
 class Ubicacion(models.Model):
     """
     Ubicación actual de la pieza.
-
-    Ej: Area de Reserva, Area de Investigación
+    Podría ser Area de Reserva,
+    Area de Investigación,
     En Préstamo, Exposición.
     """
     nombre = models.CharField(max_length=64)
@@ -420,8 +407,6 @@ class InformeCampo(models.Model):
 class UbicacionGeografica(models.Model):
     """
     Ubicación geográfica.
-
-    Ej: Pais, Provincia
     """
     nombre = models.CharField(
         max_length=64,
@@ -434,7 +419,10 @@ class UbicacionGeografica(models.Model):
 
     def __unicode__(self):
         if self.padre:
-            return "{0} ({1})".format(self.nombre, self.padre.nombre)
+            return "{0} ({1})".format(
+                self.nombre,
+                self.padre.nombre,
+            )
         else:
             return self.nombre
 

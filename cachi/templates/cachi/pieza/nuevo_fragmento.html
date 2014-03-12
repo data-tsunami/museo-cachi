@@ -11,25 +11,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
 
-                <h4>Ficha Técnica </h4>
-
-                <small>
-                /
-                <a href="{% url 'edita_pieza_conjunto'  pieza_conjunto.pk %}">
-                    {{ pieza_conjunto.nombre_descriptivo }}
-                </a> 
-                {% if fragmento %}
-                    / <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
-                        {{ fragmento.get_identificador }}
-                    </a>
-                {% endif %}
-
-                {% if fecha_diagnostico %}
-                    / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}">
-                        {{ fecha_diagnostico|date:"d/m/Y" }}
-                    </a>
-                {% endif %}
-                </small>
+                <h4 class="inline">Ficha Técnica</h4>
 
                 <div class="inline pull-right">
                     {% if not ficha_tecnica_pk %}
@@ -72,18 +54,28 @@
                     </a>
                 </div>
                 <div class="clear-fix"></div>
+
+                <small>
+                    <span class="glyphicon glyphicon-asterisk"></span>
+                    <a href="{% url 'edita_pieza_conjunto'  pieza_conjunto.pk %}">
+                        {{ pieza_conjunto.nombre_descriptivo }}
+                    </a> 
+                    {% if fragmento %}
+                        / <a href="{% url 'edita_fragmento' pieza_conjunto.pk fragmento.pk %}">
+                            {{ fragmento.get_identificador }}
+                        </a>
+                    {% endif %}
+
+                    {% if fecha_diagnostico %}
+                        / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}">
+                            {{ fecha_diagnostico|date:"d/m/Y" }}
+                        </a>
+                    {% endif %}
+                </small>
             </div>
             <div class="panel-body"> 
                 <div class="col-lg-12">                            
                     <div class="col-lg-6">
-                        <div class="form-group col-lg-12">
-                            <h5>Inventario</h5>
-                        
-                            <div class="form-group {% if form_fragmento.numero_inventario.errors %}has-error{% endif %}">
-                                <small>{{ form_fragmento.numero_inventario.label }}</small>
-                                {{ form_fragmento.numero_inventario }}
-                            </div>
-                        </div>
                         <div class="form-group col-lg-12">
                             <h5>Características</h5>
                         </div>

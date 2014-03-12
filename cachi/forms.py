@@ -20,6 +20,10 @@ from cachi.models import (
 class PiezaConjuntoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PiezaConjuntoForm, self).__init__(*args, **kwargs)
+        self.fields['numero_inventario'].widget.attrs['class'] = 'form-control'
+        self.fields['numero_inventario'].widget.attrs['title'] = \
+        'Especifique el Número de Inventario pieza o fragmento. Ejemplo: 1165.'
+
         self.fields['nombre_descriptivo'].widget.attrs['class'] = 'form-control'
         self.fields['nombre_descriptivo'].widget.attrs['title'] = \
         'Ingrese un nombre descriptivo con el que se referencie a la pieza. Ejemplo: Jarra Cuadrada.'
@@ -67,6 +71,7 @@ class PiezaConjuntoForm(forms.ModelForm):
         model = PiezaConjunto
 
         fields = (
+            'numero_inventario',
             'nombre_descriptivo',
             'fecha_hallazgo',
             'naturaleza',
@@ -79,6 +84,7 @@ class PiezaConjuntoForm(forms.ModelForm):
             'cantidad_fragmentos',
         )
         labels = {
+            'numero_inventario': 'Número Inventario',
             'nombre_descriptivo': 'Nombre Descriptivo',
             'fecha_hallazgo': 'Fecha Hallazgo (09/06/1984)',
             'naturaleza': 'Naturaleza',
@@ -92,22 +98,22 @@ class PiezaConjuntoForm(forms.ModelForm):
         }
 
 
-class FragmentoForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(FragmentoForm, self).__init__(*args, **kwargs)
-        self.fields['numero_inventario'].widget.attrs['class'] = 'form-control'
-        self.fields['numero_inventario'].widget.attrs['title'] = \
-        'Especifique el Número de Inventario pieza o fragmento. Ejemplo: 1165.'
+# class FragmentoForm(forms.ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super(FragmentoForm, self).__init__(*args, **kwargs)
+#         self.fields['numero_inventario'].widget.attrs['class'] = 'form-control'
+#         self.fields['numero_inventario'].widget.attrs['title'] = \
+#         'Especifique el Número de Inventario pieza o fragmento. Ejemplo: 1165.'
 
-    class Meta():
-        model = Fragmento
+#     class Meta():
+#         model = Fragmento
 
-        fields = (
-            'numero_inventario',
-        )
-        labels = {
-            'numero_inventario': 'Número Inventario',
-        }
+#         fields = (
+#             'numero_inventario',
+#         )
+#         labels = {
+#             'numero_inventario': 'Número Inventario',
+#         }
 
 
 class FichaTecnicaForm(forms.ModelForm):

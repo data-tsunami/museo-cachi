@@ -154,6 +154,11 @@
                             {% endif %}
                             {{ form_adjunto.adjuntos }}
 
+                            <div id="alerta_adjuntos" class="bs-callout bs-callout-danger">
+                                <h4>Cargar Adjuntos</h4>
+                                <p>Tiene que cargar los adjuntos para este nuevo diágnostico de estado.  No se mantendrán los adjuntos del diagnóstico anterior.</p>
+                            </div>
+
                             <div id="adjuntos">
                             {% if ficha_tecnica_adjuntos %}
                                 <br>
@@ -215,6 +220,9 @@
             });
 
             $('#nuevo_diagnostico_estado').click(function (){
+                limpia_adjuntos();
+                alerta_adjuntos();
+
                 $('input, textarea').attr('readonly', false);
                 $('select, input[type=file]').attr('disabled', false);
 
@@ -230,17 +238,25 @@
                 $('#cancelar').show();
             });
 
-           /*
+            /*
             Maneja los adjuntos.
             */
+            $("#alerta_adjuntos").hide();
+            function alerta_adjuntos() {
+                $("#alerta_adjuntos").show();
+            }
+
             var files = [];
             $("#id_adjuntos").change(function (){
-                $("#adjuntos").html('');
+                limpia_adjuntos();
 
                 adjuntos = this.files;
                 PreviewImage(adjuntos);
             });
 
+            function limpia_adjuntos() {
+                $("#adjuntos").html('');
+            }
             function PreviewImage(adjuntos) {
                 $("#adjuntos").append('<br><ul id="id_ul" class="media-list"></ul>');
 

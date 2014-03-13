@@ -16,20 +16,27 @@
 
 /* Mensajito de Ayuda*/
 .bs-callout {
-  margin: 20px 0;
-  padding: 20px;
-  border-left: 3px solid #eee;
+    margin: 20px 0;
+    padding: 20px;
+    border-left: 3px solid #eee;
 }
 .bs-callout-info {
-  background-color: #f4f8fa;
-  border-color: #5bc0de;
+    background-color: #f4f8fa;
+    border-color: #5bc0de;
 }
 .bs-callout-info h4 {
-  color: #5bc0de;
+    color: #5bc0de;
+}
+.bs-callout-danger {
+    background-color: #fdf7f7;
+    border-color: #d9534f;
+}
+.bs-callout-danger h4 {
+    color: #d9534f;
 }
 .bs-callout h4 {
-  margin-top: 0;
-  margin-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
 

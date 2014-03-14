@@ -6,6 +6,7 @@ from datetime import date
 #from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
 
 from django.shortcuts import (
     get_object_or_404,
@@ -223,9 +224,9 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
                 pk=fragmento_pk,
             )
 
-            ficha_tecnica = fragmento.obtiene_ficha_tecnica()
+            ficha_tecnica = fragmento.obtiene_ultima_ficha_tecnica()
             if ficha_tecnica_pk:
-                ficha_tecnica = fragmento.obtiene_ficha_tecnica_diagnostico(
+                ficha_tecnica = fragmento.obtiene_ficha_tecnica(
                     ficha_tecnica_pk,
                 )
                 fecha_diagnostico = ficha_tecnica.fecha
@@ -292,13 +293,28 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
                     fragmento.save()
 
                     adjuntos = form_adjunto.cleaned_data['adjuntos']
-                    for adjunto in adjuntos:
-                        if adjunto:
-                            tipo = adjunto.content_type.split('/')[1]
+                    for ficha_tecnica_adjunto in ficha_tecnica_adjuntos:
+                        adjuntos.append(ficha_tecnica_adjunto)
+
+                    for archivo_adjunto in adjuntos:
+                        if archivo_adjunto:
+                            if isinstance(archivo_adjunto, Adjunto):
+                                nombre = archivo_adjunto.nombre_archivo
+                                tipo = archivo_adjunto.tipo
+                                size = archivo_adjunto.size
+                                replica_adjunto = ContentFile(archivo_adjunto.adjunto.read())
+                                replica_adjunto.name = archivo_adjunto.adjunto.name
+                                adjunto = replica_adjunto
+                            else:
+                                nombre = archivo_adjunto.name
+                                tipo = archivo_adjunto.content_type.split('/')[1]
+                                adjunto = archivo_adjunto
+                                size = "{0:.2f} MB".format(bytes_2_mb(archivo_adjunto.size))
+
                             Adjunto.objects.create(
-                                nombre_archivo=adjunto.name,
-                                content_type=adjunto.content_type,
-                                size="{0:.2f} MB".format(bytes_2_mb(adjunto.size)),
+                                nombre_archivo=nombre,
+                                content_type=archivo_adjunto.content_type,
+                                size=size,
                                 tipo=tipo,
                                 adjunto=adjunto,
                                 ficha_tecnica=ficha_tecnica,

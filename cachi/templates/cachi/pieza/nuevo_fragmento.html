@@ -154,25 +154,28 @@
                             {% endif %}
                             {{ form_adjunto.adjuntos }}
 
-                            <div id="alerta_adjuntos" class="bs-callout bs-callout-danger">
+                            <div id="alerta_adjuntos" class="bs-callout bs-callout-danger" style="display:none">
                                 <h4>Cargar Adjuntos</h4>
                                 <p>Tiene que cargar los adjuntos para este nuevo diágnostico de estado.  No se mantendrán los adjuntos del diagnóstico anterior.</p>
                             </div>
 
                             <div id="adjuntos">
-                            {% if ficha_tecnica_adjuntos %}
-                                <br>
-                                <div class="row">
-                                    {% for adjunto in ficha_tecnica_adjuntos %}
-                                        <div class="col-xs-6 col-md-6 col-lg-4">
-                                            <a href="#" class="thumbnail">
-                                                <img src="{{ adjunto.adjunto.url }}">
-                                            </a>
-                                        </div>                                                                                    
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
+                            
+                            </div>
+                            <div id="lista_adjuntos">
+                                {% if ficha_tecnica_adjuntos %}
+                                    <br>
+                                    <div class="row">
+                                        {% for adjunto in ficha_tecnica_adjuntos %}
+                                            <div class="col-xs-6 col-md-6 col-lg-4">
+                                                <a href="#" class="thumbnail">
+                                                    <img src="{{ adjunto.adjunto.url }}">
+                                                </a>
+                                            </div>                                                                                    
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>                       
@@ -220,7 +223,7 @@
             });
 
             $('#nuevo_diagnostico_estado').click(function (){
-                limpia_adjuntos();
+                limpia_lista_adjuntos();
                 alerta_adjuntos();
 
                 $('input, textarea').attr('readonly', false);
@@ -241,9 +244,12 @@
             /*
             Maneja los adjuntos.
             */
-            $("#alerta_adjuntos").hide();
+            
             function alerta_adjuntos() {
                 $("#alerta_adjuntos").show();
+            }
+            function limpia_lista_adjuntos() {
+                $("#lista_adjuntos").html('');
             }
 
             var files = [];
@@ -253,10 +259,10 @@
                 adjuntos = this.files;
                 PreviewImage(adjuntos);
             });
-
             function limpia_adjuntos() {
                 $("#adjuntos").html('');
             }
+
             function PreviewImage(adjuntos) {
                 $("#adjuntos").append('<br><ul id="id_ul" class="media-list"></ul>');
 

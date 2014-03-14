@@ -15,4 +15,6 @@ def render_html_dinamico(request, html, contexto=None):
 
 
 def bytes_2_mb(bytes):
-    return float(bytes) / (1024 * 1024)
+    if isinstance(bytes, int):
+        return float(bytes) / (1024 * 1024)
+    return bytes

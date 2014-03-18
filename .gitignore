@@ -1,3 +1,4 @@
+fabfile*
 /virtualenv
 *.pyc
 /db.sqlite3

@@ -1,0 +1,11 @@
+import sys
+
+GIT_COMMIT = "%(GIT_COMMIT)s"
+DEPLOY_DATE = "%(DEPLOY_DATE)s"
+
+if __name__ == '__main__':
+    if 'PRINTALL' in sys.argv:
+        print "GIT_COMMIT=%%s" %% GIT_COMMIT
+        print "DEPLOY_DATE=%%s" %% DEPLOY_DATE
+    else:
+        print GIT_COMMIT

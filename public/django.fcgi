@@ -3,7 +3,8 @@
 import os, sys
 
 _PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_PROJECT_NAME = _PROJECT_DIR.split('/')[-1]
+#_PROJECT_NAME = _PROJECT_DIR.split('/')[-1]
+_PROJECT_NAME = 'cachi'
 _PROJECT_USR = _PROJECT_DIR.split('/')[-3]
 
 virtualenv = '/home/%s/virtualenv/env_piopablodiaz/bin/activate_this.py' % _PROJECT_USR 

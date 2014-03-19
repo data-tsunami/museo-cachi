@@ -284,15 +284,15 @@ class BusquedaPiezaForm(forms.Form):
         label='Número Inventario',
     )
     naturaleza = forms.ModelChoiceField(
-        Naturaleza.objects.all(),
+        Naturaleza.objects.all().order_by('nombre'),
         required=False,
-)
+    )
     sitio_arqueologico = forms.ModelChoiceField(
-        SitioArqueologico.objects.all(),
+        SitioArqueologico.objects.all().order_by('nombre'),
         required=False,
     )
     ubicacion = forms.ModelChoiceField(
-        UbicacionGeografica.objects.all(),
+        UbicacionGeografica.objects.filter(nivel=5).order_by('nombre'),
         required=False,
     )
 

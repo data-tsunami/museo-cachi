@@ -5,6 +5,7 @@ import csv
 from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
+from cachi.models import Ubicacion, UbicacionGeografica, SitioArqueologico
 
 
 class Command(BaseCommand):
@@ -21,6 +22,24 @@ class Command(BaseCommand):
         if len(args) != 1:
             raise CommandError("Debe especificar el archivo CSV")
 
+        # + Row:
+        #     - PAIS
+        #     - PROVINCIA
+        #     - DEPARTAMENTO
+        #     - LOCALIDAD/Municipio
+        #     - PARAJE
+        #     - NRO - SITIO
+        #     - NOMBRE DEL SITIO ARQ
+        #
+        # + Row:
+        #     - Argentina
+        #     - Salta
+        #     - Cachi
+        #     - Cachi
+        #     - La Paya
+        #     - 1
+        #     - Puerta La Paya
+
         with open(args[0], 'rb') as f:
             reader_csv = csv.reader(f, dialect=csv.excel_tab)
             rows = [row for row in reader_csv]
@@ -30,6 +49,51 @@ class Command(BaseCommand):
                 print u" + Row:"
                 for cell in row:
                     print u"     - {0}".format(cell.decode('utf-8'))
+
+                pais = row[0].strip().capitalize()
+                prov = row[1].strip().capitalize()
+                depto = row[2].strip().capitalize()
+                loc = row[3].strip().capitalize()
+                paraje = row[4].strip().capitalize()
+                nro_sitio = row[5].strip().capitalize()
+                nombre_sitio = row[5].strip().capitalize() # puede ser null o vacio
+
+                try:
+                    pais = UbicacionGeografica.objects.get(nombre__icontains=pais, padre=None)
+                except UbicacionGeografica.DoesNotExist:
+                    pais = UbicacionGeografica.objects.create(nombre=pais)
+
+                try:
+                    prov = pais.hijos.get(nombre__icontains=prov)
+                except UbicacionGeografica.DoesNotExist:
+                    prov = UbicacionGeografica.objects.create(nombre=prov, padre=pais)
+
+                try:
+                    depto = prov.hijos.get(nombre__icontains=depto)
+                except UbicacionGeografica.DoesNotExist:
+                    depto = UbicacionGeografica.objects.create(nombre=depto, padre=prov)
+
+                try:
+                    loc = depto.hijos.get(nombre__icontains=loc)
+                except UbicacionGeografica.DoesNotExist:
+                    loc = UbicacionGeografica.objects.create(nombre=loc, padre=depto)
+
+                try:
+                    paraje = loc.hijos.get(nombre__icontains=paraje)
+                except UbicacionGeografica.DoesNotExist:
+                    paraje = UbicacionGeografica.objects.create(nombre=paraje, padre=loc)
+
+                if nombre_sitio:
+                    nombre_completo = nro_sitio + "-" + nombre_sitio
+                else:
+                    nombre_completo = nro_sitio
+
+                try:
+                    SitioArqueologico.objects.get(ubicacion_geografica=paraje,
+                        nombre=nombre_completo)
+                except SitioArqueologico.DoesNotExist:
+                    SitioArqueologico.objects.create(ubicacion_geografica=paraje,
+                        nombre=nombre_completo)
 
 #            for poll_id in args:
 #                try:

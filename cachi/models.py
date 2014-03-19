@@ -406,6 +406,7 @@ class UbicacionGeografica(models.Model):
         'self',
         null=True,
         blank=True,
+        related_name="hijos"
     )
 
     def __unicode__(self):

@@ -310,7 +310,7 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
                     fragmento.save()
 
                     adjuntos = form_adjunto.cleaned_data['adjuntos']
-                    for ficha_tecnica_adjunto in ficha_tecnica_adjuntos:
+                    for ficha_tecnica_adjunto in ficha_tecnica_adjuntos or []:
                         adjuntos.append(ficha_tecnica_adjunto)
 
                     for archivo_adjunto in adjuntos:

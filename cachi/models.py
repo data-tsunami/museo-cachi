@@ -56,7 +56,10 @@ class PiezaConjunto(models.Model):
     """
     Una pieza o conjunto de piezas del museo.
     """
-    numero_inventario = models.PositiveIntegerField()
+    numero_inventario = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
     nombre_descriptivo = models.CharField(
         max_length=128,
     )

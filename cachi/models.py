@@ -408,6 +408,7 @@ class UbicacionGeografica(models.Model):
         blank=True,
         related_name="hijos"
     )
+    nivel = models.PositiveSmallIntegerField()
 
     def __unicode__(self):
         if self.padre:

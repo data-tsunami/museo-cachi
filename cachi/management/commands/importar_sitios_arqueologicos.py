@@ -47,46 +47,48 @@ class Command(BaseCommand):
                 rows = rows[1:]
             for row in rows:
                 print u" + Row:"
+                row = [cell.decode('utf-8') for cell in row]
                 for cell in row:
-                    print u"     - {0}".format(cell.decode('utf-8'))
+                    print u"     - {0}".format(cell)
 
                 pais = row[0].strip().capitalize()
                 prov = row[1].strip().capitalize()
                 depto = row[2].strip().capitalize()
                 loc = row[3].strip().capitalize()
                 paraje = row[4].strip().capitalize()
-                nro_sitio = row[5].strip().capitalize()
-                nombre_sitio = row[5].strip().capitalize() # puede ser null o vacio
+                nomenclatura_sitio = row[5].strip().capitalize()
+                nro_sitio = row[6].strip().capitalize()
+                nombre_sitio = row[7].strip().capitalize() # puede ser null o vacio
 
                 try:
                     pais = UbicacionGeografica.objects.get(nombre__icontains=pais, padre=None)
                 except UbicacionGeografica.DoesNotExist:
-                    pais = UbicacionGeografica.objects.create(nombre=pais)
+                    pais = UbicacionGeografica.objects.create(nombre=pais, nivel=1)
 
                 try:
                     prov = pais.hijos.get(nombre__icontains=prov)
                 except UbicacionGeografica.DoesNotExist:
-                    prov = UbicacionGeografica.objects.create(nombre=prov, padre=pais)
+                    prov = UbicacionGeografica.objects.create(nombre=prov, padre=pais, nivel=2)
 
                 try:
                     depto = prov.hijos.get(nombre__icontains=depto)
                 except UbicacionGeografica.DoesNotExist:
-                    depto = UbicacionGeografica.objects.create(nombre=depto, padre=prov)
+                    depto = UbicacionGeografica.objects.create(nombre=depto, padre=prov, nivel=3)
 
                 try:
                     loc = depto.hijos.get(nombre__icontains=loc)
                 except UbicacionGeografica.DoesNotExist:
-                    loc = UbicacionGeografica.objects.create(nombre=loc, padre=depto)
+                    loc = UbicacionGeografica.objects.create(nombre=loc, padre=depto, nivel=4)
 
                 try:
                     paraje = loc.hijos.get(nombre__icontains=paraje)
                 except UbicacionGeografica.DoesNotExist:
-                    paraje = UbicacionGeografica.objects.create(nombre=paraje, padre=loc)
+                    paraje = UbicacionGeografica.objects.create(nombre=paraje, padre=loc, nivel=5)
 
                 if nombre_sitio:
-                    nombre_completo = nro_sitio + "-" + nombre_sitio
+                    nombre_completo = nomenclatura_sitio + u"-" + nro_sitio + u"-" + nombre_sitio
                 else:
-                    nombre_completo = nro_sitio
+                    nombre_completo = nomenclatura_sitio + u"-" + nro_sitio
 
                 try:
                     SitioArqueologico.objects.get(ubicacion_geografica=paraje,

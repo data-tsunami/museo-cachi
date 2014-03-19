@@ -1,6 +1,34 @@
 [
 {
   "pk": 1, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Cer\u00e1mica"
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Hierro"
+  }
+},
+{
+  "pk": 3, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Madera"
+  }
+},
+{
+  "pk": 4, 
+  "model": "cachi.naturaleza", 
+  "fields": {
+    "nombre": "Metal"
+  }
+},
+{
+  "pk": 1, 
   "model": "cachi.tipoadquisicion", 
   "fields": {
     "nombre": "Explorada"
@@ -43,30 +71,114 @@
 },
 {
   "pk": 1, 
-  "model": "cachi.naturaleza", 
+  "model": "cachi.tipocondicionhallazgo", 
   "fields": {
-    "nombre": "Cer\u00e1mica"
+    "nombre": "Recolecci\u00f3n Superficial"
   }
 },
 {
   "pk": 2, 
-  "model": "cachi.naturaleza", 
+  "model": "cachi.tipocondicionhallazgo", 
   "fields": {
-    "nombre": "Hierro"
+    "nombre": "Excavaci\u00f3n"
+  }
+},
+{
+  "pk": 1, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante A1"
+  }
+},
+{
+  "pk": 2, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante A2"
   }
 },
 {
   "pk": 3, 
-  "model": "cachi.naturaleza", 
+  "model": "cachi.ubicacion", 
   "fields": {
-    "nombre": "Madera"
+    "nombre": "\u00c1rea de Reserva - Estante A3"
   }
 },
 {
   "pk": 4, 
-  "model": "cachi.naturaleza", 
+  "model": "cachi.ubicacion", 
   "fields": {
-    "nombre": "Metal"
+    "nombre": "\u00c1rea de Reserva - Estante A4"
+  }
+},
+{
+  "pk": 5, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante A5"
+  }
+},
+{
+  "pk": 6, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante A6"
+  }
+},
+{
+  "pk": 7, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante B1"
+  }
+},
+{
+  "pk": 8, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante B2"
+  }
+},
+{
+  "pk": 9, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante B3"
+  }
+},
+{
+  "pk": 10, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante B4"
+  }
+},
+{
+  "pk": 11, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante B5"
+  }
+},
+{
+  "pk": 12, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "\u00c1rea de Reserva - Estante B6"
+  }
+},
+{
+  "pk": 13, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "Exposici\u00f3n"
+  }
+},
+{
+  "pk": 14, 
+  "model": "cachi.ubicacion", 
+  "fields": {
+    "nombre": "Pr\u00e9stamo"
   }
 }
 ]

@@ -7,6 +7,20 @@
 
 ![Modelo de datos](https://github.com/data-tsunami/museo-cachi/raw/master/doc/modelos.png)
 
+# Datos iniciales
+
+Para cargar fixtures:
+
+    $ python manage.py loaddata fixtures.json
+
+Para cargar ubicaciones geograficas y sitios arqueologicos:
+
+    $ python manage.py importar_sitios_arqueologicos --ignorar-primer-linea Ubicacion-Geografica-y-sitios-S-SAL-CAC.csv
+
+Para generar fixture:
+
+    $ python manage.py dumpdata --indent=2 cachi.naturaleza cachi.tipoadquisicion cachi.tipocondicionhallazgo cachi.ubicacion > fixtures.json
+
 # Licencia - GPLv3
 
     Museo-Cachi is free software: you can redistribute it and/or modify

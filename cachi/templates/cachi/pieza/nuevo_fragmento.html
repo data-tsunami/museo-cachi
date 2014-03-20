@@ -32,7 +32,7 @@
                                 <li role="presentation" class="dropdown-header">Fechas</li>
                                 {% for ficha_tecnica_diagnostico in fichas_tecnicas_diagnosticos %}
                                     <li>
-                                        <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_diagnostico.pk %}">
+                                        <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_diagnostico.pk %}{{ ficha_tecnica_diagnostico.fecha|date:'d/m/Y'}}">
                                             {{ ficha_tecnica_diagnostico.fecha|date:"d/m/Y" }}
                                         </a>
                                     </li>
@@ -67,7 +67,7 @@
                     {% endif %}
 
                     {% if fecha_diagnostico %}
-                        / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}">
+                        / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}{{ fecha_diagnostico|date:'d/m/Y' }}">
                             {{ fecha_diagnostico|date:"d/m/Y" }}
                         </a>
                     {% endif %}

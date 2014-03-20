@@ -18,7 +18,7 @@
 
 from __future__ import unicode_literals
 
-from datetime import date
+from datetime import date, datetime
 
 #from django.conf import settings
 from django.contrib import messages
@@ -223,13 +223,13 @@ def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
 
 
 @login_required(redirect_field_name=None)
-def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_tecnica_pk=None):
+def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_tecnica_pk=None, fecha=None):
     if pieza_conjunto_pk:
         pieza_conjunto = get_object_or_404(
             PiezaConjunto,
             pk=pieza_conjunto_pk,
         )
-        
+
         fragmento = None
         ficha_tecnica = None
         ficha_tecnica_adjuntos = None
@@ -240,8 +240,9 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
 
             ficha_tecnica = fragmento.obtiene_ultima_ficha_tecnica()
             if ficha_tecnica_pk:
-                ficha_tecnica = fragmento.obtiene_ficha_tecnica(
+                ficha_tecnica = fragmento.obtiene_ficha_tecnica_diagnostico(
                     ficha_tecnica_pk,
+                    datetime.strptime(fecha, '%Y-%m-%d').date()
                 )
                 fecha_diagnostico = ficha_tecnica.fecha
 

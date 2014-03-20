@@ -32,7 +32,7 @@
                                 <li role="presentation" class="dropdown-header">Fechas</li>
                                 {% for ficha_tecnica_diagnostico in fichas_tecnicas_diagnosticos %}
                                     <li>
-                                        <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_diagnostico.pk %}{{ ficha_tecnica_diagnostico.fecha|date:'d/m/Y'}}">
+                                        <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_diagnostico.pk ficha_tecnica_diagnostico.fecha %}">
                                             {{ ficha_tecnica_diagnostico.fecha|date:"d/m/Y" }}
                                         </a>
                                     </li>
@@ -67,7 +67,7 @@
                     {% endif %}
 
                     {% if fecha_diagnostico %}
-                        / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk %}{{ fecha_diagnostico|date:'d/m/Y' }}">
+                        / <a href="{% url 'ver_ficha_tecnica_diagnostico' pieza_conjunto.pk fragmento.pk ficha_tecnica_pk fecha_diagnostico %}">
                             {{ fecha_diagnostico|date:"d/m/Y" }}
                         </a>
                     {% endif %}
@@ -217,6 +217,7 @@
 
             $('#edita_ficha_tecnica').click(function (){
                 $('input, textarea').attr('readonly', false);
+                $('#diagnostico_estado textarea').attr('readonly', true);
                 $('select, input[type=file]').attr('disabled', false);
 
                 $('#nuevo_diagnostico_estado').hide();

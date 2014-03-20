@@ -52,7 +52,7 @@ urlpatterns = patterns('',
         'cachi.views.nueva_edita_fragmento',
         name='edita_fragmento'
     ),
-    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/fragmento/(?P<fragmento_pk>\d+)/ficha_tecnica/(?P<ficha_tecnica_pk>\d+)/.+/$',
+    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/fragmento/(?P<fragmento_pk>\d+)/ficha_tecnica/(?P<ficha_tecnica_pk>\d+)/fecha/(?P<fecha>.+)/$',
         'cachi.views.nueva_edita_fragmento',
         name='ver_ficha_tecnica_diagnostico'
     ),

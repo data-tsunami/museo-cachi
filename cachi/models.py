@@ -173,9 +173,12 @@ class Fragmento(models.Model):
     def obtiene_ultima_ficha_tecnica(self):
         return self.ultima_version
 
-    def obtiene_ficha_tecnica(self, ficha_tecnica_pk):
-        return self.fichas_tecnicas.get(
+    def obtiene_ficha_tecnica_diagnostico(self, ficha_tecnica_pk, fecha):
+        return get_object_or_404(
+            self.fichas_tecnicas,
             pk=ficha_tecnica_pk,
+            fecha=fecha,
+            razon_actualizacion=RAZON_ACTUALIZACION_DIAGNOSTICO,
         )
 
     def obtiene_fichas_tecnicas_diagnosticos(self):

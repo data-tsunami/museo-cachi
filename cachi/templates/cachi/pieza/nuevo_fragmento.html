@@ -140,10 +140,21 @@
                             <small>{{ form_ficha_tecnica.autor.label }}</small>
                             {{ form_ficha_tecnica.autor }}
                         </div> 
-                        <div id="diagnostico_estado" class="form-group col-lg-12">
-                            <small>{{ form_ficha_tecnica.diagnostico_estado.label }}</small>
-                            {{ form_ficha_tecnica.diagnostico_estado }}
-                        </div>                            
+                        <div id="diagnostico_estado" class="form-group col-lg-12" style="{% if not fichas_tecnicas_diagnosticos %}display:none;{% endif %}" >
+                                <small>
+                                    {{ form_ficha_tecnica.diagnostico_estado.label }}
+                                    {% if fichas_tecnicas_diagnosticos %}
+                                        : 
+                                        {% if fecha_diagnostico %}
+                                            {{ fecha_diagnostico|date:"d/m/Y" }}
+                                        {% else %}
+                                           {{ fragmento.obtiene_ficha_tecnica_ultimo_diagnostico.fecha|date:"d/m/Y" }} (Último)
+                                        {% endif %}
+                                    {% endif %}
+                                </small>
+                                {{ form_ficha_tecnica.diagnostico_estado }}
+                        </div> 
+                                               
                     </div>
                     <div class="col-lg-6">
                         <h5>Adjuntos</h5>
@@ -192,11 +203,7 @@
             /*
             Maneja los botones 
             */
-            $('#diagnostico_estado').hide();
-            if($('#ficha_tecnica_pk').val() != "None") {
-                $('#diagnostico_estado').show();
-            }
-
+            
             if($('#fragmento_pk').val()) {
                 $('input, textarea').attr('readonly', true);
                 $('select, input[type=file]').attr('disabled', true);
@@ -226,8 +233,11 @@
                 limpia_lista_adjuntos();
                 alerta_adjuntos();
 
+                $('#diagnostico_estado textarea').val('');
+
                 $('input, textarea').attr('readonly', false);
                 $('select, input[type=file]').attr('disabled', false);
+
 
                 $('#nuevo_diagnostico_estado').hide();
                 $('#edita_ficha_tecnica').hide();

@@ -229,17 +229,14 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
             PiezaConjunto,
             pk=pieza_conjunto_pk,
         )
-
+        
         fragmento = None
         ficha_tecnica = None
         ficha_tecnica_adjuntos = None
         fichas_tecnicas_diagnosticos = None
         fecha_diagnostico = None
         if fragmento_pk:
-            fragmento = get_object_or_404(
-                Fragmento,
-                pk=fragmento_pk,
-            )
+            fragmento = pieza_conjunto.obtiene_fragmento(fragmento_pk)
 
             ficha_tecnica = fragmento.obtiene_ultima_ficha_tecnica()
             if ficha_tecnica_pk:
@@ -310,8 +307,10 @@ def nueva_edita_fragmento(request, pieza_conjunto_pk, fragmento_pk=None, ficha_t
                     fragmento.save()
 
                     adjuntos = form_adjunto.cleaned_data['adjuntos']
-                    for ficha_tecnica_adjunto in ficha_tecnica_adjuntos or []:
-                        adjuntos.append(ficha_tecnica_adjunto)
+
+                    if 'edita_ficha_tecnica' in request.POST:
+                        for ficha_tecnica_adjunto in ficha_tecnica_adjuntos or []:
+                            adjuntos.append(ficha_tecnica_adjunto)
 
                     for archivo_adjunto in adjuntos:
                         if archivo_adjunto:

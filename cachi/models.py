@@ -21,8 +21,9 @@ from __future__ import unicode_literals
 from cachi.validators import validador_cantidad_fragmentos
 from django.contrib.auth.models import User
 from django.db import models
-from django.http import Http404
-
+from django.shortcuts import (
+    get_object_or_404,
+)
 
 RAZON_ACTUALIZACION_CREACION = 1
 RAZON_ACTUALIZACION_ACTUALIZACION = 2
@@ -117,16 +118,22 @@ class PiezaConjunto(models.Model):
             )
 
     def obtiene_procedencia(self):
-        try:
-            return self.procedencia
-        except Procedencia.DoesNotExist:
-            raise Http404
+        return get_object_or_404(
+            Procedencia,
+            pieza_conjunto=self
+        )
 
     def obtiene_adjuntos(self):
         return self.adjunto_pieza_conjunto.all()
 
     def obtiene_fragmentos(self):
         return self.fragmentos_pieza_conjunto.all()
+
+    def obtiene_fragmento(self, fragmento_pk):
+        return get_object_or_404(
+            self.fragmentos_pieza_conjunto,
+            pk=fragmento_pk,
+        )
 
     def get_pieza_o_conjunto(self):
         if type(self.cantidad_fragmentos) == int:

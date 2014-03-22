@@ -63,7 +63,7 @@
                     
                     <h4>Descripción de la pieza</h4>
 
-                    <div class="form-group">
+                    <div class="form-group {% if form_pieza_conjunto.cantidad_fragmentos.errors %}has-error{% endif %}">
                         <small>{{ form_pieza_conjunto.cantidad_fragmentos.label }}</small>
                         {{ form_pieza_conjunto.cantidad_fragmentos }}
                         {% if form_pieza_conjunto.cantidad_fragmentos.field.required %}

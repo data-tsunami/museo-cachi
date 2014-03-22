@@ -332,3 +332,16 @@ class BusquedaPiezaForm(forms.Form):
         self.fields['ubicacion'].label = 'Ubicacion Geográfica'
         self.fields['ubicacion'].widget.attrs['title'] = \
         'Seleccione la ubicación geográfica para realizar una búsqueda filtrando las piezas de este lugar.'
+
+    def clean(self):
+        cleaned_data = super(BusquedaPiezaForm, self).clean()
+
+        cleaned = False
+        for key, value in cleaned_data.items():
+            if not value == None:
+                cleaned = True
+        if not cleaned:
+            raise forms.ValidationError(
+                "Debe especificar al menos un campo par la\
+                búsqueda.")
+        return cleaned_data

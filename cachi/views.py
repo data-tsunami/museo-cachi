@@ -23,7 +23,9 @@ from datetime import date, datetime
 #from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.core.files.base import ContentFile
+from django.views.generic import ListView
 
 from django.shortcuts import (
     get_object_or_404,
@@ -62,44 +64,48 @@ def index(request):
     )
 
 
-@login_required(redirect_field_name=None)
-def busca_pieza(request):
-    form = BusquedaPiezaForm(request.POST)
-    if request.method == 'POST':
-        if not form.is_valid():
-            return render_html_dinamico(
-                request,
-                'cachi/pieza/busca_pieza_conjunto.html',
-                {
-                    'form': form,
-                    'piezas': [],
-                },
-            )
+class PiezasListView(ListView):
+    template_name = 'cachi/pieza/busca_pieza_conjunto.html'
+    context_object_name = 'piezas'
+    form_class = BusquedaPiezaForm
+    model = PiezaConjunto
 
-        resultado = PiezaConjunto.objects.buscar_piezas(
-            form.cleaned_data['nro_inventario'],
-            form.cleaned_data['naturaleza'],
-            form.cleaned_data['sitio_arqueologico'],
-            form.cleaned_data['ubicacion']
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PiezasListView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        response = super(PiezasListView, self).get(request, **kwargs)
+        self.form = self.form_class()
+        return response
+
+    def get_context_data(self, **kwargs):
+        context = super(PiezasListView, self).get_context_data(**kwargs)
+        context['form'] = self.form
+
+        context['mostrar_ayuda_busqueda'] = self.mostrar_ayuda_busqueda
+        return context
+
+    def get_queryset(self):
+        self.form = self.form_class(self.request.GET)
+
+        self.mostrar_ayuda_busqueda = False
+        if not self.request.GET.items():
+            self.mostrar_ayuda_busqueda = True
+
+        if not self.form.is_valid():
+            self.mostrar_ayuda_busqueda = True
+            return None
+
+        data = self.form.cleaned_data
+
+        queryset = PiezaConjunto.objects.buscar_piezas(
+            data['nro_inventario'],
+            data['naturaleza'],
+            data['sitio_arqueologico'],
+            data['ubicacion']
         )
-
-        return render_html_dinamico(
-            request,
-            'cachi/pieza/busca_pieza_conjunto.html',
-            {
-                'form': form,
-                'piezas': resultado,
-            },
-        )
-
-    return render_html_dinamico(
-        request,
-        'cachi/pieza/busca_pieza_conjunto.html',
-        {
-            'mostrar_ayuda_busqueda': True,
-            'form': form
-        },
-    )
+        return queryset
 
 
 @login_required(redirect_field_name=None)

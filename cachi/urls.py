@@ -25,6 +25,7 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
+from cachi import views
 
 urlpatterns = patterns('',
     url(r'^$',
@@ -33,7 +34,7 @@ urlpatterns = patterns('',
     ),
 
     url(r'^pieza/busca/$',
-        'cachi.views.busca_pieza',
+        views.PiezasListView.as_view(),
         name='busca_pieza',
     ),
     url(r'^pieza/nueva/$',

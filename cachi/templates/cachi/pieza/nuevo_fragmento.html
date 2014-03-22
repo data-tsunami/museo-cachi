@@ -76,6 +76,7 @@
             <div class="panel-body"> 
                 <div class="col-lg-12">                            
                     <div class="col-lg-6">
+
                         <div class="form-group col-lg-12">
                             <h5>Características</h5>
                         </div>
@@ -84,14 +85,11 @@
                             <small>{{ form_ficha_tecnica.alto.label }}</small>
                             {{ form_ficha_tecnica.alto }}
                         </div>
-                        <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
-                            <small>{{ form_ficha_tecnica.peso.label }}</small>
-                            {{ form_ficha_tecnica.peso }}
-                        </div>
                         <div class="form-group col-lg-6 {% if form_ficha_tecnica.espesor.errors %}has-error{% endif %}">
                             <small>{{ form_ficha_tecnica.espesor.label }}</small>
                             {{ form_ficha_tecnica.espesor }}
                         </div>
+
                         <div class="form-group col-lg-6">
                             <small>{{ form_ficha_tecnica.diametro_min.label }}</small>
                             {{ form_ficha_tecnica.diametro_min }}
@@ -100,46 +98,71 @@
                             <small>{{ form_ficha_tecnica.diametro_max.label }}</small>
                             {{ form_ficha_tecnica.diametro_max }}
                         </div>
+                        
+                        <div class="form-group col-lg-6 {% if form_ficha_tecnica.peso.errors %}has-error{% endif %}">
+                            <small>{{ form_ficha_tecnica.peso.label }}</small>
+                            {{ form_ficha_tecnica.peso }}
+                        </div>
                         <div class="form-group col-lg-6 {% if form_ficha_tecnica.color.errors %}has-error{% endif %}">
                             <small>{{ form_ficha_tecnica.color.label }}</small>
                             {{ form_ficha_tecnica.color }}
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.decoracion.label }}</small>
                             {{ form_ficha_tecnica.decoracion }}
                         </div>
-                        <div class="form-group col-lg-6">
+
+                        <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.inscripciones_marcas.label }}</small>
                             {{ form_ficha_tecnica.inscripciones_marcas }}
                         </div>
-                        <div class="form-group col-lg-6">
-                            <small>{{ form_ficha_tecnica.reparaciones.label }}</small>
-                            {{ form_ficha_tecnica.reparaciones }}
+
+                        <!-- ~~~~~~~~~~ -->
+                        <div class="form-group col-lg-12">
+                            <h4>Características distintivas</h4>
                         </div>
-                        <div class="form-group col-lg-6">
+                        
+                        <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.desperfectos.label }}</small>
                             {{ form_ficha_tecnica.desperfectos }}
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
+                            <small>{{ form_ficha_tecnica.reparaciones.label }}</small>
+                            {{ form_ficha_tecnica.reparaciones }}
+                        </div>
+                        <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.desperfectos_fabricacion.label }}</small>
                             {{ form_ficha_tecnica.desperfectos_fabricacion }}
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.otras_caracteristicas_distintivas.label }}</small>
                             {{ form_ficha_tecnica.otras_caracteristicas_distintivas }}
                         </div>
-                        <div class="form-group col-lg-6">
+                        
+                        <!-- ~~~~~~~~~~ -->
+                        <div class="form-group col-lg-12">
+                            <h4>Tratamiento</h4>
+                        </div>
+                        
+                        <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.tratamiento.label }}</small>
                             {{ form_ficha_tecnica.tratamiento }}
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.observacion.label }}</small>
                             {{ form_ficha_tecnica.observacion }}
                         </div> 
+
+                        <!-- ~~~~~~~~~~ -->
+                        <div class="form-group col-lg-12">
+                            <h4>Otros datos</h4>
+                        </div>
+
                         <div class="form-group col-lg-12">
                             <small>{{ form_ficha_tecnica.autor.label }}</small>
                             {{ form_ficha_tecnica.autor }}
                         </div> 
+
                         <div id="diagnostico_estado" class="form-group col-lg-12" style="{% if not fichas_tecnicas_diagnosticos %}display:none;{% endif %}" >
                                 <small>
                                     {{ form_ficha_tecnica.diagnostico_estado.label }}

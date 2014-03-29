@@ -23,54 +23,46 @@ from datetime import date, datetime
 #from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.core.files.base import ContentFile
-from django.views.generic import ListView
-
+from django.core.urlresolvers import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import (
+    CreateView, ListView, UpdateView)
 from django.shortcuts import (
-    get_object_or_404,
-    redirect,
-)
+    get_object_or_404, redirect)
+
+from braces.views import LoginRequiredMixin
 
 from cachi.forms import (
-    AdjuntoForm,
-    FichaTecnicaForm,
-    PiezaConjuntoForm,
-    ProcedenciaForm,
-    BusquedaPiezaForm)
+    AdjuntoForm, FichaTecnicaForm, PiezaConjuntoForm,
+    ProcedenciaForm, BusquedaPiezaForm)
 
 from cachi.models import (
-    Adjunto,
-    Fragmento,
-    PiezaConjunto,
-)
+    Adjunto, Fragmento, PiezaConjunto)
+
 from cachi.models import (
     RAZON_ACTUALIZACION_CREACION,
     RAZON_ACTUALIZACION_ACTUALIZACION,
-    RAZON_ACTUALIZACION_DIAGNOSTICO,
-)
+    RAZON_ACTUALIZACION_DIAGNOSTICO)
+
 from cachi.utils import (
-    render_html_dinamico,
-    bytes_2_mb,
-)
+    render_html_dinamico, bytes_2_mb)
 
 
 @login_required(redirect_field_name=None)
 def index(request):
-    return render_html_dinamico(
-        request,
-        'cachi/index.html',
-        {},
-    )
+    #TODO: Implementar.
+    return redirect('busca_pieza')
 
 
 class PiezasListView(ListView):
+
     template_name = 'cachi/pieza/busca_pieza_conjunto.html'
     context_object_name = 'piezas'
     form_class = BusquedaPiezaForm
     model = PiezaConjunto
 
-    @method_decorator(login_required)
+    @method_decorator(login_required(redirect_field_name=None))
     def dispatch(self, *args, **kwargs):
         return super(PiezasListView, self).dispatch(*args, **kwargs)
 
@@ -108,124 +100,139 @@ class PiezasListView(ListView):
         return queryset
 
 
-@login_required(redirect_field_name=None)
-def ver_pieza(request):
-    if request.method == 'POST':
-        pass
+class PiezaCreateUpdateView(UpdateView):
 
-    return render_html_dinamico(
-        request,
-        'cachi/pieza/busca_pieza.html',
-        {},
-    )
+    template_name = 'cachi/pieza/nueva_pieza_conjunto.html'
+    model = PiezaConjunto
+    context_object_name = 'pieza_conjunto'
+    form_class = PiezaConjuntoForm
+    form_procedencia = ProcedenciaForm
+    form_adjunto = AdjuntoForm
 
+    @method_decorator(login_required(redirect_field_name=None))
+    def dispatch(self, *args, **kwargs):
+        return super(PiezaCreateUpdateView, self).dispatch(*args, **kwargs)
 
-@login_required(redirect_field_name=None)
-def nueva_edita_pieza_conjunto(request, pieza_conjunto_pk=None):
-    pieza_conjunto = None
-    procedencia = None
-    pieza_conjunto_adjuntos = None
-    pieza_conjunto_fragmentos = None
-    # Si `cantidad_fragmentos_invalido` es True, entonces hay que setear también
-    # la variable `cantidad_instancias_fragmentos`
-    cantidad_fragmentos_invalido = False
-    cantidad_instancias_fragmentos = None
+    def get_object(self, queryset=None):
+        self.cantidad_fragmentos_invalido = False
+        self.procedencia = None
 
-    if pieza_conjunto_pk:
-        pieza_conjunto = get_object_or_404(
-            PiezaConjunto,
-            pk=pieza_conjunto_pk,
-        )
-        procedencia = pieza_conjunto.obtiene_procedencia()
-        pieza_conjunto_adjuntos = pieza_conjunto.obtiene_adjuntos()
-        pieza_conjunto_fragmentos = pieza_conjunto.obtiene_fragmentos()
+        self.creating = not 'pk' in self.kwargs
+        if not self.creating:
+            pieza_conjunto = super(
+                PiezaCreateUpdateView, self).get_object(queryset)
 
-    if request.method == 'POST':
-        form_pieza_conjunto = PiezaConjuntoForm(
-            request.POST,
-            instance=pieza_conjunto
-        )
-        form_procedencia = ProcedenciaForm(
-            request.POST,
-            instance=procedencia
-        )
-        form_adjunto = AdjuntoForm(
-            request.POST,
-            request.FILES,
-        )
+            self.procedencia = pieza_conjunto.obtiene_procedencia()
+            self.pieza_conjunto_adjuntos = pieza_conjunto.obtiene_adjuntos()
+            self.pieza_conjunto_fragmentos = pieza_conjunto.obtiene_fragmentos()
 
-        if (form_pieza_conjunto.is_valid() and
-            form_procedencia.is_valid() and
-            form_adjunto.is_valid()):
+            self.cantidad_instancias_fragmentos = self.pieza_conjunto_fragmentos.count()
+            if pieza_conjunto.cantidad_fragmentos != self.cantidad_instancias_fragmentos:
+                self.cantidad_fragmentos_invalido = True
 
-            pieza_conjunto = form_pieza_conjunto.save()
+            return pieza_conjunto
 
-            procedencia = form_procedencia.save(
-                commit=False,
-            )
-            procedencia.pieza_conjunto = pieza_conjunto
-            procedencia.save()
+    def get_context_data(self, **kwargs):
+        context = super(PiezaCreateUpdateView, self).get_context_data(**kwargs)
 
-            adjuntos = form_adjunto.cleaned_data['adjuntos']
-            for adjunto in adjuntos:
-                if adjunto:
-                    tipo = adjunto.content_type.split('/')[1]
-                    Adjunto.objects.create(
-                        nombre_archivo=adjunto.name,
-                        content_type=adjunto.content_type,
-                        size="{0:.2f} MB".format(bytes_2_mb(adjunto.size)),
-                        tipo=tipo,
-                        adjunto=adjunto,
-                        pieza_conjunto=pieza_conjunto,
-                    )
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                '<strong>Operación Exitosa!</strong>\
-                Se llevó a cabo con éxito la creación de la\
-                nueva pieza o conjunto.',
+        if 'form_procedencia' not in context:
+            context['form_procedencia'] = self.form_procedencia(
+                instance=self.procedencia,
             )
 
-            return redirect('edita_pieza_conjunto', pieza_conjunto.pk)
+        if 'form_adjunto' not in context:
+            context['form_adjunto'] = self.form_adjunto
+
+        if not self.creating:
+            context['pieza_conjunto_adjuntos'] = self.pieza_conjunto_adjuntos
+            context['pieza_conjunto_fragmentos'] = self.pieza_conjunto_fragmentos
+            context['cantidad_fragmentos_invalido'] = self.cantidad_fragmentos_invalido,
+            context['cantidad_instancias_fragmentos'] = self.cantidad_instancias_fragmentos
+        return context
+
+    def form_valid(self, form):
+        return self.process_all_forms(form)
+
+    def form_invalid(self, form):
+        return self.process_all_forms(form)
+
+    def process_all_forms(self, form):
+        if form.is_valid():
+            self.object = form.save()
+
+        form_procedencia = self.form_procedencia(
+            self.request.POST, instance=self.procedencia,
+        )
+        form_adjunto = self.form_adjunto(
+            self.request.POST,
+            self.request.FILES,
+        )
+
+        is_valid = all([
+            form.is_valid(),
+            form_procedencia.is_valid(),
+            form_adjunto.is_valid(),
+        ])
+        if is_valid:
+            return self.forms_valid(
+                form_procedencia, form_adjunto)
         else:
-            messages.add_message(
-                request,
-                messages.ERROR,
-                '<strong>Operación Errónea!</strong>\
-                Revise y complete todos los campos obligatorios\
-                para la creación de una nueva pieza o conjunto.',
-            )
+            if form.is_valid():
+                self.object.delete()
+                self.object = None
 
-    elif request.method == "GET":
-        form_pieza_conjunto = PiezaConjuntoForm(
-            instance=pieza_conjunto,
+            return self.forms_invalid(
+                form, form_procedencia, form_adjunto)
+
+    def forms_valid(self, form_procedencia, form_adjunto):
+        procedencia = form_procedencia.save(
+            commit=False,
         )
-        form_procedencia = ProcedenciaForm(
-            instance=procedencia,
+        if self.creating:
+            procedencia.pieza_conjunto = self.object
+        procedencia.save()
+
+        adjuntos = form_adjunto.cleaned_data['adjuntos']
+        for adjunto in adjuntos:
+            if adjunto:
+                tipo = adjunto.content_type.split('/')[1]
+                Adjunto.objects.create(
+                    nombre_archivo=adjunto.name,
+                    content_type=adjunto.content_type,
+                    size="{0:.2f} MB".format(bytes_2_mb(adjunto.size)),
+                    tipo=tipo,
+                    adjunto=adjunto,
+                    pieza_conjunto=self.object,
+                )
+        return redirect(self.get_success_url())
+
+    def forms_invalid(self, form, form_procedencia, form_adjunto):
+        messages.add_message(
+            self.request,
+            messages.ERROR,
+            '<strong>Operación Errónea!</strong>\
+            Revise y complete todos los campos obligatorios\
+            para la creación de una nueva pieza o conjunto.',
         )
-        form_adjunto = AdjuntoForm()
+        context = self.get_context_data(
+            form=form,
+            form_procedencia=form_procedencia,
+            form_adjunto=form_adjunto,
+        )
 
-        if pieza_conjunto:
-            cantidad_instancias_fragmentos = pieza_conjunto_fragmentos.count()
-            if pieza_conjunto.cantidad_fragmentos != cantidad_instancias_fragmentos:
-                cantidad_fragmentos_invalido = True
+        return self.render_to_response(context)
 
-    contexto = {
-        'pieza_conjunto': pieza_conjunto,
-        'form_pieza_conjunto': form_pieza_conjunto,
-        'form_procedencia': form_procedencia,
-        'form_adjunto': form_adjunto,
-        'pieza_conjunto_adjuntos': pieza_conjunto_adjuntos,
-        'pieza_conjunto_fragmentos': pieza_conjunto_fragmentos,
-        'cantidad_fragmentos_invalido': cantidad_fragmentos_invalido,
-        'cantidad_instancias_fragmentos': cantidad_instancias_fragmentos
-    }
-
-    return render_html_dinamico(
-        request,
-        'cachi/pieza/nueva_pieza_conjunto.html',
-        contexto,
-    )
+    def get_success_url(self):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            '<strong>Operación Exitosa!</strong>\
+            Se llevó a cabo con éxito la creación de la\
+            nueva pieza o conjunto.',
+        )
+        return reverse(
+            'edita_pieza_conjunto',
+            args=(self.object.pk,))
 
 
 @login_required(redirect_field_name=None)

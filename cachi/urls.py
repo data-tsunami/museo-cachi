@@ -37,14 +37,16 @@ urlpatterns = patterns('',
         views.PiezasListView.as_view(),
         name='busca_pieza',
     ),
+
     url(r'^pieza/nueva/$',
-        'cachi.views.nueva_edita_pieza_conjunto',
+        views.PiezaCreateUpdateView.as_view(),
         name='nueva_pieza_conjunto',
     ),
-    url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/$',
-        'cachi.views.nueva_edita_pieza_conjunto',
+    url(r'^pieza/(?P<pk>\d+)/$',
+        views.PiezaCreateUpdateView.as_view(),
         name='edita_pieza_conjunto'
     ),
+
     url(r'^pieza/(?P<pieza_conjunto_pk>\d+)/fragmento/$',
         'cachi.views.nueva_edita_fragmento',
         name='nuevo_fragmento'

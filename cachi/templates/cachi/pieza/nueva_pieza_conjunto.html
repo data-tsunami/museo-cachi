@@ -29,32 +29,31 @@
                 <div class="col-lg-4">
 
                     <h4>Identificación de la pieza</h4>
-                    
-                    <div class="form-group {% if form_pieza_conjunto.numero_inventario.errors %}has-error{% endif %}">
-                        <small>{{ form_pieza_conjunto.numero_inventario.label }}</small>
-                        {{ form_pieza_conjunto.numero_inventario }}
-                        {% if form_pieza_conjunto.numero_inventario.field.required %}
+                    <div class="form-group {% if form.numero_inventario.errors %}has-error{% endif %}">
+                        <small>{{ form.numero_inventario.label }}</small>
+                        {{ form.numero_inventario }}
+                        {% if form.numero_inventario.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
-                    <div class="form-group {% if form_pieza_conjunto.nombre_descriptivo.errors %}has-error{% endif %}">
-                        <small>{{ form_pieza_conjunto.nombre_descriptivo.label }}</small>
-                        {{ form_pieza_conjunto.nombre_descriptivo }}
-                        {% if form_pieza_conjunto.nombre_descriptivo.field.required %}
+                    <div class="form-group {% if form.nombre_descriptivo.errors %}has-error{% endif %}">
+                        <small>{{ form.nombre_descriptivo.label }}</small>
+                        {{ form.nombre_descriptivo }}
+                        {% if form.nombre_descriptivo.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
-                    <div class="form-group {% if form_pieza_conjunto.naturaleza.errors %}has-error{% endif %}">
-                        <small>{{ form_pieza_conjunto.naturaleza.label }}</small>
-                        {{ form_pieza_conjunto.naturaleza }}
-                        {% if form_pieza_conjunto.naturaleza.field.required %}
+                    <div class="form-group {% if form.naturaleza.errors %}has-error{% endif %}">
+                        <small>{{ form.naturaleza.label }}</small>
+                        {{ form.naturaleza }}
+                        {% if form.naturaleza.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        <small>{{ form_pieza_conjunto.tipo_adquisicion.label }}</small>
-                        {{ form_pieza_conjunto.tipo_adquisicion }}
-                        {% if form_pieza_conjunto.tipo_adquisicion.field.required %}
+                        <small>{{ form.tipo_adquisicion.label }}</small>
+                        {{ form.tipo_adquisicion }}
+                        {% if form.tipo_adquisicion.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
@@ -63,25 +62,25 @@
                     
                     <h4>Descripción de la pieza</h4>
 
-                    <div class="form-group {% if form_pieza_conjunto.cantidad_fragmentos.errors %}has-error{% endif %}">
-                        <small>{{ form_pieza_conjunto.cantidad_fragmentos.label }}</small>
-                        {{ form_pieza_conjunto.cantidad_fragmentos }}
-                        {% if form_pieza_conjunto.cantidad_fragmentos.field.required %}
+                    <div class="form-group {% if form.cantidad_fragmentos.errors %}has-error{% endif %}">
+                        <small>{{ form.cantidad_fragmentos.label }}</small>
+                        {{ form.cantidad_fragmentos }}
+                        {% if form.cantidad_fragmentos.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
 
-                    <div class="form-group {% if form_pieza_conjunto.forma.errors %}has-error{% endif %}">
-                        <small>{{ form_pieza_conjunto.forma.label }}</small>
-                        {{ form_pieza_conjunto.forma }}
-                        {% if form_pieza_conjunto.forma.field.required %}
+                    <div class="form-group {% if form.forma.errors %}has-error{% endif %}">
+                        <small>{{ form.forma.label }}</small>
+                        {{ form.forma }}
+                        {% if form.forma.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        <small>{{ form_pieza_conjunto.tecnica_manufactura.label }}</small>
-                        {{ form_pieza_conjunto.tecnica_manufactura }}
-                        {% if form_pieza_conjunto.tecnica_manufactura.field.required %}
+                        <small>{{ form.tecnica_manufactura.label }}</small>
+                        {{ form.tecnica_manufactura }}
+                        {% if form.tecnica_manufactura.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
@@ -126,23 +125,23 @@
                     <h4>Hallazgo</h4>
 
                     <div class="form-group">
-                        <small>{{ form_pieza_conjunto.tipo_condicion_hallazgo.label }}</small>
-                        {{ form_pieza_conjunto.tipo_condicion_hallazgo }}
-                        {% if form_pieza_conjunto.tipo_condicion_hallazgo.field.required %}
+                        <small>{{ form.tipo_condicion_hallazgo.label }}</small>
+                        {{ form.tipo_condicion_hallazgo }}
+                        {% if form.tipo_condicion_hallazgo.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
-                    <div class="form-group {% if form_pieza_conjunto.fecha_hallazgo.errors %}has-error{% endif %}">
-                        <small>{{ form_pieza_conjunto.fecha_hallazgo.label }}</small>
-                        {{ form_pieza_conjunto.fecha_hallazgo }}
-                        {% if form_pieza_conjunto.fecha_hallazgo.field.required %}
+                    <div class="form-group {% if form.fecha_hallazgo.errors %}has-error{% endif %}">
+                        <small>{{ form.fecha_hallazgo.label }}</small>
+                        {{ form.fecha_hallazgo }}
+                        {% if form.fecha_hallazgo.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        <small>{{ form_pieza_conjunto.persona_colectora.label }}</small>
-                        {{ form_pieza_conjunto.persona_colectora }}
-                        {% if form_pieza_conjunto.persona_colectora.field.required %}
+                        <small>{{ form.persona_colectora.label }}</small>
+                        {{ form.persona_colectora }}
+                        {% if form.persona_colectora.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>
@@ -152,9 +151,9 @@
                     <h4>Ubicación actual</h4>                            
 
                     <div class="form-group">
-                        <small>{{ form_pieza_conjunto.ubicacion.label }}</small>
-                        {{ form_pieza_conjunto.ubicacion }}
-                        {% if form_pieza_conjunto.ubicacion.field.required %}
+                        <small>{{ form.ubicacion.label }}</small>
+                        {{ form.ubicacion }}
+                        {% if form.ubicacion.field.required %}
                             <div style="text-align: right; color: gray;"><em><small>- requerido</small></em></div>
                         {% endif %}
                     </div>

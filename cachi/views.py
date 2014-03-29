@@ -20,18 +20,18 @@ from __future__ import unicode_literals
 
 from datetime import date, datetime
 
-#from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.files.base import ContentFile
-from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
+from django.core.files.base import ContentFile
+
+from django.core.urlresolvers import reverse
 from django.views.generic import (
     CreateView, ListView, UpdateView)
+
 from django.shortcuts import (
     get_object_or_404, redirect)
 
-from braces.views import LoginRequiredMixin
 
 from cachi.forms import (
     AdjuntoForm, FichaTecnicaForm, PiezaConjuntoForm,
@@ -62,7 +62,7 @@ class PiezasListView(ListView):
     form_class = BusquedaPiezaForm
     model = PiezaConjunto
 
-    @method_decorator(login_required(redirect_field_name=None))
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(PiezasListView, self).dispatch(*args, **kwargs)
 
@@ -223,12 +223,19 @@ class PiezaCreateUpdateView(UpdateView):
         return self.render_to_response(context)
 
     def get_success_url(self):
+        if self.creating:
+            message = '<strong>Operación Exitosa!</strong>\
+            Se llevó a cabo con éxito la creación de la\
+            nueva pieza o conjunto.',
+        else:
+            message = '<strong>Operación Exitosa!</strong>\
+            Se llevó a cabo con éxito la actualización de la\
+            pieza o conjunto.',
+
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            '<strong>Operación Exitosa!</strong>\
-            Se llevó a cabo con éxito la creación de la\
-            nueva pieza o conjunto.',
+            message,
         )
         return reverse(
             'edita_pieza_conjunto',

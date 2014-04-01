@@ -39,11 +39,11 @@ urlpatterns = patterns('',
     ),
 
     url(r'^pieza/nueva/$',
-        views.PiezaCreateUpdateView.as_view(),
+        views.PiezaCreateView.as_view(),
         name='nueva_pieza_conjunto',
     ),
     url(r'^pieza/(?P<pk>\d+)/$',
-        views.PiezaCreateUpdateView.as_view(),
+        views.PiezaUpdateView.as_view(),
         name='edita_pieza_conjunto'
     ),
 

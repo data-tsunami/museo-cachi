@@ -56,6 +56,10 @@ def index(request):
 
 
 class PiezasListView(ListView):
+    """
+    Vista para la búsqueda y listado de PiezasConjunto.
+    Requiere que el usuario este logueado.
+    """
 
     template_name = 'cachi/pieza/busca_pieza_conjunto.html'
     context_object_name = 'piezas'
@@ -100,61 +104,11 @@ class PiezasListView(ListView):
         return queryset
 
 
-class PiezaCreateUpdateView(UpdateView):
-
-    template_name = 'cachi/pieza/nueva_pieza_conjunto.html'
-    model = PiezaConjunto
-    context_object_name = 'pieza_conjunto'
-    form_class = PiezaConjuntoForm
-    form_procedencia = ProcedenciaForm
-    form_adjunto = AdjuntoForm
-
-    @method_decorator(login_required(redirect_field_name=None))
-    def dispatch(self, *args, **kwargs):
-        return super(PiezaCreateUpdateView, self).dispatch(*args, **kwargs)
-
-    def get_object(self, queryset=None):
-        self.cantidad_fragmentos_invalido = False
-        self.procedencia = None
-
-        self.creating = not 'pk' in self.kwargs
-        if not self.creating:
-            pieza_conjunto = super(
-                PiezaCreateUpdateView, self).get_object(queryset)
-
-            self.procedencia = pieza_conjunto.obtiene_procedencia()
-            self.pieza_conjunto_adjuntos = pieza_conjunto.obtiene_adjuntos()
-            self.pieza_conjunto_fragmentos = pieza_conjunto.obtiene_fragmentos()
-
-            self.cantidad_instancias_fragmentos = self.pieza_conjunto_fragmentos.count()
-            if pieza_conjunto.cantidad_fragmentos != self.cantidad_instancias_fragmentos:
-                self.cantidad_fragmentos_invalido = True
-
-            return pieza_conjunto
-
-    def get_context_data(self, **kwargs):
-        context = super(PiezaCreateUpdateView, self).get_context_data(**kwargs)
-
-        if 'form_procedencia' not in context:
-            context['form_procedencia'] = self.form_procedencia(
-                instance=self.procedencia,
-            )
-
-        if 'form_adjunto' not in context:
-            context['form_adjunto'] = self.form_adjunto
-
-        if not self.creating:
-            context['pieza_conjunto_adjuntos'] = self.pieza_conjunto_adjuntos
-            context['pieza_conjunto_fragmentos'] = self.pieza_conjunto_fragmentos
-            context['cantidad_fragmentos_invalido'] = self.cantidad_fragmentos_invalido,
-            context['cantidad_instancias_fragmentos'] = self.cantidad_instancias_fragmentos
-        return context
-
-    def form_valid(self, form):
-        return self.process_all_forms(form)
-
-    def form_invalid(self, form):
-        return self.process_all_forms(form)
+class PiezaMixin(object):
+    """
+    Mixin para el procesamiento de los formularios
+    en la creación o edición de las PiezasConjunto.
+    """
 
     def process_all_forms(self, form):
         if form.is_valid():
@@ -188,8 +142,7 @@ class PiezaCreateUpdateView(UpdateView):
         procedencia = form_procedencia.save(
             commit=False,
         )
-        if self.creating:
-            procedencia.pieza_conjunto = self.object
+        procedencia.pieza_conjunto = self.object
         procedencia.save()
 
         adjuntos = form_adjunto.cleaned_data['adjuntos']
@@ -222,15 +175,115 @@ class PiezaCreateUpdateView(UpdateView):
 
         return self.render_to_response(context)
 
+
+class PiezaCreateView(CreateView, PiezaMixin):
+    """
+    Vista para la creación de las PiezasConjunto.
+    Requiere que el usuario este logueado.
+    Procesa tres formulario.
+    """
+
+    template_name = 'cachi/pieza/nueva_pieza_conjunto.html'
+    model = PiezaConjunto
+    context_object_name = 'pieza_conjunto'
+    form_class = PiezaConjuntoForm
+    form_procedencia = ProcedenciaForm
+    form_adjunto = AdjuntoForm
+
+    @method_decorator(login_required(redirect_field_name=None))
+    def dispatch(self, *args, **kwargs):
+        return super(PiezaCreateView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PiezaCreateView, self).get_context_data(**kwargs)
+        if 'form_procedencia' not in context:
+            context['form_procedencia'] = self.form_procedencia
+        if 'form_adjunto' not in context:
+            context['form_adjunto'] = self.form_adjunto
+        return context
+
+    def form_valid(self, form):
+        self.procedencia = None
+        return self.process_all_forms(form)
+
+    def form_invalid(self, form):
+        return self.process_all_forms(form)
+
     def get_success_url(self):
-        if self.creating:
-            message = '<strong>Operación Exitosa!</strong>\
-            Se llevó a cabo con éxito la creación de la\
-            nueva pieza o conjunto.',
-        else:
-            message = '<strong>Operación Exitosa!</strong>\
-            Se llevó a cabo con éxito la actualización de la\
-            pieza o conjunto.',
+        message = '<strong>Operación Exitosa!</strong>\
+        Se llevó a cabo con éxito la creación de la\
+        nueva pieza o conjunto.'
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            message,
+        )
+        return reverse(
+            'edita_pieza_conjunto',
+            args=(self.object.pk,))
+
+
+class PiezaUpdateView(UpdateView, PiezaMixin):
+    """
+    Vista para la edición de las PiezasConjunto.
+    Requiere que el usuario este logueado.
+    Procesa tres formulario.
+    """
+
+    template_name = 'cachi/pieza/nueva_pieza_conjunto.html'
+    model = PiezaConjunto
+    context_object_name = 'pieza_conjunto'
+    form_class = PiezaConjuntoForm
+    form_procedencia = ProcedenciaForm
+    form_adjunto = AdjuntoForm
+
+    @method_decorator(login_required(redirect_field_name=None))
+    def dispatch(self, *args, **kwargs):
+        return super(PiezaUpdateView, self).dispatch(*args, **kwargs)
+
+    def get_object(self, queryset=None):
+        pieza_conjunto = super(PiezaUpdateView, self).get_object(queryset)
+
+        self.procedencia = pieza_conjunto.obtiene_procedencia()
+        self.pieza_conjunto_adjuntos = pieza_conjunto.obtiene_adjuntos()
+        self.pieza_conjunto_fragmentos = pieza_conjunto.obtiene_fragmentos()
+
+        self.cantidad_instancias_fragmentos = self.pieza_conjunto_fragmentos.count()
+
+        self.cantidad_fragmentos_invalido = False
+        if pieza_conjunto.cantidad_fragmentos != self.cantidad_instancias_fragmentos:
+            self.cantidad_fragmentos_invalido = True
+
+        return pieza_conjunto
+
+    def get_context_data(self, **kwargs):
+        context = super(PiezaUpdateView, self).get_context_data(**kwargs)
+
+        if 'form_procedencia' not in context:
+            context['form_procedencia'] = self.form_procedencia(
+                instance=self.procedencia,
+            )
+
+        if 'form_adjunto' not in context:
+            context['form_adjunto'] = self.form_adjunto
+
+        context['pieza_conjunto_adjuntos'] = self.pieza_conjunto_adjuntos
+        context['pieza_conjunto_fragmentos'] = self.pieza_conjunto_fragmentos
+        context['cantidad_fragmentos_invalido'] = self.cantidad_fragmentos_invalido,
+        context['cantidad_instancias_fragmentos'] = self.cantidad_instancias_fragmentos
+        return context
+
+    def form_valid(self, form):
+        return self.process_all_forms(form)
+
+    def form_invalid(self, form):
+        return self.process_all_forms(form)
+
+    def get_success_url(self):
+        message = '<strong>Operación Exitosa!</strong>\
+        Se llevó a cabo con éxito la actualización de la\
+        pieza o conjunto.'
 
         messages.add_message(
             self.request,
